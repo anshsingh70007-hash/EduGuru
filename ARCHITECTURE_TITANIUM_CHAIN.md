@@ -207,3 +207,15 @@ Whenever you (the AI assistant) or any engineer makes changes to this project, *
 5. **Update Documentation:** Append any new collections, fields, or endpoints to this document (`ARCHITECTURE_TITANIUM_CHAIN.md`) and verify against `AGENTS.md`.
 6. **Rebuild Production Bundle:** Run `node scratch/build_production_bundle.js` to ensure the Hostinger release zip (`educationistguru_production_package.zip`) is always up-to-date and ready for instant deployment.
 
+---
+
+## 🗓️ Maintenance Log
+
+### 2026-09-23 — Anti-AI Visual Harmony Sweep (Phases 4 & 5)
+- **Content Studio (EDIT):** Purged all harsh `#ff3115` red from `edit.html`, `edit/index.html`, and shared `edit/css/edit.css`, replacing with the brand orange system (`--primary: #ff6b00`, hover `#e65e00`, ambient `rgba(255,107,0,*)` glows). Login submit button, "Content Studio Access" pill, and focus rings now render brand orange. Sign Out demoted to a neutral ghost button (`#64748b`). Dual-file SHA256 parity re-verified `true`.
+- **CRM:** Removed harsh `#ff3115` across every CRM page (`dashboard`, `leads`, `applications`, `enrollments`, `fees`, `inquiries`, `subscribers`, `users`, `settings`) and `CRM/js/data.js` → brand orange. Semantic red retained only for genuine destructive/danger states.
+- **Section Chain (INVARIANT 1):** Re-confirmed `renderAll()` isolates each section in its own try/catch; all sections render independently even with empty collections.
+- **Zero-Loss Lead Capture (INVARIANT 3):** Verified end-to-end — normal, offline (queued to `eg_pending_leads_queue` with success UX and no red error), and reconnect drain (`flushOfflineLeadsQueue` → queue emptied to server). `js/crm-integration.js` untouched.
+- **Empty-Collection Safety:** Enrollments / Fees / Users & Roles render graceful empty-states with zeroed stats; `readData()` self-heal confirmed identical in `server.js` and `api.php` (INVARIANT 5).
+- **Validation:** `node scratch/test_unbreakable_system.js` passing; EDIT SHA256 parity `true`. Note: `test_unbreakable_recovery.js` fails only on a hard-coded Windows vault path (`C:\Users\...`), an environment-specific artifact unrelated to these display-only changes.
+
