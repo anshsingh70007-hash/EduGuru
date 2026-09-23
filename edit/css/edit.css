@@ -855,7 +855,7 @@ textarea.form-control {
     right: -150px;
     width: 450px;
     height: 450px;
-    background: radial-gradient(circle, rgba(255, 49, 21, 0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.25) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -899,9 +899,9 @@ textarea.form-control {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: #fff1ef;
-    color: #ff3115;
-    border: 1px solid #fed7d2;
+    background: var(--primary-light);
+    color: #ff6b00;
+    border: 1px solid #ffd9bf;
     padding: 3px 10px;
     border-radius: 20px;
     font-size: 11px;
@@ -974,9 +974,9 @@ textarea.form-control {
 .edit-login-card input[type="text"]:focus,
 .edit-login-card .form-control:focus,
 .edit-login-card .form-input:focus {
-    border-color: #ff3115 !important;
+    border-color: #ff6b00 !important;
     background: #ffffff !important;
-    box-shadow: 0 0 0 3.5px rgba(255, 49, 21, 0.15) !important;
+    box-shadow: 0 0 0 3.5px rgba(255, 107, 0, 0.15) !important;
 }
 
 .edit-pass-wrap {
@@ -1009,11 +1009,11 @@ textarea.form-control {
 }
 
 .edit-pass-toggle:hover {
-    color: #ff3115;
+    color: #ff6b00;
 }
 .edit-login-submit {
     width: 100%;
-    background: linear-gradient(135deg, #ff3115, #e0260c);
+    background: linear-gradient(135deg, #ff6b00, #e65e00);
     color: #fff;
     border: none;
     padding: 13px;
@@ -1021,7 +1021,7 @@ textarea.form-control {
     font-size: 15px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 49, 21, 0.35);
+    box-shadow: 0 4px 15px rgba(255, 107, 0, 0.35);
     transition: transform 0.2s, box-shadow 0.2s;
     display: flex;
     align-items: center;
@@ -1031,7 +1031,7 @@ textarea.form-control {
 }
 .edit-login-submit:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(255, 49, 21, 0.45);
+    box-shadow: 0 6px 20px rgba(255, 107, 0, 0.45);
 }
 .edit-login-footer {
     text-align: center;
@@ -1042,7 +1042,7 @@ textarea.form-control {
     color: #64748b;
 }
 .edit-login-footer a {
-    color: #ff3115;
+    color: #ff6b00;
     font-weight: 600;
     text-decoration: none;
 }
@@ -1066,7 +1066,7 @@ textarea.form-control {
     height: 36px;
     min-width: 36px;
     border-radius: 50%;
-    background: #ff3115;
+    background: #ff6b00;
     color: #fff;
     font-weight: 700;
     font-size: 13px;
@@ -2049,9 +2049,9 @@ textarea.form-control {
     gap: 4px;
 }
 .btn-tool:hover {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
-    border-color: #ff3115;
+    border-color: #ff6b00;
 }
 .btn-tool-h {
     font-family: monospace;
@@ -2065,8 +2065,8 @@ textarea.form-control {
     border-color: #0f172a;
 }
 .btn-tool-preview:hover {
-    background: #ff3115;
-    border-color: #ff3115;
+    background: #ff6b00;
+    border-color: #ff6b00;
 }
 .rich-textarea {
     border-radius: 0 0 8px 8px !important;
@@ -2186,7 +2186,7 @@ textarea.form-control {
     transition: border-color 0.2s;
 }
 .tool-select:focus, .tool-select:hover {
-    border-color: #ff3115;
+    border-color: #ff6b00;
 }
 
 .toolbar-divider {
@@ -2213,9 +2213,9 @@ textarea.form-control {
 }
 
 .btn-visual-tool:hover {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
-    border-color: #ff3115;
+    border-color: #ff6b00;
     transform: translateY(-1px);
 }
 
@@ -2268,7 +2268,7 @@ textarea.form-control {
 }
 
 .visual-editor-canvas:focus {
-    box-shadow: inset 0 0 0 2px rgba(255, 49, 21, 0.35);
+    box-shadow: inset 0 0 0 2px rgba(255, 107, 0, 0.35);
 }
 
 .visual-editor-canvas[placeholder]:empty:before {
@@ -2279,8 +2279,8 @@ textarea.form-control {
 }
 
 /* Formatted Headings rendered visually in Canvas */
-.visual-editor-canvas h1 { font-size: 26px; font-weight: 800; color: #0f172a; margin: 18px 0 10px; border-bottom: 2px solid #ff3115; padding-bottom: 6px; line-height: 1.3; }
-.visual-editor-canvas h2 { font-size: 22px; font-weight: 800; color: #1e293b; margin: 16px 0 8px; border-left: 4px solid #ff3115; padding-left: 10px; line-height: 1.35; }
+.visual-editor-canvas h1 { font-size: 26px; font-weight: 800; color: #0f172a; margin: 18px 0 10px; border-bottom: 2px solid #ff6b00; padding-bottom: 6px; line-height: 1.3; }
+.visual-editor-canvas h2 { font-size: 22px; font-weight: 800; color: #1e293b; margin: 16px 0 8px; border-left: 4px solid #ff6b00; padding-left: 10px; line-height: 1.35; }
 .visual-editor-canvas h3 { font-size: 19px; font-weight: 700; color: #334155; margin: 14px 0 6px; line-height: 1.4; }
 .visual-editor-canvas h4 { font-size: 17px; font-weight: 700; color: #475569; margin: 12px 0 4px; line-height: 1.4; }
 .visual-editor-canvas h5 { font-size: 15px; font-weight: 600; color: #64748b; margin: 10px 0 4px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -2557,7 +2557,7 @@ body.has-fullscreen-editor {
     gap: 8px;
 }
 .visual-editor-canvas .editorial-faq-q i {
-    color: #ff3115;
+    color: #ff6b00;
 }
 .visual-editor-canvas .editorial-faq-a {
     color: #475569;
@@ -2605,7 +2605,7 @@ body.has-fullscreen-editor {
 
 /* Quote / Testimonial Box */
 .visual-editor-canvas .editorial-quote-box {
-    border-left: 4px solid #ff3115;
+    border-left: 4px solid #ff6b00;
     background: #fff7ed;
     padding: 14px 20px;
     margin: 18px 0;
