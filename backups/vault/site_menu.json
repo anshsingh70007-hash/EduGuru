@@ -1,0 +1,134 @@
+{
+  "announcement": {
+    "enabled": true,
+    "text": "",
+    "phone": "",
+    "email": "",
+    "whatsapp": "918750477000",
+    "ctaText": "Apply Now",
+    "ctaLink": "contact.html",
+    "link": "contact.html"
+  },
+  "navItems": [
+    {
+      "id": "home",
+      "title": "Home",
+      "url": "index.html",
+      "type": "link",
+      "order": 1
+    },
+    {
+      "id": "courses",
+      "title": "Courses",
+      "url": "courses.html",
+      "type": "megamenu",
+      "badge": "Popular",
+      "order": 2
+    },
+    {
+      "id": "universities",
+      "title": "Universities",
+      "url": "universities.html",
+      "type": "dropdown",
+      "badge": "UGC Valid",
+      "order": 3
+    },
+    {
+      "id": "colleges",
+      "title": "Colleges",
+      "url": "colleges.html",
+      "type": "link",
+      "order": 4
+    },
+    {
+      "id": "boards",
+      "title": "Boards & Open School",
+      "url": "#",
+      "type": "dropdown",
+      "order": 5,
+      "children": [
+        {
+          "id": "nios-admission",
+          "title": "NIOS 10th & 12th Admission",
+          "url": "contact.html?subject=NIOS+Admission",
+          "desc": "Direct enrollment in National Institute of Open Schooling"
+        },
+        {
+          "id": "bbose-admission",
+          "title": "BBOSE Open Schooling",
+          "url": "contact.html?subject=BBOSE+Admission",
+          "desc": "State open schooling board verification & enrollment"
+        },
+        {
+          "id": "open-counseling",
+          "title": "Free Document & Eligibility Assessment",
+          "url": "contact.html?subject=Eligibility+Verification",
+          "desc": "100% verified educational counselor support"
+        }
+      ]
+    },
+    {
+      "id": "about",
+      "title": "About Us",
+      "url": "about.html",
+      "type": "link",
+      "order": 6
+    },
+    {
+      "id": "videos",
+      "title": "Videos",
+      "url": "youtube.html",
+      "type": "link",
+      "icon": "fa fa-youtube-play text-danger",
+      "order": 7
+    },
+    {
+      "id": "blog",
+      "title": "Blog",
+      "url": "blog.html",
+      "type": "link",
+      "order": 8
+    },
+    {
+      "id": "contact",
+      "title": "Contact",
+      "url": "contact.html",
+      "type": "link",
+      "order": 9
+    },
+    {
+      "id": "subharti-mba-hub",
+      "title": "Subharti MBA",
+      "url": "blog-details.html?id=100",
+      "type": "dropdown",
+      "order": 10,
+      "children": [
+        {
+          "id": "subharti-mba-guide",
+          "title": "MBA in Financial & Project Management",
+          "url": "blog-details.html?id=100",
+          "desc": "Subharti University dual specialization admission & syllabus guide"
+        },
+        {
+          "id": "subharti-course-details",
+          "title": "Course Syllabus & Fee Schedule",
+          "url": "courses-details.html?id=107",
+          "desc": "2-Year program breakdown, modules & recognition details"
+        },
+        {
+          "id": "subharti-counselor-helpline",
+          "title": "Direct Admission Helpline",
+          "url": "contact.html?subject=Subharti+University+MBA",
+          "desc": "Connect with authorized counselors at 8750477000"
+        }
+      ],
+      "badge": "New 2026"
+    }
+  ],
+  "config": {
+    "autoSyncCourses": true,
+    "autoSyncUniversities": true,
+    "maxMegaMenuCoursesPerFaculty": 6,
+    "updatedAt": "2026-09-22T11:10:35.451Z"
+  }
+}

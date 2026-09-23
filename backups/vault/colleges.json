@@ -1,0 +1,310 @@
+[
+  {
+    "id": 7,
+    "slug": "zenith-institute-of-advanced-technology-and-ai",
+    "name": "Zenith Institute of Advanced Technology & AI",
+    "category": "Faculty of Engineering & Technology, Faculty of Computer Applications & IT, Faculty of Commerce & Management",
+    "affiliation": "Affiliated to VTU & Approved by AICTE",
+    "location": "Bengaluru, Karnataka",
+    "established": "2008",
+    "accreditation": "NAAC A++, AICTE, NBA",
+    "fee": "₹1,25,000 / Semester",
+    "image": "images/courses/1.jpg",
+    "rating": 4.9,
+    "courses": "B.Tech Artificial Intelligence, B.Tech Computer Science, M.Tech Robotics, MCA, BCA, MBA Tech",
+    "description": "Premier AI and technology institute providing industry-immersive learning and 100% placement track record.",
+    "isFeatured": true,
+    "featured": true,
+    "dateAdded": "2026-09-21T14:30:20.246Z",
+    "categories": [
+      "Faculty of Engineering & Technology",
+      "Faculty of Computer Applications & IT",
+      "Faculty of Commerce & Management"
+    ],
+    "coursesList": [
+      "B.Tech Artificial Intelligence",
+      "B.Tech Computer Science",
+      "M.Tech Robotics",
+      "MCA",
+      "BCA",
+      "MBA Tech"
+    ],
+    "updatedAt": "2026-09-21T18:02:46.379Z",
+    "facilities": [
+      "Advanced AI & Robotics Lab",
+      "Wi-Fi Campus",
+      "Central Digital Library",
+      "Hostel Accommodations",
+      "100% Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Zenith Institute of Advanced Technology & AI. NAAC A++, AICTE, NBA. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 1,
+    "name": "Delhi Institute of Pharmaceutical Sciences & Research",
+    "category": "Faculty of Pharmacy",
+    "affiliation": "Affiliated to State University / Approved by PCI & AICTE",
+    "location": "New Delhi, Delhi",
+    "established": "1994",
+    "accreditation": "PCI Approved, AICTE, NAAC A+",
+    "courses": "D.Pharm, B.Pharm, M.Pharm, Clinical Research",
+    "fee": "₹55,000 - ₹95,000 / year",
+    "image": "https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.8",
+    "description": "Premier institution for pharmaceutical sciences offering cutting-edge laboratory infrastructure, drug formulation research facilities, and verified industry placement records.",
+    "isFeatured": true,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "delhi-institute-of-pharmaceutical-sciences-and-research",
+    "facilities": [
+      "Drug Formulation Labs",
+      "Research Labs",
+      "Digital E-Library",
+      "AC Auditorium",
+      "Campus Wi-Fi",
+      "Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Delhi Institute of Pharmaceutical Sciences & Research. PCI Approved, AICTE, NAAC A+. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 2,
+    "name": "Guru Nanak Institute of Technology & Management",
+    "category": "Faculty of Engineering & Technology",
+    "affiliation": "Affiliated to GGSIPU / AICTE Approved",
+    "location": "Greater Noida, Delhi NCR",
+    "established": "2006",
+    "accreditation": "AICTE, NBA Accredited, NAAC A",
+    "courses": "B.Tech (CSE, AI & ML), M.Tech, BCA, MCA",
+    "fee": "₹85,000 - ₹1,20,000 / year",
+    "image": "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.7",
+    "description": "Top-tier engineering and technology campus with specialized labs for Artificial Intelligence, Cloud Computing, and robotics, boasting 90%+ placement rate.",
+    "isFeatured": true,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "guru-nanak-institute-of-technology-and-management",
+    "facilities": [
+      "Advanced AI & Robotics Lab",
+      "Wi-Fi Campus",
+      "Central Digital Library",
+      "Hostel Accommodations",
+      "100% Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Guru Nanak Institute of Technology & Management. AICTE, NBA Accredited, NAAC A. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 3,
+    "name": "National College of Law & Legal Studies",
+    "category": "Faculty of Law",
+    "affiliation": "Recognized by Bar Council of India (BCI)",
+    "location": "Noida, Uttar Pradesh",
+    "established": "2010",
+    "accreditation": "Bar Council of India (BCI), UGC Recognized",
+    "courses": "LL.B. (3 Years), B.A. LL.B. (5 Years), LL.M.",
+    "fee": "₹60,000 - ₹90,000 / year",
+    "image": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.6",
+    "description": "Distinguished law institution with active moot court society, legal aid clinics, and direct internships with high court advocates and top corporate law firms.",
+    "isFeatured": false,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "national-college-of-law-and-legal-studies",
+    "facilities": [
+      "Moot Court Hall",
+      "Legal Aid Clinic",
+      "Bar Council Law Library",
+      "Wi-Fi Campus",
+      "Seminar Hall"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at National College of Law & Legal Studies. Bar Council of India (BCI), UGC Recognized. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 4,
+    "name": "Metro College of Paramedical & Health Sciences",
+    "category": "Faculty of Paramedical Sciences",
+    "affiliation": "Approved by State Paramedical Faculty & UGC Recognized",
+    "location": "Ghaziabad, Delhi NCR",
+    "established": "2012",
+    "accreditation": "State Paramedical Council, ISO Certified",
+    "courses": "BMLT, DMLT, B.Sc. Radiology & Imaging, Operation Theatre Tech",
+    "fee": "₹45,000 - ₹75,000 / year",
+    "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.7",
+    "description": "Hands-on medical diagnostics training with attached multispecialty hospitals, providing clinical internships, pathology training, and immediate hospital placements.",
+    "isFeatured": true,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "metro-college-of-paramedical-and-health-sciences",
+    "facilities": [
+      "Wi-Fi Campus",
+      "Modern Computer Labs",
+      "Central Library",
+      "Cafeteria & Mess",
+      "Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Metro College of Paramedical & Health Sciences. State Paramedical Council, ISO Certified. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 5,
+    "name": "Imperial Institute of Management Studies",
+    "category": "Faculty of Commerce and Management",
+    "affiliation": "AICTE Approved / State University Affiliated",
+    "location": "Gurugram, Haryana",
+    "established": "2008",
+    "accreditation": "AICTE, NAAC A Grade",
+    "courses": "MBA, BBA, B.Com (Hons), Executive Management",
+    "fee": "₹75,000 - ₹1,40,000 / year",
+    "image": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.9",
+    "description": "Corporate-partnered business school offering dual specializations in Marketing, Finance, HR, and Analytics, with guest lectures from top Fortune 500 executives.",
+    "isFeatured": true,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "imperial-institute-of-management-studies",
+    "facilities": [
+      "Wi-Fi Campus",
+      "Modern Computer Labs",
+      "Central Library",
+      "Cafeteria & Mess",
+      "Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Imperial Institute of Management Studies. AICTE, NAAC A Grade. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 6,
+    "name": "Vivekananda College of Education & Sports",
+    "category": "Faculty of Education & Sports",
+    "affiliation": "Approved by NCTE & UGC Recognized",
+    "location": "Faridabad, Haryana",
+    "established": "2011",
+    "accreditation": "NCTE Approved, NAAC B++",
+    "courses": "B.Ed, D.El.Ed, B.P.Ed, M.Ed",
+    "fee": "₹40,000 - ₹65,000 / year",
+    "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&auto=format&fit=crop&q=80",
+    "rating": "4.5",
+    "description": "Comprehensive teacher training and physical education academy with dedicated smart classrooms, teaching methodologies labs, and school internship tie-ups.",
+    "isFeatured": false,
+    "dateAdded": "2026-09-18T10:00:00.000Z",
+    "slug": "vivekananda-college-of-education-and-sports",
+    "facilities": [
+      "Wi-Fi Campus",
+      "Modern Computer Labs",
+      "Central Library",
+      "Cafeteria & Mess",
+      "Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Vivekananda College of Education & Sports. NCTE Approved, NAAC B++. Get free counselor support and fee installment breakdown."
+  },
+  {
+    "id": 8,
+    "slug": "automated-test-institute-of-ai-and-tech-1790056214809",
+    "name": "Automated Test Institute of AI & Tech 1790056214809",
+    "category": "Faculty of Engineering & Technology, Faculty of Computer Applications & IT, Faculty of Pharmacy & Pharmaceutical Sciences",
+    "categories": [
+      "Faculty of Engineering & Technology",
+      "Faculty of Computer Applications & IT",
+      "Faculty of Pharmacy & Pharmaceutical Sciences"
+    ],
+    "affiliation": "Approved by State University / AICTE",
+    "location": "New Delhi, IndiaGurugram, Haryana",
+    "established": "2010",
+    "accreditation": "PCI Approved, AICTE, NAAC A+",
+    "fee": "₹55,000 - ₹95,000 / year",
+    "image": "images/courses/1.jpg",
+    "rating": 4.8,
+    "courses": "B.Tech Artificial Intelligence, B.Tech Computer Science, MCA, BCA",
+    "coursesList": [
+      "B.Tech Artificial Intelligence",
+      "B.Tech Computer Science",
+      "MCA",
+      "BCA"
+    ],
+    "description": "Automated Test Institute of AI & Tech 1790056214809 offers accredited professional degree programs with distinguished faculty and placement guidance.",
+    "isFeatured": true,
+    "featured": true,
+    "dateAdded": "2026-09-22T05:50:16.093Z",
+    "facilities": [
+      "Advanced AI & Robotics Lab",
+      "Wi-Fi Campus",
+      "Central Digital Library",
+      "Hostel Accommodations",
+      "100% Placement Cell"
+    ],
+    "tags": [
+      "Accredited Campus",
+      "100% Free Counseling",
+      "Verified Institute"
+    ],
+    "keywords": [
+      "Direct Admission",
+      "Government Valid",
+      "Affordable Installments"
+    ],
+    "metaDescription": "Admissions Open at Automated Test Institute of AI & Tech 1790056214809. PCI Approved, AICTE, NAAC A+. Get free counselor support and fee installment breakdown."
+  }
+]

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Subscribers | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .stats-grid-3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px; margin-bottom:20px; }
+        .stat-card-sub { background:#fff; border-radius:12px; padding:18px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #edf2f7; display:flex; align-items:center; gap:16px; }
+        .stat-icon-sub { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+        .stat-icon-sub.active { background:#e8f5e9; color:#2e7d32; }
+        .stat-icon-sub.total { background:#e8f4fd; color:#0d6efd; }
+        .stat-icon-sub.unsub { background:#fff8e1; color:#f57f17; }
+        .stat-val-sub { font-size:22px; font-weight:800; color:#1a202c; margin-top:2px; font-family:'Inter',sans-serif; }
+        .stat-lbl-sub { font-size:12px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:.5px; }
+
+        .btn-download-csv { background:#fff; border:2px solid #28a745; color:#28a745; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; }
+        .btn-download-csv:hover { background:#28a745; color:#fff; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Newsletter Subscribers</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- KPI Stats -->
+                <div class="stats-grid-3">
+                    <div class="stat-card-sub">
+                        <div class="stat-icon-sub active"><i class="fa fa-check-circle"></i></div>
+                        <div>
+                            <div class="stat-lbl-sub">Active Subscribers</div>
+                            <div class="stat-val-sub" style="color:#2e7d32;" id="statActiveSubs">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-sub">
+                        <div class="stat-icon-sub total"><i class="fa fa-bell"></i></div>
+                        <div>
+                            <div class="stat-lbl-sub">Total Subscribers</div>
+                            <div class="stat-val-sub" id="statTotalSubs">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-sub">
+                        <div class="stat-icon-sub unsub"><i class="fa fa-ban"></i></div>
+                        <div>
+                            <div class="stat-lbl-sub">Unsubscribed</div>
+                            <div class="stat-val-sub" style="color:#e65100;" id="statUnsub">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="table-toolbar" style="margin-bottom:16px;">
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search email, name..." oninput="render()">
+                        </div>
+                        <select id="filterStatus" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Statuses</option>
+                            <option value="active">Active</option>
+                            <option value="unsubscribed">Unsubscribed</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-download-csv" onclick="downloadSubscribersCSV()">
+                            <i class="fa fa-download"></i> Export CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="openSubModal()">
+                            <i class="fa fa-plus"></i> Add Subscriber
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card"><div class="card-body no-padding">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Subscriber Email</th>
+                                <th>Name / Tag</th>
+                                <th>Source</th>
+                                <th>Subscribed On</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTable"></tbody>
+                    </table>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Subscriber Modal -->
+    <div class="modal-overlay" id="subModal" onclick="if(event.target===this)closeSubModal()">
+        <div class="modal" style="width:500px;max-width:96vw;">
+            <div class="modal-header">
+                <h3 id="subModalTitle"><i class="fa fa-bell" style="color:#ff3115;margin-right:8px;"></i> Add Subscriber</h3>
+                <button class="modal-close" onclick="closeSubModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="subId">
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="subEmail" required placeholder="subscriber@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Subscriber Name (Optional)</label>
+                    <input type="text" id="subName" placeholder="e.g. Rahul Sharma">
+                </div>
+                <div class="form-group">
+                    <label>Subscription Source</label>
+                    <select id="subSource">
+                        <option value="Website Footer Newsletter">Website Footer Newsletter</option>
+                        <option value="Admission Blog Reader">Admission Blog Reader</option>
+                        <option value="Webinar / Event Form">Webinar / Event Form</option>
+                        <option value="Direct Admin Entry">Direct Admin Entry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="subStatus">
+                        <option value="active">Active</option>
+                        <option value="unsubscribed">Unsubscribed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeSubModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSubscriber()"><i class="fa fa-check"></i> Save Subscriber</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('subscribers');
+
+        function render() {
+            let subs = CRM.getAll('subscribers');
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            document.getElementById('statTotalSubs').textContent = subs.length;
+            document.getElementById('statActiveSubs').textContent = subs.filter(s => s.status === 'active').length;
+            document.getElementById('statUnsub').textContent = subs.filter(s => s.status === 'unsubscribed').length;
+
+            if (q) subs = subs.filter(s => (s.email || '').toLowerCase().includes(q) || (s.name || '').toLowerCase().includes(q));
+            if (statusFilter) subs = subs.filter(s => s.status === statusFilter);
+
+            const tbody = document.getElementById('dataTable');
+            if (subs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#888;font-size:13px;"><i class="fa fa-bell-o" style="font-size:32px;display:block;margin-bottom:8px;color:#cbd5e1;"></i>No subscribers found.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = subs.map((s, i) => `
+                <tr>
+                    <td>${i + 1}</td>
+                    <td><strong style="color:#1a202c;">${s.email}</strong></td>
+                    <td style="font-size:13px;color:#4a5568;">${s.name || 'Anonymous Reader'}</td>
+                    <td style="font-size:12px;color:#718096;">${s.source || 'Website Footer'}</td>
+                    <td style="font-size:12px;color:#6c757d;">${CRM.formatDate(s.date)}</td>
+                    <td>
+                        <button onclick="toggleSubStatus(${s.id})" class="badge ${s.status==='active'?'badge-success':'badge-danger'}" style="border:none;cursor:pointer;text-transform:uppercase;font-size:11px;">
+                            ${s.status}
+                        </button>
+                    </td>
+                    <td style="text-align:right;">
+                        <button class="btn-icon" title="Edit" onclick="editSub(${s.id})"><i class="fa fa-pencil"></i></button>
+                        <button class="btn-icon danger" title="Remove" onclick="deleteSub(${s.id})"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleSubStatus(id) {
+            const s = CRM.getById('subscribers', id);
+            if (!s) return;
+            const newStatus = s.status === 'active' ? 'unsubscribed' : 'active';
+            CRM.update('subscribers', id, { status: newStatus, updatedAt: new Date().toISOString() });
+            showAlert(`Subscriber status updated to ${newStatus}!`, 'info');
+            render();
+        }
+
+        function openSubModal(data) {
+            document.getElementById('subModal').classList.add('active');
+            if (data) {
+                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Subscriber';
+                document.getElementById('subId').value = data.id;
+                document.getElementById('subEmail').value = data.email || '';
+                document.getElementById('subName').value = data.name || '';
+                document.getElementById('subSource').value = data.source || 'Website Footer Newsletter';
+                document.getElementById('subStatus').value = data.status || 'active';
+            } else {
+                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> Add Subscriber';
+                document.getElementById('subId').value = '';
+                document.getElementById('subEmail').value = '';
+                document.getElementById('subName').value = '';
+                document.getElementById('subSource').selectedIndex = 0;
+                document.getElementById('subStatus').value = 'active';
+            }
+        }
+
+        function closeSubModal() {
+            document.getElementById('subModal').classList.remove('active');
+        }
+
+        function saveSubscriber() {
+            const id = document.getElementById('subId').value;
+            const email = document.getElementById('subEmail').value.trim();
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const data = {
+                email,
+                name: document.getElementById('subName').value.trim(),
+                source: document.getElementById('subSource').value,
+                status: document.getElementById('subStatus').value,
+                date: id ? undefined : new Date().toISOString().split('T')[0]
+            };
+
+            if (id) {
+                CRM.update('subscribers', parseInt(id), data);
+                showAlert('Subscriber updated successfully!', 'success');
+            } else {
+                if (CRM.getAll('subscribers').some(s => s.email.toLowerCase() === email.toLowerCase())) {
+                    alert('This email is already subscribed.');
+                    return;
+                }
+                CRM.add('subscribers', data);
+                showAlert('Subscriber added to newsletter list!', 'success');
+            }
+
+            closeSubModal();
+            render();
+        }
+
+        function editSub(id) {
+            const s = CRM.getById('subscribers', id);
+            if (s) openSubModal(s);
+        }
+
+        function deleteSub(id) {
+            if (confirm('Are you sure you want to remove this subscriber?')) {
+                CRM.remove('subscribers', id);
+                showAlert('Subscriber removed.', 'danger');
+                render();
+            }
+        }
+
+        function downloadSubscribersCSV() {
+            const subs = CRM.getAll('subscribers');
+            if (subs.length === 0) {
+                alert('No subscribers to export.');
+                return;
+            }
+
+            const headers = ['Email', 'Name', 'Source', 'Status', 'Subscribed Date'];
+            const rows = subs.map(s => [
+                s.email || '',
+                s.name || '',
+                s.source || '',
+                s.status || 'active',
+                s.date || ''
+            ]);
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += headers.map(h => `"${h}"`).join(',') + '\r\n';
+            rows.forEach(r => {
+                csvContent += r.map(v => `"${v}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `EducationistGuru_Newsletter_Subscribers_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showAlert(`Exported ${subs.length} subscribers to CSV!`, 'success');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await CRM.syncWithServer();
+            render();
+        });
+    
+        // Multi-device real-time sync listener
+        window.addEventListener('crm:synced', () => {
+            if (typeof render === "function") render();
+        });
+</script>
+</body>
+</html>

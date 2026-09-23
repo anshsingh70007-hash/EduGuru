@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    <meta charset="utf-8">
+    <title>CRM Login | EducationistGuru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .login-error { background:#f8d7da;color:#721c24;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:15px;display:none;align-items:center;gap:8px; }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div style="text-align:center;margin-bottom:12px;">
+                <img src="../images/logo.png" alt="EducationistGuru Logo" style="max-height:55px;width:auto;object-fit:contain;">
+            </div>
+            <p class="login-subtitle">CRM — Customer Relationship Management</p>
+            <h2>Sign In</h2>
+            <div class="login-error" id="loginError"><i class="fa fa-exclamation-circle"></i> <span id="errorMsg"></span></div>
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email" required autofocus>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                    <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;text-transform:none;letter-spacing:0;">
+                        <input type="checkbox" checked> Remember me
+                    </label>
+                    <a href="#" onclick="alert('Please contact your System Administrator to reset your password.');return false;" style="font-size:13px;color:#ff3115;">Forgot password?</a>
+                </div>
+                <button type="submit" class="login-btn"><i class="fa fa-sign-in" style="margin-right:8px;"></i> Sign In</button>
+            </form>
+
+            <!-- Quick Auto-Fill Credentials Card -->
+            <div style="margin-top:18px;padding:12px 14px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;font-size:12px;color:#64748b;text-align:left;">
+                <div style="font-weight:700;color:#1e293b;margin-bottom:4px;"><i class="fa fa-key" style="color:#ff3115;"></i> Administrator Credentials:</div>
+                <div>Email: <strong style="color:#0f172a;">admin@educationistguru.com</strong></div>
+                <div>Password: <strong style="color:#0f172a;">EduGuru#Admin2026!</strong> <span style="color:#94a3b8;">(or admin123)</span></div>
+                <button type="button" onclick="fillAdminCredentials()" style="margin-top:8px;width:100%;padding:7px;background:#fff;border:1px solid #cbd5e1;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;color:#ff3115;transition:all .2s;">
+                    <i class="fa fa-magic"></i> Auto-fill Admin Credentials
+                </button>
+            </div>
+
+            <div class="login-footer">
+                <p style="margin-top:16px;">Back to <a href="../index.html">EducationistGuru Website</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        function fillAdminCredentials() {
+            document.getElementById('loginEmail').value = 'admin@educationistguru.com';
+            document.getElementById('loginPassword').value = 'EduGuru#Admin2026!';
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const user = CRM.authenticate(email, password);
+            if (user) {
+                CRM.setCurrentUser(user);
+                window.location.href = '/crm/dashboard';
+            } else {
+                document.getElementById('loginError').style.display = 'flex';
+                document.getElementById('errorMsg').textContent = 'Invalid email or password. Please try again or click Auto-fill above.';
+            }
+            return false;
+        }
+
+        // If already logged in, redirect
+        if (localStorage.getItem('crm_logged_in') === 'true' && CRM.getCurrentUser()) {
+            window.location.href = '/crm/dashboard';
+        }
+    </script>
+</body>
+</html>

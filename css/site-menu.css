@@ -1,0 +1,457 @@
+/* =========================================================
+   EducationistGuru - Smart Mega-Menu & Multi-Tier Headers CSS
+   Provides premium responsive dropdowns, multi-column mega-menus,
+   and dynamic announcement ribbons across all pages.
+   ========================================================= */
+
+:root {
+    --eg-menu-primary: #ff3115;
+    --eg-menu-primary-hover: #e0260d;
+    --eg-menu-dark: #0f172a;
+    --eg-menu-text: #1e293b;
+    --eg-menu-muted: #64748b;
+    --eg-menu-border: #e2e8f0;
+    --eg-menu-bg: #ffffff;
+    --eg-menu-radius: 12px;
+    --eg-menu-shadow: 0 20px 45px rgba(15, 23, 42, 0.14);
+}
+
+/* ================= TOP ANNOUNCEMENT RIBBON ================= */
+.eg-announcement-bar {
+    background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #ff3115 100%);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1001;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.eg-announcement-bar .announcement-text {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.eg-announcement-bar .pulse-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: egPulseDot 1.8s infinite;
+    flex-shrink: 0;
+}
+@keyframes egPulseDot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.eg-announcement-bar .announcement-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+.eg-announcement-bar .announcement-cta:hover {
+    background: #ffffff;
+    color: #ff3115;
+}
+@media (max-width: 768px) {
+    .eg-announcement-bar {
+        font-size: 11.5px;
+        padding: 6px 12px;
+    }
+    .eg-announcement-bar .announcement-cta {
+        display: none;
+    }
+}
+
+/* ================= FULL WIDTH HEADER CONTAINER SCALING ================= */
+.full-width-header .container,
+.rs-header-top .container,
+.menu-area .container,
+.eg-announcement-bar .container,
+.rs-toolbar .container {
+    max-width: 1380px !important;
+    width: 96% !important;
+}
+
+/* ================= NAVBAR BADGES & POINTERS ================= */
+.main-menu .row.relative > .col-sm-12 {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    position: relative !important;
+}
+.rs-menu {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+}
+.rs-menu .nav-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    flex-wrap: nowrap !important;
+    gap: 1px;
+}
+.rs-menu ul.nav-menu > li {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+.rs-menu ul.nav-menu > li > a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap !important;
+    padding: 15px 6px !important;
+    font-size: 12px !important;
+    letter-spacing: -0.25px;
+}
+.right-bar-icon {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: 12px !important;
+    flex-shrink: 0 !important;
+}
+.right-bar-icon a {
+    margin-left: 0 !important;
+    padding: 6px 8px !important;
+    color: #cbd5e1 !important;
+    font-size: 15px !important;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.right-bar-icon a:hover {
+    color: #ff3115 !important;
+}
+
+@media (max-width: 1320px) and (min-width: 992px) {
+    .rs-menu ul.nav-menu > li > a {
+        padding: 16px 5.5px !important;
+        font-size: 11.5px !important;
+    }
+    .eg-menu-badge {
+        font-size: 8px !important;
+        padding: 1px 4px !important;
+    }
+}
+
+.eg-menu-badge {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 1.5px 5.5px;
+    border-radius: 8px;
+    background: #ff3115;
+    color: #ffffff;
+    line-height: 1.1;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-left: 3px;
+    vertical-align: middle;
+}
+.eg-menu-badge.badge-green {
+    background: #10b981;
+}
+.eg-menu-badge.badge-blue {
+    background: #2563eb;
+}
+.eg-menu-badge.badge-amber {
+    background: #d97706;
+}
+.eg-menu-arrow {
+    font-size: 10px;
+    margin-left: 2px;
+    transition: transform 0.25s ease;
+    opacity: 0.7;
+}
+.rs-menu ul.nav-menu > li:hover .eg-menu-arrow {
+    transform: rotate(180deg);
+    opacity: 1;
+}
+
+.menu-area, .main-menu, .rs-menu, .row.relative {
+    overflow: visible !important;
+}
+
+/* ================= MEGA-MENU CONTAINER (DESKTOP) ================= */
+@media (min-width: 992px) {
+    .rs-menu ul.nav-menu > li.has-megamenu {
+        position: static !important;
+    }
+    .eg-megamenu-panel {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: 94vw;
+        max-width: 1220px;
+        background: #ffffff;
+        border-radius: var(--eg-menu-radius);
+        box-shadow: var(--eg-menu-shadow);
+        border: 1px solid var(--eg-menu-border);
+        padding: 24px 28px;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+        z-index: 9999;
+    }
+    .rs-menu ul.nav-menu > li.has-megamenu:hover .eg-megamenu-panel {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .eg-megamenu-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr 1fr 1fr 1.05fr;
+        gap: 20px;
+    }
+    .eg-megamenu-col {
+        border-right: 1px solid #f1f5f9;
+        padding-right: 16px;
+    }
+    .eg-megamenu-col:last-child {
+        border-right: none;
+        padding-right: 0;
+    }
+    .eg-megamenu-heading {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--eg-menu-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-bottom: 2px solid #fee2e2;
+        padding-bottom: 6px;
+    }
+    .eg-megamenu-heading i {
+        color: var(--eg-menu-primary);
+        font-size: 14px;
+    }
+    .eg-megamenu-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .eg-megamenu-list li {
+        margin-bottom: 6px;
+    }
+    .eg-megamenu-list li a {
+        font-size: 13px;
+        color: #334155;
+        font-weight: 600;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 8px;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+        line-height: 1.35;
+    }
+    .eg-megamenu-list li a:hover {
+        background: #fff5f2;
+        color: var(--eg-menu-primary);
+        padding-left: 12px;
+    }
+    .eg-megamenu-list li a .item-mode {
+        font-size: 10px;
+        color: #64748b;
+        font-weight: 500;
+        background: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+    .eg-megamenu-list li a:hover .item-mode {
+        background: #fee2e2;
+        color: #ff3115;
+    }
+
+    /* Featured Counselor Card in Mega-Menu */
+    .eg-megamenu-promo {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: 10px;
+        padding: 16px;
+        color: #ffffff;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+    .eg-megamenu-promo h5 {
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+    .eg-megamenu-promo p {
+        font-size: 12px;
+        color: #94a3b8;
+        line-height: 1.45;
+        margin-bottom: 12px;
+    }
+    .eg-megamenu-promo .btn-promo-call {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: #ff3115;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+    .eg-megamenu-promo .btn-promo-call:hover {
+        background: #e0260d;
+        color: #ffffff;
+    }
+
+    /* ================= STANDARD MULTI-TIER DROPDOWN (DESKTOP) ================= */
+    .rs-menu ul.nav-menu > li.has-dropdown {
+        position: relative;
+    }
+    .eg-dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 250px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+        border: 1px solid var(--eg-menu-border);
+        padding: 10px 0;
+        list-style: none;
+        margin: 0;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        z-index: 9999;
+    }
+    .rs-menu ul.nav-menu > li.has-dropdown:hover > .eg-dropdown-menu {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .eg-dropdown-menu li {
+        position: relative;
+    }
+    .eg-dropdown-menu li a {
+        display: block;
+        padding: 9px 18px;
+        color: #334155;
+        font-size: 13.5px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        line-height: 1.35;
+    }
+    .eg-dropdown-menu li a:hover {
+        background: #fff5f2;
+        color: #ff3115;
+        padding-left: 22px;
+    }
+    .eg-dropdown-menu li a .dropdown-desc {
+        display: block;
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 400;
+        margin-top: 2px;
+    }
+
+    /* Nested Sub-Dropdown (Flyout) */
+    .eg-dropdown-menu li.has-sub-dropdown > .eg-sub-dropdown {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        min-width: 240px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12);
+        border: 1px solid var(--eg-menu-border);
+        padding: 10px 0;
+        list-style: none;
+        margin: 0;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+    .eg-dropdown-menu li.has-sub-dropdown:hover > .eg-sub-dropdown {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ================= MOBILE ACCORDION STYLES ================= */
+@media (max-width: 991px) {
+    .eg-megamenu-panel,
+    .eg-dropdown-menu,
+    .eg-sub-dropdown {
+        display: none;
+        background: #f8fafc;
+        border-left: 3px solid #ff3115;
+        padding: 10px 14px;
+        margin: 6px 0;
+        border-radius: 6px;
+    }
+    .eg-megamenu-panel.mobile-open,
+    .eg-dropdown-menu.mobile-open,
+    .eg-sub-dropdown.mobile-open {
+        display: block;
+    }
+    .eg-megamenu-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+    .eg-megamenu-col {
+        border-right: none;
+        padding-right: 0;
+    }
+    .eg-megamenu-promo {
+        margin-top: 10px;
+    }
+    .eg-mobile-toggle-btn {
+        float: right;
+        padding: 2px 8px;
+        font-size: 14px;
+        color: #ff3115;
+        cursor: pointer;
+    }
+}

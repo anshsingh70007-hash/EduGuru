@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Leads | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        .btn-gmail { background:#fff; border:2px solid #ddd; color:#333; display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; font-family:'Inter',sans-serif; }
+        .btn-gmail:hover { border-color:#ea4335; box-shadow:0 3px 12px rgba(234,67,53,.15); }
+        .btn-gmail svg { vertical-align:middle; }
+        .btn-refresh { background:#f0f2f5; border:2px solid #e9ecef; color:#333; display:inline-flex; align-items:center; gap:6px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; font-family:'Inter',sans-serif; }
+        .btn-refresh:hover { border-color:#ff3115; color:#ff3115; }
+        .btn-refresh.spinning i { animation: spin 1s linear infinite; }
+        @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+        .btn-download { background:#fff; border:2px solid #28a745; color:#28a745; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; font-family:'Inter',sans-serif; }
+        .btn-download:hover { background:#28a745; color:#fff; box-shadow:0 3px 12px rgba(40,167,69,.2); }
+        
+        .gmail-status-bar { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:#e8f5e9; border:1px solid #c8e6c9; border-radius:10px; font-size:13px; color:#2e7d32; font-weight:500; margin-bottom:15px; }
+        .gmail-status-bar.disconnected { background:#f8f9fa; border-color:#e9ecef; color:#6c757d; }
+        .pulse-dot { width:10px; height:10px; border-radius:50%; background:#28a745; display:inline-block; margin-right:6px; box-shadow:0 0 0 0 rgba(40,167,69,.7); animation:pulse 1.8s infinite; }
+        @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(40,167,69,.7)} 70%{box-shadow:0 0 0 8px rgba(40,167,69,0)} 100%{box-shadow:0 0 0 0 rgba(40,167,69,0)} }
+
+        .gmail-tab-nav { display:flex; border-bottom:2px solid #e9ecef; margin-bottom:20px; }
+        .gmail-tab-nav button { padding:10px 20px; border:none; background:none; font-size:13px; font-weight:600; cursor:pointer; color:#6c757d; border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .2s; font-family:'Inter',sans-serif; }
+        .gmail-tab-nav button.active { color:#ff3115; border-bottom-color:#ff3115; }
+        .gmail-tab { display:none; }
+        .gmail-tab.active { display:block; }
+
+        .method-selector { display:flex; gap:10px; margin-bottom:20px; background:#f1f3f5; padding:5px; border-radius:10px; }
+        .method-btn { flex:1; padding:9px 12px; border:none; background:none; border-radius:7px; font-size:13px; font-weight:600; color:#495057; cursor:pointer; transition:all .2s; font-family:'Inter',sans-serif; text-align:center; }
+        .method-btn.active { background:#fff; color:#ff3115; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+
+        .email-preview { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border:1px solid #e9ecef; border-radius:10px; margin-bottom:8px; transition:all .2s; background:#fff; }
+        .email-preview:hover { border-color:#ff3115; background:#fff9f8; }
+        .email-preview.exists { background:#fafbfc; opacity:.85; }
+        .email-preview input[type="checkbox"] { accent-color:#ff3115; width:16px; height:16px; margin-top:4px; cursor:pointer; }
+        .email-preview .ep-info { flex:1; min-width:0; }
+        .email-preview .ep-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:3px; }
+        .email-preview .ep-from { font-weight:600; font-size:13px; color:#212529; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .email-preview .ep-email { font-size:12px; color:#6c757d; font-weight:normal; margin-left:4px; }
+        .email-preview .ep-subject { font-size:13px; font-weight:600; color:#343a40; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .email-preview .ep-snippet { font-size:12px; color:#6c757d; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .email-preview .ep-date { font-size:11px; color:#adb5bd; white-space:nowrap; }
+
+        .lead-badge { display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; text-transform:uppercase; letter-spacing:.5px; }
+        .lead-badge.new { background:#d4edda; color:#155724; }
+        .lead-badge.exists { background:#e9ecef; color:#6c757d; }
+
+        .quick-tag { display:inline-block; padding:4px 10px; border-radius:14px; font-size:11px; font-weight:600; background:#f8f9fa; border:1px solid #dee2e6; color:#495057; cursor:pointer; transition:all .2s; }
+        .quick-tag:hover, .quick-tag.active { background:#ff3115; color:#fff; border-color:#ff3115; }
+
+        .paste-area { width:100%; min-height:120px; padding:15px; border:2px dashed #ddd; border-radius:10px; font-size:13px; font-family:'Inter',sans-serif; resize:vertical; outline:none; transition:border-color .3s; }
+        .paste-area:focus { border-color:#ff3115; }
+        .lead-count-bar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#f8f9fa; border-radius:10px; margin-bottom:15px; }
+        .lead-count-bar .lc-left { font-size:14px; font-weight:600; }
+        .lead-count-bar .lc-left span { color:#ff3115; }
+        .last-refresh { font-size:12px; color:#adb5bd; display:flex; align-items:center; gap:5px; }
+
+        /* Priority and Fast Action Badges */
+        .badge-hot { background:#ffebee; color:#c62828; border:1px solid #ffcdd2; font-weight:700; padding:2px 7px; border-radius:12px; font-size:11px; display:inline-flex; align-items:center; gap:3px; }
+        .badge-warm { background:#fff8e1; color:#f57f17; border:1px solid #ffe082; font-weight:700; padding:2px 7px; border-radius:12px; font-size:11px; display:inline-flex; align-items:center; gap:3px; }
+        .badge-cold { background:#e3f2fd; color:#1565c0; border:1px solid #bbdefb; font-weight:700; padding:2px 7px; border-radius:12px; font-size:11px; display:inline-flex; align-items:center; gap:3px; }
+        .lead-modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        @media (max-width:768px) { .lead-modal-grid { grid-template-columns:1fr; } }
+        .row-fast-actions { display:flex; align-items:center; justify-content:center; gap:6px; }
+        .btn-fast-action { width:32px; height:32px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; border:1px solid #dee2e6; background:#fff; cursor:pointer; font-size:13px; transition:all .2s; text-decoration:none; }
+        .btn-fast-action:hover { transform:translateY(-1px); box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+        .btn-fast-action.wa { color:#25D366; border-color:#25D366; }
+        .btn-fast-action.wa:hover { background:#25D366; color:#fff; }
+        .btn-fast-action.tel { color:#0d6efd; border-color:#0d6efd; }
+        .btn-fast-action.tel:hover { background:#0d6efd; color:#fff; }
+        .btn-fast-action.app { color:#6f42c1; border-color:#6f42c1; }
+        .btn-fast-action.app:hover { background:#6f42c1; color:#fff; }
+        .btn-fast-action.edit { color:#495057; border-color:#ced4da; }
+        .btn-fast-action.edit:hover { background:#495057; color:#fff; }
+        .btn-fast-action.del { color:#dc3545; border-color:#dc3545; }
+        .btn-fast-action.del:hover { background:#dc3545; color:#fff; }
+        .inline-status-sel { padding:5px 8px; border-radius:6px; font-size:12px; font-weight:600; border:1px solid #ced4da; background:#fff; cursor:pointer; font-family:'Inter',sans-serif; }
+        .mode-tag { display:inline-block; font-size:11px; padding:2px 7px; border-radius:4px; font-weight:600; background:#f1f5f9; color:#475569; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Leads Management</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- Lead Count Bar with Refresh -->
+                <div class="lead-count-bar">
+                    <div class="lc-left"><i class="fa fa-users" style="margin-right:6px;"></i> Total: <span id="leadCount">0</span> leads</div>
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <div class="last-refresh"><i class="fa fa-clock-o"></i> Last refreshed: <span id="lastRefresh">just now</span></div>
+                        <button class="btn-refresh" id="refreshBtn" onclick="refreshLeads()"><i class="fa fa-refresh"></i> Refresh</button>
+                    </div>
+                </div>
+
+                <!-- Toolbar with Multi-Filters -->
+                <div class="table-toolbar">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <div class="search-box"><i class="fa fa-search"></i><input type="text" id="searchInput" placeholder="Search name, phone, course, city..." oninput="renderLeads()"></div>
+                        <select id="filterStatus" onchange="renderLeads()">
+                            <option value="">All Statuses</option>
+                            <option value="new">New Lead</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="follow-up">Follow Up Scheduled</option>
+                            <option value="interested">Interested / Counseling Done</option>
+                            <option value="application">Application Started</option>
+                            <option value="enrolled">Enrolled / Admitted</option>
+                            <option value="lost">Lost / Not Interested</option>
+                        </select>
+                        <select id="filterPriority" onchange="renderLeads()">
+                            <option value="">All Priorities</option>
+                            <option value="hot">🔥 Hot Leads</option>
+                            <option value="warm">⚡ Warm Leads</option>
+                            <option value="cold">❄️ Cold Leads</option>
+                        </select>
+                        <select id="filterSource" onchange="renderLeads()">
+                            <option value="">All Sources</option>
+                            <option value="Course Enrollment">🎓 Course Enrollment</option>
+                            <option value="Callback Request">⚡ Callback Request</option>
+                            <option value="WhatsApp Chat">💬 WhatsApp Chat</option>
+                            <option value="Contact Form">📩 Contact Form</option>
+                            <option value="College Directory">🏛️ College Directory</option>
+                            <option value="University Directory">🎓 University Directory</option>
+                            <option value="EducationistGuru App - Course Selling">📱 Mobile App</option>
+                            <option value="Website">Website</option>
+                            <option value="Apply Now">Apply Now</option>
+                            <option value="Events">Events</option>
+                            <option value="Gmail">Gmail</option>
+                            <option value="JustDial">JustDial</option>
+                            <option value="Google Ads">Google Ads</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Walk-in">Walk-in</option>
+                            <option value="Referral">Referral</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-download" onclick="downloadLeadsCSV()" title="Export filtered or all leads to CSV">
+                            <i class="fa fa-download"></i> Download Leads (CSV)
+                        </button>
+                        <button class="btn-gmail" onclick="openGmailModal()">
+                            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 5.457l13.09 9.882L48 5.457V38c0 2.21-1.79 4-4 4H4c-2.21 0-4-1.79-4-4V5.457l10.91 9.882z"/><path fill="#FBBC05" d="M0 5.457V38l16.91-16.271z"/><path fill="#34A853" d="M24 26.914L7.09 15.339 0 5.457h48l-7.09 9.882z"/><path fill="#C5221F" d="M48 5.457L31.09 15.339 24 26.914l24-21.457z"/><path fill="#4285F4" d="M48 5.457v32.543L31.09 15.339z"/></svg>
+                            Import from Gmail
+                        </button>
+                        <button class="btn btn-primary" onclick="openModal()"><i class="fa fa-plus"></i> Add Lead</button>
+                    </div>
+                </div>
+
+                <div class="card"><div class="card-body no-padding">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Candidate Details</th>
+                                <th>Course &amp; Learning Mode</th>
+                                <th>Priority &amp; Status</th>
+                                <th>Follow-up &amp; Counselor</th>
+                                <th>Date Added</th>
+                                <th style="text-align:center;">Fast Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsTable"></tbody>
+                    </table>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Lead Modal (Indian Higher Education Admissions Profile) -->
+    <div class="modal-overlay" id="leadModal" onclick="if(event.target===this)closeModal()"><div class="modal" style="width:780px;max-width:96vw;">
+        <div class="modal-header"><h3 id="modalTitle">Add New Lead</h3><button class="modal-close" onclick="closeModal()">&times;</button></div>
+        <div class="modal-body"><input type="hidden" id="leadId">
+            <div class="lead-modal-grid">
+                <!-- Column 1: Personal & Academic -->
+                <div>
+                    <div class="form-group"><label>Candidate Full Name *</label><input type="text" id="leadName" required placeholder="e.g. Rahul Verma"></div>
+                    <div class="form-group"><label>Mobile Number (Calling) *</label><input type="tel" id="leadPhone" required placeholder="+91 98765 43210" oninput="syncWhatsAppPhone()"></div>
+                    <div class="form-group">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                            <label style="margin-bottom:0;">WhatsApp Number</label>
+                            <label style="font-size:11px;cursor:pointer;color:#25D366;font-weight:600;display:flex;align-items:center;gap:4px;">
+                                <input type="checkbox" id="leadSameWa" onchange="toggleSameWa()" checked> Same as Mobile
+                            </label>
+                        </div>
+                        <input type="tel" id="leadWa" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group"><label>Email Address</label><input type="email" id="leadEmail" placeholder="candidate@example.com"></div>
+                    <div class="form-group"><label>City &amp; State (Location)</label><input type="text" id="leadCity" placeholder="e.g. Ludhiana, Punjab or Delhi NCR"></div>
+                    <div class="form-group">
+                        <label>Highest Qualification</label>
+                        <select id="leadQualification">
+                            <option value="12th Pass (Commerce)">12th Pass (Commerce)</option>
+                            <option value="12th Pass (Science PCM/PCB)">12th Pass (Science PCM/PCB)</option>
+                            <option value="12th Pass (Arts / Humanities)">12th Pass (Arts / Humanities)</option>
+                            <option value="10th / Matriculation">10th / Matriculation</option>
+                            <option value="Diploma / Polytechnic">Diploma / Polytechnic</option>
+                            <option value="Bachelor's Degree / Graduate">Bachelor's Degree / Graduate</option>
+                            <option value="Master's Degree / Post-Graduate">Master's Degree / Post-Graduate</option>
+                            <option value="Working Professional">Working Professional</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Column 2: Program & Admissions Intent -->
+                <div>
+                    <div class="form-group">
+                        <label>Interested Course (106+ Programs) *</label>
+                        <select id="leadCourse" style="font-size:13px;"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred Learning Mode</label>
+                        <select id="leadMode">
+                            <option value="Online Learning (Flexible)">Online Learning (Flexible UGC Approved)</option>
+                            <option value="Distance Education">Distance Education (UGC-DEB Approved)</option>
+                            <option value="Regular Campus Degree">Regular On-Campus Degree</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lead Priority / Temperature</label>
+                        <select id="leadPriority">
+                            <option value="hot">🔥 Hot Lead (High Intent / Ready to Enroll)</option>
+                            <option value="warm" selected>⚡ Warm Lead (Interested / Comparing Options)</option>
+                            <option value="cold">❄️ Cold Lead (General Inquiry / Later Intake)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Scheduled Follow-up Date &amp; Time</label>
+                        <input type="datetime-local" id="leadFollowUp">
+                    </div>
+                    <div class="form-group">
+                        <label>Assigned Counselor</label>
+                        <select id="leadCounselor">
+                            <option value="Jatinder Kaur">Jatinder Kaur (Director / Senior Counselor)</option>
+                            <option value="Central Admissions Desk" selected>Central Admissions Desk</option>
+                            <option value="Academic Counselor 1">Academic Counselor 1</option>
+                            <option value="Academic Counselor 2">Academic Counselor 2</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lead Source</label>
+                        <select id="leadSource">
+                            <option value="Course Enrollment">🎓 Course Enrollment</option>
+                            <option value="Callback Request">⚡ Callback Request</option>
+                            <option value="WhatsApp Chat">💬 WhatsApp Chat</option>
+                            <option value="Contact Form">📩 Contact Form</option>
+                            <option value="College Directory">🏛️ College Directory</option>
+                            <option value="University Directory">🎓 University Directory</option>
+                            <option value="EducationistGuru App - Course Selling">📱 Mobile App</option>
+                            <option value="Website">Website</option>
+                            <option value="Apply Now">Apply Now</option>
+                            <option value="Events">Events</option>
+                            <option value="Gmail">Gmail</option>
+                            <option value="JustDial">JustDial</option>
+                            <option value="Google Ads">Google Ads</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Walk-in">Walk-in</option>
+                            <option value="Referral">Referral</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Admission Status</label>
+                        <select id="leadStatus">
+                            <option value="new">New Lead</option>
+                            <option value="contacted">Contacted</option>
+                            <option value="follow-up">Follow Up Scheduled</option>
+                            <option value="interested">Interested / Counseling Done</option>
+                            <option value="application">Application Started</option>
+                            <option value="enrolled">Enrolled / Admitted</option>
+                            <option value="lost">Lost / Not Interested</option>
+                            <option value="invalid">Invalid / Wrong Number</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Width Notes -->
+            <div class="form-group" style="margin-top:10px;">
+                <label>Counseling Notes &amp; Candidate Remarks</label>
+                <textarea id="leadNotes" rows="3" placeholder="Enter student background, career aspirations, scholarship notes, university preference..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveLead()"><i class="fa fa-check"></i> Save Lead</button>
+        </div>
+    </div></div>
+
+    <!-- Gmail Import Modal -->
+    <div class="modal-overlay" id="gmailModal" onclick="if(event.target===this)closeGmailModal()"><div class="modal" style="width:680px;max-width:96vw;">
+        <div class="modal-header">
+            <h3>
+                <svg width="22" height="22" viewBox="0 0 48 48" style="vertical-align:middle;margin-right:8px;"><path fill="#EA4335" d="M24 5.457l13.09 9.882L48 5.457V38c0 2.21-1.79 4-4 4H4c-2.21 0-4-1.79-4-4V5.457l10.91 9.882z"/><path fill="#FBBC05" d="M0 5.457V38l16.91-16.271z"/><path fill="#34A853" d="M24 26.914L7.09 15.339 0 5.457h48l-7.09 9.882z"/><path fill="#C5221F" d="M48 5.457L31.09 15.339 24 26.914l24-21.457z"/><path fill="#4285F4" d="M48 5.457v32.543L31.09 15.339z"/></svg>
+                Import Leads from Gmail
+            </h3>
+            <button class="modal-close" onclick="closeGmailModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <!-- Modal Internal Alerts -->
+            <div id="gmailModalAlert"></div>
+
+            <!-- Gmail Connection Status Bar -->
+            <div id="gmailConnectionStatus"></div>
+
+            <!-- Tab Navigation -->
+            <div class="gmail-tab-nav">
+                <button class="active" onclick="switchGmailTab('connect',this)"><i class="fa fa-google" style="margin-right:4px;"></i> Gmail Account</button>
+                <button onclick="switchGmailTab('paste',this)"><i class="fa fa-paste" style="margin-right:4px;"></i> Paste Emails</button>
+                <button onclick="switchGmailTab('csv',this)"><i class="fa fa-file-text-o" style="margin-right:4px;"></i> CSV File</button>
+            </div>
+
+            <!-- Tab 1: Connect Gmail / Inbox View -->
+            <div id="gmailTab-connect" class="gmail-tab active">
+                <!-- VIEW 1: NOT CONNECTED (Show real connection forms) -->
+                <div id="gmailConnectArea">
+                    <div class="method-selector">
+                        <button class="method-btn active" id="btnMethodAppPass" onclick="switchConnectMethod('apppass')"><i class="fa fa-key" style="margin-right:6px;"></i> Gmail App Password (Instant)</button>
+                        <button class="method-btn" id="btnMethodOAuth" onclick="switchConnectMethod('oauth')"><i class="fa fa-google" style="margin-right:6px;"></i> Google OAuth 2.0</button>
+                    </div>
+
+                    <!-- Method A: App Password -->
+                    <div id="methodSectionAppPass">
+                        <div style="background:#f8f9fa;padding:15px;border-radius:10px;margin-bottom:15px;border:1px solid #e9ecef;">
+                            <div style="font-size:13px;color:#495057;line-height:1.6;margin-bottom:12px;">
+                                Connect your Gmail account directly to fetch admission inquiries and student emails in real time.
+                            </div>
+                            <div class="form-group" style="margin-bottom:12px;">
+                                <label style="font-size:12px;font-weight:600;">Your Gmail Address</label>
+                                <input type="email" id="gmailAppEmail" placeholder="e.g. harmeet@gmail.com" style="width:100%;padding:9px 12px;border:1px solid #ced4da;border-radius:6px;font-size:13px;">
+                            </div>
+                            <div class="form-group" style="margin-bottom:15px;">
+                                <label style="font-size:12px;font-weight:600;">16-Character Google App Password</label>
+                                <input type="password" id="gmailAppPass" placeholder="xxxx xxxx xxxx xxxx" style="width:100%;padding:9px 12px;border:1px solid #ced4da;border-radius:6px;font-size:13px;">
+                            </div>
+                            <button class="btn btn-primary" id="btnConnectAppPass" onclick="connectGmailAppPassword()" style="width:100%;padding:11px;font-size:14px;font-weight:600;">
+                                <i class="fa fa-plug"></i> Connect Real Gmail Account
+                            </button>
+                        </div>
+
+                        <div style="padding:14px 16px;background:#eef7fe;border:1px solid #cfe2ff;border-radius:8px;font-size:12px;color:#084298;">
+                            <div style="font-weight:700;margin-bottom:6px;"><i class="fa fa-info-circle"></i> How to generate your 16-character App Password (30 seconds):</div>
+                            <ol style="margin:0;padding-left:18px;line-height:1.8;">
+                                <li>Make sure 2-Step Verification is turned ON on your Google Account.</li>
+                                <li>Go to <a href="https://myaccount.google.com/apppasswords" target="_blank" style="color:#0a58ca;font-weight:700;text-decoration:underline;">Google App Passwords <i class="fa fa-external-link"></i></a></li>
+                                <li>Type <strong>EducationistGuru CRM</strong> as the app name and click <strong>Create</strong>.</li>
+                                <li>Copy the 16-letter password, paste it above, and click Connect!</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Method B: Google OAuth -->
+                    <div id="methodSectionOAuth" style="display:none;">
+                        <div style="text-align:center;padding:15px 0;">
+                            <div style="width:60px;height:60px;margin:0 auto 12px;background:linear-gradient(135deg,#ea4335,#fbbc05,#34a853,#4285f4);border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                                <i class="fa fa-google" style="font-size:26px;color:#fff;"></i>
+                            </div>
+                            <h4 style="margin-bottom:6px;">Google Cloud OAuth Sign-In</h4>
+                            <p style="color:#6c757d;font-size:13px;margin-bottom:15px;max-width:440px;margin-left:auto;margin-right:auto;">
+                                Connect your Gmail via official Google OAuth 2.0. Requires a Google Cloud Client ID configured for <code>http://localhost:3000</code>.
+                            </p>
+
+                            <div style="max-width:440px;margin:0 auto 15px;text-align:left;">
+                                <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Google OAuth Client ID</label>
+                                <input type="text" id="oauthClientIdInput" placeholder="xxxxxxxxxxxx-xxxxxxxx.apps.googleusercontent.com" style="width:100%;padding:9px 12px;border:1px solid #ced4da;border-radius:6px;font-size:12px;">
+                            </div>
+
+                            <button class="btn-gmail" onclick="connectGmailOAuth()" style="margin:0 auto;font-size:14px;padding:10px 24px;">
+                                <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/><path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/><path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238A11.91 11.91 0 0124 36c-5.202 0-9.619-3.317-11.283-7.946l-6.522 5.025C9.505 39.556 16.227 44 24 44z"/><path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 01-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/></svg>
+                                Sign in with Google
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: CONNECTED (Inbox view with live emails) -->
+                <div id="gmailInboxArea" style="display:none;">
+                    <!-- Inbox Search & Filter bar -->
+                    <div style="background:#f8f9fa;padding:12px;border-radius:10px;margin-bottom:12px;border:1px solid #e9ecef;">
+                        <div style="display:flex;gap:8px;margin-bottom:8px;">
+                            <div style="flex:1;position:relative;">
+                                <i class="fa fa-search" style="position:absolute;left:10px;top:10px;color:#adb5bd;font-size:12px;"></i>
+                                <input type="text" id="gmailSearchInput" placeholder="Search emails (e.g. admission, course, fees, student name)..." style="width:100%;padding:7px 10px 7px 30px;border:1px solid #ced4da;border-radius:6px;font-size:13px;" onkeypress="if(event.key==='Enter') executeGmailSearch()">
+                            </div>
+                            <button class="btn btn-outline btn-sm" onclick="executeGmailSearch()"><i class="fa fa-search"></i> Search</button>
+                            <button class="btn btn-outline btn-sm" id="btnRefreshInbox" onclick="refreshGmailInbox()"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                            <span style="font-size:11px;color:#6c757d;font-weight:600;margin-right:2px;">Quick Filter:</span>
+                            <span class="quick-tag active" onclick="setSearchFilter('', this)">All Recent</span>
+                            <span class="quick-tag" onclick="setSearchFilter('admission', this)">Admission</span>
+                            <span class="quick-tag" onclick="setSearchFilter('course', this)">Course</span>
+                            <span class="quick-tag" onclick="setSearchFilter('fees', this)">Fees & Scholarship</span>
+                            <span class="quick-tag" onclick="setSearchFilter('enquiry', this)">Enquiry</span>
+                        </div>
+                    </div>
+
+                    <!-- Selection & Counter toolbar -->
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:0 2px;">
+                        <div style="font-size:13px;font-weight:600;color:#343a40;" id="inboxStatusCount">
+                            Loading emails...
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 8px;" onclick="selectAllNewEmails()">Select New Leads</button>
+                            <button class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 8px;" onclick="toggleSelectAllEmails(true)">Select All</button>
+                            <button class="btn btn-outline btn-sm" style="font-size:11px;padding:4px 8px;" onclick="toggleSelectAllEmails(false)">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Scrollable Email List -->
+                    <div style="max-height:340px;overflow-y:auto;padding-right:4px;" id="emailList"></div>
+
+                    <!-- Action Footer -->
+                    <div style="margin-top:14px;padding-top:12px;border-top:1px solid #e9ecef;display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:#6c757d;" id="selectedImportNotice">0 leads selected</span>
+                        <button class="btn btn-primary" id="btnImportEmails" onclick="importSelectedEmails()" style="font-size:13px;font-weight:600;padding:8px 18px;">
+                            <i class="fa fa-download"></i> Import Selected as Leads
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Paste Emails -->
+            <div id="gmailTab-paste" class="gmail-tab">
+                <p style="color:#6c757d;font-size:13px;margin-bottom:12px;">Paste email addresses below (one per line). Each will be added as a new lead with source "Gmail".</p>
+                <textarea class="paste-area" id="pasteEmails" placeholder="Full Name <student@gmail.com>&#10;parent@yahoo.com&#10;Candidate Name <candidate@gmail.com>&#10;..."></textarea>
+                <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;">
+                    <span style="font-size:12px;color:#6c757d;" id="pasteCount">0 emails detected</span>
+                    <button class="btn btn-primary btn-sm" onclick="importPastedEmails()"><i class="fa fa-download"></i> Import All as Leads</button>
+                </div>
+            </div>
+
+            <!-- Tab 3: CSV Import -->
+            <div id="gmailTab-csv" class="gmail-tab">
+                <p style="color:#6c757d;font-size:13px;margin-bottom:12px;">Upload a CSV file with columns: <strong>Name, Email, Phone, Course</strong> (header row required)</p>
+                <div style="border:2px dashed #ddd;border-radius:12px;padding:40px;text-align:center;cursor:pointer;transition:all .3s;" onclick="document.getElementById('csvFile').click()" id="csvDropZone">
+                    <i class="fa fa-cloud-upload" style="font-size:40px;color:#adb5bd;margin-bottom:10px;display:block;"></i>
+                    <p style="font-weight:600;margin-bottom:5px;">Click to upload or drag CSV file here</p>
+                    <p style="font-size:12px;color:#adb5bd;">Supported: .csv files</p>
+                    <input type="file" id="csvFile" accept=".csv" style="display:none;" onchange="handleCSV(this)">
+                </div>
+                <div id="csvPreview" style="display:none;margin-top:15px;"></div>
+            </div>
+        </div>
+    </div></div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        // Auth & Sidebar check
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+        function showGmailModalAlert(m,t){document.getElementById('gmailModalAlert').innerHTML='<div class="alert alert-'+t+'" style="margin-bottom:12px;"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('gmailModalAlert').innerHTML='',4000);}
+
+        function buildSidebar(activePage) {
+            const cu=CRM.getCurrentUser();
+            const modules=[
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('leads');
+
+        // ============ LEADS TABLE RENDERING ============
+        // ============ DYNAMIC COURSE DROPDOWN ============
+        let availableCourses = [];
+        async function populateCourseDropdown() {
+            const select = document.getElementById('leadCourse');
+            if (!select) return;
+            availableCourses = await CRM.loadCourses();
+            const grouped = {};
+            availableCourses.forEach(c => {
+                const fac = c.faculty || 'Other Accredited Programs';
+                if (!grouped[fac]) grouped[fac] = [];
+                grouped[fac].push(c);
+            });
+            let html = '';
+            for (const [fac, list] of Object.entries(grouped)) {
+                html += `<optgroup label="${fac}">`;
+                list.forEach(c => {
+                    html += `<option value="${c.name}">${c.name}</option>`;
+                });
+                html += `</optgroup>`;
+            }
+            select.innerHTML = html;
+        }
+
+        function syncWhatsAppPhone() {
+            const same = document.getElementById('leadSameWa');
+            if (same && same.checked) {
+                document.getElementById('leadWa').value = document.getElementById('leadPhone').value;
+            }
+        }
+
+        function toggleSameWa() {
+            const same = document.getElementById('leadSameWa').checked;
+            const waInput = document.getElementById('leadWa');
+            if (same) {
+                waInput.value = document.getElementById('leadPhone').value;
+                waInput.style.background = '#f8f9fa';
+            } else {
+                waInput.style.background = '#fff';
+            }
+        }
+
+        // ============ LEADS TABLE RENDERING ============
+        function renderLeads() {
+            let leads = CRM.getAll('leads');
+            // Always sort authoritative newest leads to the very top
+            leads.sort((a, b) => {
+                const tA = new Date(a.dateAdded || a.updatedAt || a.date || 0).getTime();
+                const tB = new Date(b.dateAdded || b.updatedAt || b.date || 0).getTime();
+                if (tB !== tA) return tB - tA;
+                return (Number(b.id) || 0) - (Number(a.id) || 0);
+            });
+            const q = (document.getElementById('searchInput').value||'').toLowerCase();
+            const s = document.getElementById('filterStatus').value;
+            const p = document.getElementById('filterPriority').value;
+            const src = document.getElementById('filterSource').value;
+
+            if (q) {
+                leads = leads.filter(l => 
+                    (l.name||'').toLowerCase().includes(q) || 
+                    (l.email||'').toLowerCase().includes(q) || 
+                    (l.phone||'').includes(q) || 
+                    (l.course||'').toLowerCase().includes(q) || 
+                    (l.city||'').toLowerCase().includes(q) ||
+                    (l.notes||'').toLowerCase().includes(q)
+                );
+            }
+            if (s) leads = leads.filter(l => l.status === s);
+            if (p) leads = leads.filter(l => (l.priority || 'warm') === p);
+            if (src) leads = leads.filter(l => l.source === src);
+
+            document.getElementById('leadCount').textContent = leads.length;
+
+            const tbody = document.getElementById('leadsTable');
+            if (leads.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:45px;color:#999;"><i class="fa fa-inbox" style="font-size:36px;display:block;margin-bottom:12px;color:#cbd5e1;"></i>No admission leads found matching the selected filters.</td></tr>';
+                return;
+            }
+
+            const priorityBadge = (pri) => {
+                const pr = (pri || 'warm').toLowerCase();
+                if (pr === 'hot' || pr === 'high') return '<span class="badge-hot"><i class="fa fa-fire"></i> HOT</span>';
+                if (pr === 'cold' || pr === 'low') return '<span class="badge-cold"><i class="fa fa-snowflake-o"></i> COLD</span>';
+                return '<span class="badge-warm"><i class="fa fa-bolt"></i> WARM</span>';
+            };
+
+            tbody.innerHTML = leads.map(l => {
+                const cleanPhone = (l.phone || '').replace(/[^0-9]/g, '').slice(-10);
+                const waPhone = (l.wa || l.phone || '').replace(/[^0-9]/g, '').slice(-10);
+                const isUrgent = l.priority === 'hot' || l.source === 'Callback Request';
+
+                return `
+                <tr style="${isUrgent ? 'background:#fffdfc;' : ''}">
+                    <td>
+                        <div style="display:flex;align-items:flex-start;gap:10px;">
+                            <div class="avatar" style="background:${CRM.getAvatarColor(l.name)};width:38px;height:38px;min-width:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;margin-top:2px;">
+                                ${CRM.getInitials(l.name)}
+                            </div>
+                            <div>
+                                <div style="font-weight:700;font-size:14px;color:#1e293b;">
+                                    ${l.name}
+                                    ${l.source === 'Course Enrollment' ? '<span class="badge" style="background:#e3f2fd;color:#0d47a1;font-size:10px;padding:2px 6px;margin-left:4px;">Enrolled Online</span>' : ''}
+                                </div>
+                                <div style="font-size:12.5px;color:#475569;margin-top:2px;">
+                                    ${cleanPhone ? `<i class="fa fa-phone" style="color:#0d6efd;margin-right:3px;"></i>+91 ${cleanPhone}` : '<span style="color:#94a3b8;">No phone</span>'}
+                                    ${waPhone ? `<i class="fa fa-whatsapp" style="color:#25D366;margin-left:6px;margin-right:2px;"></i>` : ''}
+                                </div>
+                                ${l.email ? `<div style="font-size:11.5px;color:#64748b;">${l.email}</div>` : ''}
+                                ${l.city ? `<div style="font-size:11px;color:#94a3b8;"><i class="fa fa-map-marker"></i> ${l.city}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div style="font-weight:600;color:#0f172a;font-size:13.5px;">${l.course || 'General Program'}</div>
+                        <div style="margin-top:4px;display:flex;gap:5px;flex-wrap:wrap;">
+                            <span class="mode-tag">${l.mode || 'Online Learning'}</span>
+                            ${l.qualification ? `<span style="font-size:11px;padding:2px 6px;border-radius:4px;background:#f8fafc;border:1px solid #e2e8f0;color:#64748b;">${l.qualification}</span>` : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <div style="margin-bottom:6px;">${priorityBadge(l.priority)}</div>
+                        <select class="inline-status-sel" onchange="quickUpdateLeadStatus(${l.id}, this.value)">
+                            <option value="new" ${l.status==='new'?'selected':''}>New Lead</option>
+                            <option value="contacted" ${l.status==='contacted'?'selected':''}>Contacted</option>
+                            <option value="follow-up" ${l.status==='follow-up'?'selected':''}>Follow Up</option>
+                            <option value="interested" ${l.status==='interested'?'selected':''}>Interested</option>
+                            <option value="application" ${l.status==='application'?'selected':''}>Application</option>
+                            <option value="enrolled" ${l.status==='enrolled'?'selected':''}>Enrolled</option>
+                            <option value="lost" ${l.status==='lost'?'selected':''}>Lost</option>
+                        </select>
+                    </td>
+                    <td>
+                        ${l.followUp ? `<div style="font-size:12px;font-weight:600;color:#c2410c;"><i class="fa fa-clock-o"></i> ${new Date(l.followUp).toLocaleString('en-IN', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })}</div>` : '<span style="font-size:11.5px;color:#94a3b8;">No date set</span>'}
+                        <div style="font-size:11.5px;color:#64748b;margin-top:3px;"><i class="fa fa-user-circle-o"></i> ${l.counselor || 'Central Admissions Desk'}</div>
+                    </td>
+                    <td style="font-size:12.5px;color:#64748b;white-space:nowrap;">
+                        ${CRM.formatDate(l.date)}
+                        <div style="font-size:11px;color:#94a3b8;">${l.source || 'Website'}</div>
+                    </td>
+                    <td style="text-align:center;">
+                        <div class="row-fast-actions">
+                            ${waPhone ? `<a href="javascript:void(0)" onclick="openWhatsAppChat(${l.id})" class="btn-fast-action wa" title="Chat on WhatsApp (1-Click)"><i class="fa fa-whatsapp"></i></a>` : ''}
+                            ${cleanPhone ? `<a href="tel:+91${cleanPhone}" class="btn-fast-action tel" title="Call Candidate"><i class="fa fa-phone"></i></a>` : ''}
+                            <button class="btn-fast-action app" title="Convert to Application" onclick="convertLeadToApp(${l.id})"><i class="fa fa-graduation-cap"></i></button>
+                            <button class="btn-fast-action edit" title="Edit Lead" onclick="editLead(${l.id})"><i class="fa fa-pencil"></i></button>
+                            <button class="btn-fast-action del" title="Delete Lead" onclick="deleteLead(${l.id})"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function quickUpdateLeadStatus(id, newStatus) {
+            CRM.update('leads', id, { status: newStatus });
+            showAlert(`Lead status updated to "${newStatus}"!`, 'success');
+            renderLeads();
+        }
+
+        function openWhatsAppChat(id) {
+            const lead = CRM.getById('leads', id);
+            if (!lead) return;
+            const phone = (lead.wa || lead.phone || '').replace(/[^0-9]/g, '').slice(-10);
+            if (!phone) {
+                alert('No valid phone or WhatsApp number recorded for this lead.');
+                return;
+            }
+            const counselorName = lead.counselor || 'Admissions Counselor';
+            const courseName = lead.course || 'degree program';
+            const msg = `Hello ${lead.name}! This is ${counselorName} from EducationistGuru Admissions Desk. I am contacting you regarding your admission inquiry for "${courseName}". Are you available for a quick discussion on admission eligibility, fee structure, and university options?`;
+            
+            const waUrl = `https://api.whatsapp.com/send?phone=91${phone}&text=${encodeURIComponent(msg)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function convertLeadToApp(id) {
+            const lead = CRM.getById('leads', id);
+            if (!lead) return;
+            if (confirm(`Convert ${lead.name} into an official Application record for "${lead.course}"?`)) {
+                CRM.convertToApplication(id);
+                showAlert(`Application record created for ${lead.name}!`, 'success');
+                renderLeads();
+            }
+        }
+
+        async function syncServerLeads() {
+            await CRM.syncWithServer();
+            return CRM.getAll('leads').length;
+        }
+
+        async function refreshLeads() {
+            const btn = document.getElementById('refreshBtn');
+            btn.classList.add('spinning');
+            btn.disabled = true;
+            await CRM.syncWithServer();
+            setTimeout(() => {
+                renderLeads();
+                btn.classList.remove('spinning');
+                btn.disabled = false;
+                document.getElementById('lastRefresh').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                showAlert('Leads synchronized from server!', 'success');
+            }, 300);
+        }
+
+        // ============ DOWNLOAD LEADS (CSV) ============
+        function downloadLeadsCSV() {
+            let leads = CRM.getAll('leads');
+            const q = (document.getElementById('searchInput').value||'').toLowerCase();
+            const s = document.getElementById('filterStatus').value;
+            const p = document.getElementById('filterPriority').value;
+            const src = document.getElementById('filterSource').value;
+
+            if (q) leads = leads.filter(l => (l.name||'').toLowerCase().includes(q) || (l.email||'').toLowerCase().includes(q) || (l.phone||'').includes(q) || (l.course||'').toLowerCase().includes(q) || (l.city||'').toLowerCase().includes(q));
+            if (s) leads = leads.filter(l => l.status === s);
+            if (p) leads = leads.filter(l => (l.priority || 'warm') === p);
+            if (src) leads = leads.filter(l => l.source === src);
+
+            if (leads.length === 0) {
+                alert('No leads found to export matching your filter criteria.');
+                return;
+            }
+
+            const headers = ['Lead ID', 'Full Name', 'Calling Phone', 'WhatsApp Phone', 'Email', 'City/State', 'Qualification', 'Interested Course', 'Learning Mode', 'Priority', 'Status', 'Follow-up Date', 'Assigned Counselor', 'Source', 'Date Added', 'Counseling Notes'];
+            const rows = leads.map(l => [
+                l.id || '',
+                l.name || '',
+                l.phone || '',
+                l.wa || l.phone || '',
+                l.email || '',
+                l.city || '',
+                l.qualification || '',
+                l.course || '',
+                l.mode || '',
+                l.priority || 'warm',
+                l.status || 'new',
+                l.followUp || '',
+                l.counselor || 'Central Admissions Desk',
+                l.source || '',
+                l.date || '',
+                (l.notes || '').replace(/"/g, '""')
+            ]);
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += headers.map(h => `"${h}"`).join(',') + '\r\n';
+            rows.forEach(r => {
+                csvContent += r.map(v => `"${v}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            const today = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `EducationistGuru_Leads_${today}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showAlert(`Exported ${leads.length} lead(s) with full admission profile to CSV!`, 'success');
+        }
+
+        // ============ LEAD MODAL CONTROLLER ============
+        async function openModal(data) {
+            await populateCourseDropdown();
+            document.getElementById('leadModal').classList.add('active');
+
+            if (data) {
+                document.getElementById('modalTitle').textContent = 'Edit Admission Lead';
+                document.getElementById('leadId').value = data.id || '';
+                document.getElementById('leadName').value = data.name || '';
+                document.getElementById('leadPhone').value = data.phone || '';
+                document.getElementById('leadWa').value = data.wa || data.phone || '';
+                document.getElementById('leadSameWa').checked = (data.wa === data.phone || !data.wa);
+                document.getElementById('leadEmail').value = data.email || '';
+                document.getElementById('leadCity').value = data.city || '';
+                document.getElementById('leadQualification').value = data.qualification || '12th Pass (Commerce)';
+                document.getElementById('leadCourse').value = data.course || (availableCourses[0] ? availableCourses[0].name : '');
+                document.getElementById('leadMode').value = data.mode || 'Online Learning (Flexible)';
+                document.getElementById('leadPriority').value = data.priority || 'warm';
+                document.getElementById('leadFollowUp').value = data.followUp || '';
+                document.getElementById('leadCounselor').value = data.counselor || 'Central Admissions Desk';
+                document.getElementById('leadSource').value = data.source || 'Website';
+                document.getElementById('leadStatus').value = data.status || 'new';
+                document.getElementById('leadNotes').value = data.notes || '';
+            } else {
+                document.getElementById('modalTitle').textContent = 'Add New Admission Lead';
+                document.getElementById('leadId').value = '';
+                document.getElementById('leadName').value = '';
+                document.getElementById('leadPhone').value = '';
+                document.getElementById('leadWa').value = '';
+                document.getElementById('leadSameWa').checked = true;
+                document.getElementById('leadEmail').value = '';
+                document.getElementById('leadCity').value = '';
+                document.getElementById('leadQualification').selectedIndex = 0;
+                if (document.getElementById('leadCourse').options.length > 0) {
+                    document.getElementById('leadCourse').selectedIndex = 0;
+                }
+                document.getElementById('leadMode').selectedIndex = 0;
+                document.getElementById('leadPriority').value = 'warm';
+                document.getElementById('leadFollowUp').value = '';
+                document.getElementById('leadCounselor').value = 'Central Admissions Desk';
+                document.getElementById('leadSource').value = 'Website';
+                document.getElementById('leadStatus').value = 'new';
+                document.getElementById('leadNotes').value = '';
+            }
+            toggleSameWa();
+        }
+
+        function closeModal() { 
+            document.getElementById('leadModal').classList.remove('active'); 
+        }
+
+        function saveLead() {
+            const id = document.getElementById('leadId').value;
+            const name = document.getElementById('leadName').value.trim();
+            const phone = document.getElementById('leadPhone').value.trim();
+
+            if (!name) { 
+                alert('Candidate Full Name is required.'); 
+                document.getElementById('leadName').focus();
+                return; 
+            }
+            if (!phone) {
+                alert('Mobile Number is required for admissions counseling.');
+                document.getElementById('leadPhone').focus();
+                return;
+            }
+
+            const d = {
+                name: name,
+                phone: phone,
+                wa: document.getElementById('leadWa').value.trim() || phone,
+                email: document.getElementById('leadEmail').value.trim(),
+                city: document.getElementById('leadCity').value.trim(),
+                qualification: document.getElementById('leadQualification').value,
+                course: document.getElementById('leadCourse').value,
+                mode: document.getElementById('leadMode').value,
+                priority: document.getElementById('leadPriority').value,
+                followUp: document.getElementById('leadFollowUp').value,
+                counselor: document.getElementById('leadCounselor').value,
+                source: document.getElementById('leadSource').value,
+                status: document.getElementById('leadStatus').value,
+                notes: document.getElementById('leadNotes').value.trim(),
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            if (id) { 
+                CRM.update('leads', parseInt(id), d); 
+                showAlert('Lead profile updated successfully!', 'success'); 
+            } else { 
+                CRM.add('leads', d); 
+                showAlert('New admission lead added successfully!', 'success'); 
+            }
+
+            closeModal();
+            renderLeads();
+        }
+
+        function editLead(id) { 
+            openModal(CRM.getById('leads', id)); 
+        }
+
+        function deleteLead(id) { 
+            if (confirm('Are you sure you want to delete this lead?')) { 
+                CRM.remove('leads', id); 
+                showAlert('Lead deleted.', 'danger'); 
+                renderLeads(); 
+            } 
+        }
+
+        // =========================================================================
+        // REAL GMAIL INTEGRATION (App Password & Google OAuth 2.0)
+        // =========================================================================
+        let gmailConnected = localStorage.getItem('gmail_connected') === 'true';
+        let gmailUser = localStorage.getItem('gmail_user') || '';
+        let gmailAuthType = localStorage.getItem('gmail_auth_type') || 'app_password';
+        let fetchedEmails = [];
+        let currentSearchQuery = '';
+
+        function openGmailModal() {
+            document.getElementById('gmailModal').classList.add('active');
+            // Sync saved client ID if any
+            const savedClientId = localStorage.getItem('google_client_id') || '';
+            const clientIdInput = document.getElementById('oauthClientIdInput');
+            if (clientIdInput) clientIdInput.value = savedClientId;
+
+            // Sync saved email if any
+            const savedEmail = localStorage.getItem('gmail_user') || '';
+            const emailInput = document.getElementById('gmailAppEmail');
+            if (emailInput && savedEmail && !emailInput.value) emailInput.value = savedEmail;
+
+            updateGmailStatus();
+
+            // If already connected, fetch real inbox messages
+            if (gmailConnected) {
+                fetchGmailMessages('');
+            }
+        }
+
+        function closeGmailModal() {
+            document.getElementById('gmailModal').classList.remove('active');
+        }
+
+        function switchGmailTab(tab, btn) {
+            document.querySelectorAll('.gmail-tab-nav button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.gmail-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('gmailTab-' + tab).classList.add('active');
+        }
+
+        function switchConnectMethod(method) {
+            const btnApp = document.getElementById('btnMethodAppPass');
+            const btnOAuth = document.getElementById('btnMethodOAuth');
+            const secApp = document.getElementById('methodSectionAppPass');
+            const secOAuth = document.getElementById('methodSectionOAuth');
+
+            if (method === 'apppass') {
+                btnApp.classList.add('active');
+                btnOAuth.classList.remove('active');
+                secApp.style.display = 'block';
+                secOAuth.style.display = 'none';
+            } else {
+                btnOAuth.classList.add('active');
+                btnApp.classList.remove('active');
+                secApp.style.display = 'none';
+                secOAuth.style.display = 'block';
+            }
+        }
+
+        function updateGmailStatus() {
+            const el = document.getElementById('gmailConnectionStatus');
+            const connectArea = document.getElementById('gmailConnectArea');
+            const inboxArea = document.getElementById('gmailInboxArea');
+
+            if (gmailConnected && gmailUser) {
+                const typeLabel = gmailAuthType === 'app_password' ? 'Direct IMAP' : 'Google OAuth';
+                el.className = 'gmail-status-bar';
+                el.innerHTML = `
+                    <div style="display:flex;align-items:center;">
+                        <span class="pulse-dot"></span>
+                        <span>Connected to <strong>${gmailUser}</strong> (${typeLabel})</span>
+                    </div>
+                    <button onclick="disconnectGmail()" style="background:none;border:none;color:#dc3545;cursor:pointer;font-size:13px;font-weight:600;font-family:Inter,sans-serif;">
+                        <i class="fa fa-sign-out"></i> Disconnect
+                    </button>
+                `;
+                connectArea.style.display = 'none';
+                inboxArea.style.display = 'block';
+            } else {
+                el.className = 'gmail-status-bar disconnected';
+                el.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <i class="fa fa-envelope-o" style="font-size:16px;"></i>
+                        <span>Gmail not connected — Connect your Gmail to scan and import admission leads</span>
+                    </div>
+                `;
+                connectArea.style.display = 'block';
+                inboxArea.style.display = 'none';
+            }
+        }
+
+        // --- METHOD 1: CONNECT VIA GMAIL APP PASSWORD ---
+        async function connectGmailAppPassword() {
+            const email = document.getElementById('gmailAppEmail').value.trim();
+            const pass = document.getElementById('gmailAppPass').value.trim();
+            const btn = document.getElementById('btnConnectAppPass');
+
+            if (!email || !pass) {
+                showGmailModalAlert('Please enter both your Gmail address and 16-character App Password.', 'danger');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Connecting to Gmail IMAP...';
+
+            try {
+                const res = await fetch('/api/gmail/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, appPassword: pass })
+                });
+                const data = await res.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || 'Connection failed.');
+                }
+
+                // Store credentials locally
+                localStorage.setItem('gmail_connected', 'true');
+                localStorage.setItem('gmail_user', email);
+                localStorage.setItem('gmail_app_pass', pass);
+                localStorage.setItem('gmail_auth_type', 'app_password');
+
+                gmailConnected = true;
+                gmailUser = email;
+                gmailAuthType = 'app_password';
+
+                showGmailModalAlert('Successfully connected to ' + email + '! Scanning inbox...', 'success');
+                updateGmailStatus();
+                await fetchGmailMessages('');
+            } catch (err) {
+                showGmailModalAlert(err.message, 'danger');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa fa-plug"></i> Connect Real Gmail Account';
+            }
+        }
+
+        // --- METHOD 2: CONNECT VIA GOOGLE OAUTH 2.0 ---
+        function connectGmailOAuth() {
+            const clientId = (document.getElementById('oauthClientIdInput').value || '').trim();
+            if (!clientId) {
+                showGmailModalAlert('Please enter a valid Google OAuth Client ID first.', 'danger');
+                return;
+            }
+
+            localStorage.setItem('google_client_id', clientId);
+
+            try {
+                if (typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2) {
+                    throw new Error('Google Identity Services library is still loading. Please check internet connection.');
+                }
+
+                const client = google.accounts.oauth2.initTokenClient({
+                    client_id: clientId,
+                    scope: 'https://www.googleapis.com/auth/gmail.readonly',
+                    callback: async (tokenResponse) => {
+                        if (tokenResponse.error) {
+                            showGmailModalAlert('Google Login Error: ' + (tokenResponse.error_description || tokenResponse.error), 'danger');
+                            return;
+                        }
+                        if (tokenResponse.access_token) {
+                            localStorage.setItem('gmail_token', tokenResponse.access_token);
+                            localStorage.setItem('gmail_connected', 'true');
+                            localStorage.setItem('gmail_auth_type', 'oauth');
+                            gmailConnected = true;
+                            gmailAuthType = 'oauth';
+
+                            // Get user profile email
+                            try {
+                                const profRes = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/profile', {
+                                    headers: { 'Authorization': 'Bearer ' + tokenResponse.access_token }
+                                });
+                                const prof = await profRes.json();
+                                gmailUser = prof.emailAddress || 'Connected Account';
+                                localStorage.setItem('gmail_user', gmailUser);
+                            } catch(e) {
+                                gmailUser = 'Connected User';
+                            }
+
+                            showGmailModalAlert('Google Account connected successfully! Fetching emails...', 'success');
+                            updateGmailStatus();
+                            await fetchGmailMessages('');
+                        }
+                    },
+                    error_callback: (err) => {
+                        showGmailModalAlert('Google OAuth prompt closed or failed: ' + (err.message || 'Pop-up blocked?'), 'danger');
+                    }
+                });
+
+                client.requestAccessToken({ prompt: 'consent' });
+            } catch (err) {
+                showGmailModalAlert('OAuth Error: ' + err.message, 'danger');
+            }
+        }
+
+        // --- DISCONNECT ---
+        function disconnectGmail() {
+            if (!confirm('Are you sure you want to disconnect this Gmail account?')) return;
+            gmailConnected = false;
+            gmailUser = '';
+            localStorage.removeItem('gmail_connected');
+            localStorage.removeItem('gmail_user');
+            localStorage.removeItem('gmail_app_pass');
+            localStorage.removeItem('gmail_auth_type');
+            localStorage.removeItem('gmail_token');
+            fetchedEmails = [];
+            updateGmailStatus();
+            showAlert('Gmail account disconnected.', 'info');
+        }
+
+        // --- FETCH MESSAGES (App Password or OAuth) ---
+        async function fetchGmailMessages(keyword = '') {
+            const listEl = document.getElementById('emailList');
+            const countEl = document.getElementById('inboxStatusCount');
+            const refreshBtn = document.getElementById('btnRefreshInbox');
+
+            if (refreshBtn) refreshBtn.innerHTML = '<i class="fa fa-refresh fa-spin"></i> Refreshing...';
+            listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#6c757d;"><i class="fa fa-spinner fa-spin" style="font-size:24px;margin-bottom:8px;display:block;color:#ff3115;"></i>Scanning Gmail inbox for messages...</div>';
+            countEl.textContent = 'Scanning inbox...';
+
+            try {
+                if (gmailAuthType === 'app_password') {
+                    const email = localStorage.getItem('gmail_user');
+                    const pass = localStorage.getItem('gmail_app_pass');
+                    if (!email || !pass) throw new Error('Missing saved credentials. Please reconnect your Gmail.');
+
+                    const res = await fetch('/api/gmail/messages', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, appPassword: pass, query: keyword, count: 30 })
+                    });
+                    const data = await res.json();
+                    if (!data.success) throw new Error(data.error || 'Failed to fetch messages.');
+                    fetchedEmails = data.emails || [];
+                } else if (gmailAuthType === 'oauth') {
+                    const token = localStorage.getItem('gmail_token');
+                    if (!token) throw new Error('OAuth token expired. Please re-sign in with Google.');
+
+                    let q = keyword ? `subject:(${keyword}) OR (${keyword})` : 'label:INBOX';
+                    const res = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?maxResults=25&q=${encodeURIComponent(q)}`, {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    const data = await res.json();
+
+                    if (!data.messages || data.messages.length === 0) {
+                        fetchedEmails = [];
+                    } else {
+                        fetchedEmails = [];
+                        for (const msg of data.messages.slice(0, 20)) {
+                            const detail = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${msg.id}?format=metadata&metadataHeaders=From&metadataHeaders=Subject&metadataHeaders=Date`, {
+                                headers: { 'Authorization': 'Bearer ' + token }
+                            });
+                            const d = await detail.json();
+                            const headers = d.payload?.headers || [];
+                            const from = headers.find(h => h.name === 'From')?.value || '';
+                            const subject = headers.find(h => h.name === 'Subject')?.value || '(no subject)';
+                            const date = headers.find(h => h.name === 'Date')?.value || '';
+
+                            let name = from;
+                            let email = from;
+                            const emailExtract = from.match(/<([^>]+)>/);
+                            if (emailExtract) {
+                                email = emailExtract[1];
+                                name = from.replace(emailExtract[0], '').replace(/["']/g, '').trim() || email.split('@')[0];
+                            }
+
+                            fetchedEmails.push({
+                                id: msg.id,
+                                name: name,
+                                email: email,
+                                subject: subject,
+                                snippet: d.snippet || subject,
+                                date: date ? new Date(date).toLocaleDateString('en-IN') : 'Recent'
+                            });
+                        }
+                    }
+                }
+
+                renderEmailList();
+            } catch (err) {
+                listEl.innerHTML = `
+                    <div style="padding:25px;text-align:center;color:#dc3545;background:#f8d7da;border-radius:10px;border:1px solid #f5c6cb;">
+                        <i class="fa fa-exclamation-triangle" style="font-size:26px;margin-bottom:8px;display:block;"></i>
+                        <strong>Error fetching emails:</strong><br>${err.message}
+                        <div style="margin-top:10px;">
+                            <button class="btn btn-outline btn-sm" onclick="fetchGmailMessages('${keyword}')"><i class="fa fa-refresh"></i> Try Again</button>
+                        </div>
+                    </div>
+                `;
+                countEl.textContent = 'Error fetching emails';
+            } finally {
+                if (refreshBtn) refreshBtn.innerHTML = '<i class="fa fa-refresh"></i> Refresh';
+            }
+        }
+
+        function renderEmailList() {
+            const listEl = document.getElementById('emailList');
+            const countEl = document.getElementById('inboxStatusCount');
+            const existingLeads = CRM.getAll('leads');
+
+            if (fetchedEmails.length === 0) {
+                listEl.innerHTML = `
+                    <div style="text-align:center;padding:40px 20px;color:#6c757d;">
+                        <i class="fa fa-inbox" style="font-size:36px;color:#adb5bd;display:block;margin-bottom:10px;"></i>
+                        <strong style="font-size:14px;color:#495057;">No emails found</strong>
+                        <p style="font-size:12px;margin-top:4px;">No emails matched your filter. Try clearing the search keyword or click "Refresh" to check again.</p>
+                    </div>
+                `;
+                countEl.textContent = '0 emails found';
+                updateSelectedCount();
+                return;
+            }
+
+            let newLeadCount = 0;
+            listEl.innerHTML = fetchedEmails.map((e, idx) => {
+                const alreadyExists = existingLeads.some(l => (l.email||'').toLowerCase() === (e.email||'').toLowerCase());
+                if (!alreadyExists) newLeadCount++;
+                const isChecked = !alreadyExists;
+
+                return `
+                    <div class="email-preview ${alreadyExists ? 'exists' : ''}">
+                        <input type="checkbox" id="em_${idx}" ${isChecked ? 'checked' : ''} onchange="updateSelectedCount()">
+                        <div class="avatar" style="background:${CRM.getAvatarColor(e.name)};width:36px;height:36px;min-width:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;">
+                            ${CRM.getInitials(e.name)}
+                        </div>
+                        <div class="ep-info">
+                            <div class="ep-header">
+                                <div class="ep-from">${e.name} <span class="ep-email">&lt;${e.email}&gt;</span></div>
+                                <div style="display:flex;align-items:center;gap:6px;">
+                                    ${alreadyExists 
+                                        ? '<span class="lead-badge exists" title="Already present in CRM leads">Already in Leads</span>' 
+                                        : '<span class="lead-badge new">New Lead</span>'}
+                                    <span class="ep-date">${e.date}</span>
+                                </div>
+                            </div>
+                            <div class="ep-subject">${e.subject}</div>
+                            <div class="ep-snippet">${e.snippet}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            countEl.innerHTML = `${fetchedEmails.length} emails found &bull; <span style="color:#28a745;font-weight:700;">${newLeadCount} new lead(s)</span>`;
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const checked = document.querySelectorAll('#emailList input[type="checkbox"]:checked').length;
+            const notice = document.getElementById('selectedImportNotice');
+            const btn = document.getElementById('btnImportEmails');
+
+            if (notice) notice.textContent = `${checked} lead(s) selected for import`;
+            if (btn) btn.innerHTML = `<i class="fa fa-download"></i> Import ${checked} Selected as Leads`;
+        }
+
+        function selectAllNewEmails() {
+            const existingLeads = CRM.getAll('leads');
+            fetchedEmails.forEach((e, idx) => {
+                const cb = document.getElementById('em_' + idx);
+                if (cb) {
+                    const alreadyExists = existingLeads.some(l => (l.email||'').toLowerCase() === (e.email||'').toLowerCase());
+                    cb.checked = !alreadyExists;
+                }
+            });
+            updateSelectedCount();
+        }
+
+        function toggleSelectAllEmails(val) {
+            document.querySelectorAll('#emailList input[type="checkbox"]').forEach(cb => cb.checked = val);
+            updateSelectedCount();
+        }
+
+        function executeGmailSearch() {
+            const q = document.getElementById('gmailSearchInput').value.trim();
+            currentSearchQuery = q;
+            fetchGmailMessages(q);
+        }
+
+        function setSearchFilter(filter, el) {
+            document.querySelectorAll('.quick-tag').forEach(t => t.classList.remove('active'));
+            if (el) el.classList.add('active');
+            document.getElementById('gmailSearchInput').value = filter;
+            currentSearchQuery = filter;
+            fetchGmailMessages(filter);
+        }
+
+        function refreshGmailInbox() {
+            fetchGmailMessages(currentSearchQuery);
+        }
+
+        function importSelectedEmails() {
+            const checkboxes = document.querySelectorAll('#emailList input[type="checkbox"]:checked');
+            if (checkboxes.length === 0) {
+                alert('Please select at least one email to import.');
+                return;
+            }
+
+            let imported = 0;
+            checkboxes.forEach(cb => {
+                const idx = parseInt(cb.id.replace('em_', ''));
+                const email = fetchedEmails[idx];
+                if (email) {
+                    const existing = CRM.getAll('leads').find(l => (l.email||'').toLowerCase() === (email.email||'').toLowerCase());
+                    if (!existing) {
+                        // Guess course from subject or snippet
+                        let guessedCourse = 'To be determined';
+                        const text = (email.subject + ' ' + email.snippet).toLowerCase();
+                        if (text.includes('b.tech') || text.includes('btech') || text.includes('engineering')) guessedCourse = 'B.Tech Computer Science';
+                        else if (text.includes('mba')) guessedCourse = 'MBA';
+                        else if (text.includes('mca')) guessedCourse = 'MCA Data Science';
+                        else if (text.includes('bba')) guessedCourse = 'BBA';
+                        else if (text.includes('bca')) guessedCourse = 'BCA';
+                        else if (text.includes('b.com') || text.includes('bcom')) guessedCourse = 'B.Com';
+
+                        CRM.add('leads', {
+                            name: email.name,
+                            email: email.email,
+                            phone: '',
+                            course: guessedCourse,
+                            status: 'new',
+                            source: 'Gmail',
+                            date: new Date().toISOString().split('T')[0],
+                            notes: `Imported from Gmail • Subject: "${email.subject}"`
+                        });
+                        imported++;
+                    }
+                }
+            });
+
+            closeGmailModal();
+            renderLeads();
+            if (imported > 0) {
+                showAlert(`Successfully imported ${imported} new lead(s) from Gmail!`, 'success');
+            } else {
+                showAlert('No new leads imported (all selected were already present).', 'info');
+            }
+        }
+
+        // ============ PASTE EMAILS IMPORT ============
+        document.addEventListener('input', function(e) {
+            if (e.target.id === 'pasteEmails') {
+                const lines = e.target.value.split('\n').filter(l => l.trim() && l.includes('@'));
+                document.getElementById('pasteCount').textContent = lines.length + ' emails detected';
+            }
+        });
+
+        function importPastedEmails() {
+            const text = document.getElementById('pasteEmails').value;
+            const lines = text.split('\n').filter(l => l.trim());
+            let imported = 0;
+
+            lines.forEach(line => {
+                line = line.trim();
+                let email = '', name = '';
+                const emailMatch = line.match(/[\w.-]+@[\w.-]+\.\w+/);
+                if (emailMatch) {
+                    email = emailMatch[0];
+                    name = line.replace(email, '').replace(/[<>,]/g, '').trim() || email.split('@')[0].replace(/[._]/g, ' ');
+                    name = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                }
+
+                if (email) {
+                    const existing = CRM.getAll('leads').find(l => (l.email||'').toLowerCase() === email.toLowerCase());
+                    if (!existing) {
+                        CRM.add('leads', {
+                            name: name || email.split('@')[0],
+                            email: email,
+                            phone: '',
+                            course: 'To be determined',
+                            status: 'new',
+                            source: 'Gmail',
+                            date: new Date().toISOString().split('T')[0],
+                            notes: 'Imported via email paste'
+                        });
+                        imported++;
+                    }
+                }
+            });
+
+            document.getElementById('pasteEmails').value = '';
+            document.getElementById('pasteCount').textContent = '0 emails detected';
+            closeGmailModal();
+            renderLeads();
+            if (imported > 0) showAlert(`${imported} lead(s) imported from pasted emails!`, 'success');
+            else showAlert('No new leads imported (check format or duplicates).', 'info');
+        }
+
+        // ============ CSV IMPORT ============
+        function handleCSV(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const lines = e.target.result.split('\n').filter(l => l.trim());
+                if (lines.length < 2) { alert('CSV must have header + at least 1 row.'); return; }
+
+                const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/"/g,''));
+                const nameIdx = headers.findIndex(h => h.includes('name'));
+                const emailIdx = headers.findIndex(h => h.includes('email') || h.includes('mail'));
+                const phoneIdx = headers.findIndex(h => h.includes('phone') || h.includes('mobile'));
+                const courseIdx = headers.findIndex(h => h.includes('course') || h.includes('program'));
+
+                if (emailIdx === -1) { alert('CSV must have an "Email" column.'); return; }
+
+                let rows = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const cols = lines[i].split(',').map(c => c.trim().replace(/"/g,''));
+                    if (cols[emailIdx]) {
+                        rows.push({
+                            name: nameIdx >= 0 ? cols[nameIdx] : cols[emailIdx].split('@')[0],
+                            email: cols[emailIdx],
+                            phone: phoneIdx >= 0 ? cols[phoneIdx] : '',
+                            course: courseIdx >= 0 ? cols[courseIdx] : 'To be determined'
+                        });
+                    }
+                }
+
+                document.getElementById('csvPreview').style.display = 'block';
+                document.getElementById('csvPreview').innerHTML = `
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <strong>${rows.length} contacts found in CSV</strong>
+                        <button class="btn btn-primary btn-sm" onclick="importCSVRows()"><i class="fa fa-download"></i> Import All</button>
+                    </div>
+                    <div style="max-height:200px;overflow-y:auto;border:1px solid #e9ecef;border-radius:8px;">
+                        <table class="data-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Course</th></tr></thead>
+                        <tbody>${rows.map(r => `<tr><td>${r.name}</td><td>${r.email}</td><td>${r.phone||'-'}</td><td>${r.course}</td></tr>`).join('')}</tbody></table>
+                    </div>
+                `;
+                window._csvRows = rows;
+            };
+            reader.readAsText(file);
+        }
+
+        function importCSVRows() {
+            if (!window._csvRows) return;
+            let imported = 0;
+            window._csvRows.forEach(r => {
+                const existing = CRM.getAll('leads').find(l => (l.email||'').toLowerCase() === (r.email||'').toLowerCase());
+                if (!existing) {
+                    CRM.add('leads', {
+                        name: r.name, email: r.email, phone: r.phone,
+                        course: r.course, status: 'new', source: 'Gmail',
+                        date: new Date().toISOString().split('T')[0],
+                        notes: 'Imported from CSV file'
+                    });
+                    imported++;
+                }
+            });
+            closeGmailModal();
+            renderLeads();
+            showAlert(`${imported} lead(s) imported from CSV!`, 'success');
+        }
+
+        // Escape key to close modals
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeGmailModal();
+            }
+        });
+
+        // Initial render & sync
+        syncServerLeads().then(() => {
+            populateCourseDropdown();
+            renderLeads();
+        });
+        renderLeads();
+        populateCourseDropdown();
+
+        // Real-time live sync listeners for multi-device collaboration
+        window.addEventListener('crm:synced', () => {
+            populateCourseDropdown();
+            renderLeads();
+        });
+
+        // Background auto-refresh polling every 8 seconds for multi-device real-time sync
+        setInterval(() => {
+            CRM.syncWithServer();
+        }, 8000);
+    </script>
+</body>
+</html>

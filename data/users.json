@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Jatinder Kaur",
+    "email": "admin@educationistguru.com",
+    "password": "EduGuru#Admin2026!",
+    "phone": "+91 87504 77000",
+    "role": "owner",
+    "status": "active",
+    "createdAt": "2026-01-01"
+  }
+]

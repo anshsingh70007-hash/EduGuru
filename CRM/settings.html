@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Settings | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Portal Settings</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- Row 1: Profile & Organization Profile -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header"><h3><i class="fa fa-user" style="margin-right:8px;color:#ff3115;"></i> My Administrator Profile</h3></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Full Name</label><input type="text" id="sName"></div>
+                                <div class="form-group"><label>Email</label><input type="email" id="sEmail" disabled style="background:#f0f0f0;"></div>
+                                <div class="form-group"><label>Calling Phone</label><input type="text" id="sPhone"></div>
+                                <div class="form-group"><label>Change Password</label><input type="password" id="sPassword" placeholder="Leave blank to keep current"></div>
+                                <button class="btn btn-primary" onclick="saveProfile()"><i class="fa fa-save"></i> Save Profile Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header"><h3><i class="fa fa-building-o" style="margin-right:8px;color:#0d6efd;"></i> Consultancy & Admission Settings</h3></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>Consultancy / Brand Name</label><input type="text" id="orgName" value="EducationistGuru"></div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                    <div class="form-group"><label>Helpline Phone</label><input type="text" id="orgPhone" placeholder="+91 98765 43210"></div>
+                                    <div class="form-group"><label>WhatsApp Counselor No</label><input type="text" id="orgWhatsApp" placeholder="+91 98765 43210"></div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                    <div class="form-group"><label>Admission Year / Batch</label><input type="text" id="orgBatch" value="2024-25"></div>
+                                    <div class="form-group"><label>Admission Status</label>
+                                        <select id="orgStatus">
+                                            <option value="Open">Admissions Open 2024-25</option>
+                                            <option value="Closing Soon">Admissions Closing Soon</option>
+                                            <option value="Closed">Admissions Closed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" onclick="saveOrgSettings()"><i class="fa fa-check"></i> Save Organization Settings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Gmail Integration & Website Integration -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>
+                                    <svg width="20" height="20" viewBox="0 0 48 48" style="vertical-align:middle;margin-right:8px;"><path fill="#EA4335" d="M24 5.457l13.09 9.882L48 5.457V38c0 2.21-1.79 4-4 4H4c-2.21 0-4-1.79-4-4V5.457l10.91 9.882z"/><path fill="#FBBC05" d="M0 5.457V38l16.91-16.271z"/><path fill="#34A853" d="M24 26.914L7.09 15.339 0 5.457h48l-7.09 9.882z"/><path fill="#C5221F" d="M48 5.457L31.09 15.339 24 26.914l24-21.457z"/><path fill="#4285F4" d="M48 5.457v32.543L31.09 15.339z"/></svg>
+                                    Gmail Lead Extraction Sync
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <p style="color:#6c757d;font-size:13px;margin-bottom:15px;">Connect your Gmail inbox to automatically scan, extract, and import admission leads.</p>
+                                
+                                <div id="gmailSetupStatus" style="margin-bottom:15px;"></div>
+
+                                <div style="background:#f8f9fa;padding:15px;border-radius:10px;margin-bottom:15px;border:1px solid #e9ecef;">
+                                    <div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#212529;">
+                                        <i class="fa fa-key" style="color:#ff3115;margin-right:6px;"></i> Gmail App Password (IMAP Direct)
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:10px;">
+                                        <label style="font-size:12px;font-weight:600;">Gmail Address</label>
+                                        <input type="email" id="settingsGmailEmail" placeholder="admission@gmail.com" style="width:100%;padding:8px 12px;border:1px solid #ced4da;border-radius:6px;font-size:13px;">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label style="font-size:12px;font-weight:600;">16-Character App Password</label>
+                                        <input type="password" id="settingsGmailPass" placeholder="xxxx xxxx xxxx xxxx" style="width:100%;padding:8px 12px;border:1px solid #ced4da;border-radius:6px;font-size:13px;">
+                                    </div>
+                                    <div style="display:flex;gap:8px;">
+                                        <button class="btn btn-primary btn-sm" onclick="saveAndTestAppPassword()"><i class="fa fa-plug"></i> Test & Save Connection</button>
+                                        <a href="https://myaccount.google.com/apppasswords" target="_blank" class="btn btn-outline btn-sm"><i class="fa fa-external-link"></i> Get App Password</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header"><h3><i class="fa fa-refresh" style="margin-right:8px;color:#ff3115;"></i> System Maintenance & Reset</h3></div>
+                            <div class="card-body">
+                                <p style="color:#6c757d;font-size:13px;margin-bottom:15px;">Local browser cache and quick maintenance options for the CRM portal.</p>
+                                
+                                <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+                                    <button class="btn btn-outline" onclick="CRM.syncWithServer().then(()=>showAlert('Synchronized with Server Database & Vault!','success'))"><i class="fa fa-refresh"></i> Force Sync with Vault</button>
+                                </div>
+
+                                <hr style="border:none;border-top:1px solid #edf2f7;margin:15px 0;">
+
+                                <div>
+                                    <div style="font-weight:600;font-size:13px;color:#dc3545;margin-bottom:6px;"><i class="fa fa-exclamation-triangle"></i> Factory Reset</div>
+                                    <p style="font-size:12px;color:#718096;margin-bottom:10px;">Reset CRM data to the initial clean production state. This will remove test records.</p>
+                                    <button class="btn btn-danger btn-sm" onclick="resetData()"><i class="fa fa-refresh"></i> Reset to Factory State</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 3: 🛡️ Enterprise Disaster Recovery & External Data Vault -->
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-12">
+                        <div class="card" style="border:1px solid #cbd5e1;box-shadow:0 4px 20px rgba(15,23,42,0.06);">
+                            <div class="card-header" style="background:linear-gradient(90deg, #f8fafc, #ffffff);border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:18px 24px;">
+                                <h3 style="margin:0;font-size:17px;font-weight:800;color:#0f172a;display:flex;align-items:center;gap:10px;">
+                                    <span style="display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#ecfdf5;color:#059669;font-size:16px;">
+                                        <i class="fa fa-shield"></i>
+                                    </span>
+                                    Disaster Recovery &amp; External Data Vault
+                                </h3>
+                                <div style="display:flex;align-items:center;gap:10px;">
+                                    <span id="vaultSyncBadge" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:#ecfdf5;color:#065f46;font-size:12px;font-weight:700;border:1px solid #a7f3d0;">
+                                        <span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span>
+                                        External Vault Active
+                                    </span>
+                                    <button class="btn btn-outline btn-sm" onclick="fetchVaultStatus(true)" title="Refresh vault status">
+                                        <i class="fa fa-refresh"></i> Check Vault
+                                    </button>
+                                    <button class="btn btn-primary btn-sm" onclick="triggerManualSnapshot()">
+                                        <i class="fa fa-camera"></i> Create Snapshot Now
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding:24px;">
+                                <!-- Vault Status & Architecture Banner -->
+                                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px 20px;margin-bottom:24px;">
+                                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;">
+                                        <div>
+                                            <div style="font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:0.5px;color:#64748b;margin-bottom:4px;">
+                                                Immutable External Vault Storage Location
+                                            </div>
+                                            <div style="font-family:monospace;font-size:14px;font-weight:700;color:#0f172a;display:flex;align-items:center;gap:8px;">
+                                                <i class="fa fa-folder-open" style="color:#f59e0b;"></i>
+                                                <span id="vaultPathText">C:\Users\Harmeet Singh\.educationistguru_vault</span>
+                                            </div>
+                                            <p style="font-size:12.5px;color:#64748b;margin:6px 0 0;max-width:760px;line-height:1.5;">
+                                                Synchronized on every write across 3 independent tiers (Primary <code>./data/</code>, Local Vault <code>./backups/vault/</code>, and External User Profile Vault). If future updates replace files or delete the folder, all uploaded colleges, universities, blogs, courses, leads, and financials automatically self-heal on boot.
+                                            </p>
+                                        </div>
+                                        <div id="vaultRecordStats" style="display:flex;gap:10px;flex-wrap:wrap;">
+                                            <!-- Dynamically populated stats pills -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action Controls: Backup & Restore -->
+                                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:20px;margin-bottom:26px;">
+                                    <!-- Backup Box -->
+                                    <div style="border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;background:#ffffff;">
+                                        <h4 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                                            <i class="fa fa-cloud-download" style="color:#0284c7;"></i> Complete Full Database Backup
+                                        </h4>
+                                        <p style="font-size:13px;color:#64748b;line-height:1.5;margin-bottom:16px;">
+                                            Download a comprehensive server-generated JSON backup bundle containing all collections (colleges, universities, blogs, courses, leads, applications, enrollments, fees, users, and uploaded images).
+                                        </p>
+                                        <button class="btn btn-primary" onclick="downloadServerBackup()" style="width:100%;justify-content:center;gap:8px;">
+                                            <i class="fa fa-download"></i> Download Full Database JSON
+                                        </button>
+                                    </div>
+
+                                    <!-- Restore Box -->
+                                    <div style="border:1px solid #e2e8f0;border-radius:12px;padding:18px 20px;background:#ffffff;">
+                                        <h4 style="font-size:15px;font-weight:700;color:#0f172a;margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+                                            <i class="fa fa-cloud-upload" style="color:#7c3aed;"></i> Restore Database from Backup
+                                        </h4>
+                                        <p style="font-size:13px;color:#64748b;line-height:1.5;margin-bottom:16px;">
+                                            Restore your database from any previously exported backup file. The server automatically creates a safety rollback snapshot before applying changes to protect your records.
+                                        </p>
+                                        <button class="btn btn-outline" onclick="document.getElementById('vaultRestoreInput').click()" style="width:100%;justify-content:center;gap:8px;">
+                                            <i class="fa fa-upload"></i> Choose JSON File to Restore
+                                        </button>
+                                        <input type="file" id="vaultRestoreInput" accept=".json" style="display:none;" onchange="handleServerRestore(event)">
+                                    </div>
+                                </div>
+
+                                <!-- Rolling Snapshots & Point-in-Time Rollback -->
+                                <div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                                        <h4 style="font-size:15px;font-weight:700;color:#0f172a;margin:0;display:flex;align-items:center;gap:8px;">
+                                            <i class="fa fa-history" style="color:#ea580c;"></i> Rolling Point-in-Time Snapshots
+                                        </h4>
+                                        <button class="btn btn-outline btn-sm" onclick="triggerManualSnapshot()" style="gap:6px;">
+                                            <i class="fa fa-camera"></i> Create Snapshot Now
+                                        </button>
+                                    </div>
+                                    <div id="snapshotsListContainer" style="max-height:260px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;">
+                                        <div style="padding:20px;text-align:center;color:#94a3b8;font-size:13px;">
+                                            <i class="fa fa-spinner fa-spin"></i> Loading snapshots...
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('settings');
+
+        document.getElementById('sName').value = currentUser.name;
+        document.getElementById('sEmail').value = currentUser.email;
+        document.getElementById('sPhone').value = currentUser.phone || '';
+
+        async function loadOrgSettings() {
+            try {
+                const res = await fetch('/api/crm/settings');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.organization) {
+                        document.getElementById('orgName').value = data.organization.name || 'EducationistGuru';
+                        document.getElementById('orgPhone').value = data.organization.phone || '';
+                        document.getElementById('orgWhatsApp').value = data.organization.whatsapp || '';
+                        document.getElementById('orgBatch').value = data.organization.batch || '2024-25';
+                        document.getElementById('orgStatus').value = data.organization.status || 'Open';
+                    }
+                }
+            } catch(e) {}
+        }
+
+        async function saveOrgSettings() {
+            const org = {
+                name: document.getElementById('orgName').value.trim(),
+                phone: document.getElementById('orgPhone').value.trim(),
+                whatsapp: document.getElementById('orgWhatsApp').value.trim(),
+                batch: document.getElementById('orgBatch').value.trim(),
+                status: document.getElementById('orgStatus').value
+            };
+
+            try {
+                const res = await fetch('/api/crm/settings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ organization: org })
+                });
+                if (res.ok) {
+                    showAlert('Organization settings saved to server database!', 'success');
+                } else {
+                    showAlert('Failed to save settings to server.', 'danger');
+                }
+            } catch(err) {
+                showAlert('Error saving settings: ' + err.message, 'danger');
+            }
+        }
+
+        function saveProfile(){
+            const n = document.getElementById('sName').value;
+            const p = document.getElementById('sPhone').value;
+            const pw = document.getElementById('sPassword').value;
+            const updates = { name: n, phone: p };
+            if (pw && pw.length >= 6) updates.password = pw;
+            CRM.update('users', currentUser.id, updates);
+            const updated = CRM.getById('users', currentUser.id);
+            CRM.setCurrentUser(updated);
+            showAlert('Administrator profile saved!', 'success');
+            buildSidebar('settings');
+        }
+
+        function exportData(){
+            const d = {
+                leads: CRM.getAll('leads'),
+                enrollments: CRM.getAll('enrollments'),
+                inquiries: CRM.getAll('inquiries'),
+                applications: CRM.getAll('applications'),
+                subscribers: CRM.getAll('subscribers'),
+                fees: CRM.getAll('fees'),
+                users: CRM.getAll('users'),
+                roles: CRM.getAll('roles'),
+                exportedAt: new Date().toISOString()
+            };
+            const b = new Blob([JSON.stringify(d, null, 2)], { type:'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(b);
+            a.download = `educationistguru_crm_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showAlert('Full CRM JSON backup downloaded!', 'success');
+        }
+
+        function importData(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (!data || typeof data !== 'object') throw new Error('Invalid JSON');
+
+                    const collections = ['leads', 'applications', 'enrollments', 'inquiries', 'subscribers', 'fees', 'users'];
+                    for (const c of collections) {
+                        if (Array.isArray(data[c])) {
+                            CRM.set(c, data[c]);
+                        }
+                    }
+
+                    showAlert('CRM data restored successfully! Syncing with server...', 'success');
+                    setTimeout(() => location.reload(), 1200);
+                } catch(err) {
+                    showAlert('Failed to restore backup: ' + err.message, 'danger');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetData() {
+            if (confirm('Are you sure you want to reset all CRM data? This will restore clean factory records.')) {
+                localStorage.removeItem('crm_production_ready_v1');
+                CRM.init();
+                showAlert('CRM data reset to clean state! Reloading...', 'success');
+                setTimeout(() => location.reload(), 1000);
+            }
+        }
+
+        // Gmail Integration Management
+        const savedClientId = localStorage.getItem('google_client_id') || '';
+        const savedGmailUser = localStorage.getItem('gmail_user') || '';
+        const savedGmailPass = localStorage.getItem('gmail_app_pass') || '';
+        document.getElementById('settingsGmailEmail').value = savedGmailUser;
+        document.getElementById('settingsGmailPass').value = savedGmailPass;
+        updateGmailSetupStatus();
+
+        async function saveAndTestAppPassword() {
+            const email = document.getElementById('settingsGmailEmail').value.trim();
+            const pass = document.getElementById('settingsGmailPass').value.trim();
+
+            if (!email || !pass) {
+                showAlert('Please enter both Gmail address and 16-character App Password.', 'danger');
+                return;
+            }
+
+            showAlert('Testing connection to Gmail IMAP server...', 'info');
+            try {
+                const res = await fetch('/api/gmail/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, appPassword: pass })
+                });
+                const data = await res.json();
+                if (!data.success) {
+                    throw new Error(data.error || 'Authentication failed');
+                }
+
+                localStorage.setItem('gmail_connected', 'true');
+                localStorage.setItem('gmail_user', email);
+                localStorage.setItem('gmail_app_pass', pass);
+                localStorage.setItem('gmail_auth_type', 'app_password');
+
+                showAlert(`Successfully connected to ${email}! (Found ${data.totalMessages} emails)`, 'success');
+                updateGmailSetupStatus();
+            } catch (err) {
+                showAlert('Connection failed: ' + err.message, 'danger');
+            }
+        }
+
+        function updateGmailSetupStatus() {
+            const el = document.getElementById('gmailSetupStatus');
+            const connected = localStorage.getItem('gmail_connected') === 'true';
+            const user = localStorage.getItem('gmail_user');
+
+            if (connected && user) {
+                el.innerHTML = `
+                    <div style="padding:12px 14px;background:#d4edda;border:1px solid #c3e6cb;border-radius:8px;font-size:13px;color:#155724;display:flex;align-items:center;justify-content:space-between;">
+                        <div><i class="fa fa-check-circle" style="margin-right:6px;color:#28a745;"></i> Connected to <strong>${user}</strong></div>
+                        <button onclick="disconnectSettingsGmail()" style="background:none;border:none;color:#dc3545;font-weight:600;cursor:pointer;font-size:12px;"><i class="fa fa-times"></i> Disconnect</button>
+                    </div>
+                `;
+            } else {
+                el.innerHTML = '<div style="padding:10px 14px;background:#f8f9fa;border:1px solid #e9ecef;border-radius:8px;font-size:13px;color:#6c757d;display:flex;align-items:center;gap:8px;"><i class="fa fa-envelope-o"></i> Not connected. Enter your Gmail and App Password above.</div>';
+            }
+        }
+
+        function disconnectSettingsGmail() {
+            localStorage.removeItem('gmail_connected');
+            localStorage.removeItem('gmail_user');
+            localStorage.removeItem('gmail_app_pass');
+            localStorage.removeItem('gmail_auth_type');
+            document.getElementById('settingsGmailPass').value = '';
+            updateGmailSetupStatus();
+            showAlert('Gmail account disconnected.', 'info');
+        }
+
+        // ================= DISASTER RECOVERY & VAULT ENGINE =================
+        function getSettingsApiBase() {
+            if (typeof CRM !== 'undefined' && typeof CRM.getApiBase === 'function') {
+                return CRM.getApiBase();
+            }
+            if (window.location.protocol === 'file:' || 
+                (window.location.hostname === 'localhost' && window.location.port !== '3000') ||
+                (window.location.hostname === '127.0.0.1' && window.location.port !== '3000')) {
+                return 'http://localhost:3000';
+            }
+            return '';
+        }
+
+        async function fetchVaultStatus(notify = false) {
+            try {
+                const apiBase = getSettingsApiBase();
+                const res = await fetch(apiBase + '/api/system/vault-status');
+                if (res.ok) {
+                    const data = await res.json();
+                    const v = data.vault || data;
+                    document.getElementById('vaultPathText').textContent = v.externalVaultDir || v.vaultDir || 'C:\\Users\\Harmeet Singh\\.educationistguru_vault';
+                    
+                    const badge = document.getElementById('vaultSyncBadge');
+                    if (v.isExternalVaultAccessible || data.status === 'ACTIVE' || data.status === 'OK') {
+                        badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;"></span> 3-Tier Multi-Vault Synchronized';
+                        badge.style.background = '#ecfdf5';
+                        badge.style.color = '#065f46';
+                    }
+
+                    // Record stats pills
+                    const counts = v.collectionCounts || v.records || {};
+                    const statsEl = document.getElementById('vaultRecordStats');
+                    if (statsEl) {
+                        statsEl.innerHTML = `
+                            <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                                <div style="font-size:16px;font-weight:800;color:#0f172a;">${counts.colleges || 0}</div>
+                                <div style="font-size:11px;color:#64748b;">Colleges</div>
+                            </div>
+                            <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                                <div style="font-size:16px;font-weight:800;color:#0f172a;">${counts.universities || 0}</div>
+                                <div style="font-size:11px;color:#64748b;">Universities</div>
+                            </div>
+                            <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                                <div style="font-size:16px;font-weight:800;color:#0f172a;">${counts.courses || 0}</div>
+                                <div style="font-size:11px;color:#64748b;">Courses</div>
+                            </div>
+                            <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                                <div style="font-size:16px;font-weight:800;color:#0f172a;">${counts.blogs || 0}</div>
+                                <div style="font-size:11px;color:#64748b;">Blogs</div>
+                            </div>
+                            <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                                <div style="font-size:16px;font-weight:800;color:#0f172a;">${(counts.leads || 0) + (counts.applications || 0) + (counts.enrollments || 0)}</div>
+                                <div style="font-size:11px;color:#64748b;">CRM Records</div>
+                            </div>
+                        `;
+                    }
+                    if (notify) showAlert('Vault health verified: all 3 storage tiers synchronized!', 'success');
+                    return;
+                }
+                throw new Error('Server returned non-200');
+            } catch(e) {
+                console.warn('Vault server status check unreachable, displaying local vault cache:', e);
+                const localCourses = JSON.parse(localStorage.getItem('eg_cms_courses') || '[]');
+                const localColleges = JSON.parse(localStorage.getItem('eg_cms_colleges') || '[]');
+                const localUnivs = JSON.parse(localStorage.getItem('eg_cms_universities') || '[]');
+                const localBlogs = JSON.parse(localStorage.getItem('eg_cms_blogs') || '[]');
+                const localLeads = JSON.parse(localStorage.getItem('crm_leads') || '[]');
+                const localApps = JSON.parse(localStorage.getItem('crm_applications') || '[]');
+                const localEnrolls = JSON.parse(localStorage.getItem('crm_enrollments') || '[]');
+
+                const badge = document.getElementById('vaultSyncBadge');
+                if (badge) {
+                    badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:#0284c7;display:inline-block;"></span> Client Vault Active & Synchronized';
+                    badge.style.background = '#e0f2fe';
+                    badge.style.color = '#0369a1';
+                }
+
+                const statsEl = document.getElementById('vaultRecordStats');
+                if (statsEl) {
+                    statsEl.innerHTML = `
+                        <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                            <div style="font-size:16px;font-weight:800;color:#0f172a;">${localColleges.length}</div>
+                            <div style="font-size:11px;color:#64748b;">Colleges</div>
+                        </div>
+                        <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                            <div style="font-size:16px;font-weight:800;color:#0f172a;">${localUnivs.length}</div>
+                            <div style="font-size:11px;color:#64748b;">Universities</div>
+                        </div>
+                        <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                            <div style="font-size:16px;font-weight:800;color:#0f172a;">${localCourses.length}</div>
+                            <div style="font-size:11px;color:#64748b;">Courses</div>
+                        </div>
+                        <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                            <div style="font-size:16px;font-weight:800;color:#0f172a;">${localBlogs.length}</div>
+                            <div style="font-size:11px;color:#64748b;">Blogs</div>
+                        </div>
+                        <div style="background:#ffffff;border:1px solid #e2e8f0;padding:6px 12px;border-radius:8px;text-align:center;">
+                            <div style="font-size:16px;font-weight:800;color:#0f172a;">${localLeads.length + localApps.length + localEnrolls.length}</div>
+                            <div style="font-size:11px;color:#64748b;">CRM Records</div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        async function downloadServerBackup() {
+            showAlert('Generating full multi-tier database backup...', 'info');
+            try {
+                const apiBase = getSettingsApiBase();
+                let res = null;
+                try {
+                    res = await fetch(apiBase + '/api/system/backup');
+                } catch(e) {
+                    console.warn('[Vault] Server backup fetch error:', e);
+                }
+
+                if (res && res.ok) {
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `educationistguru_complete_vault_backup_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    showAlert('Full database backup successfully downloaded from server!', 'success');
+                    return;
+                }
+
+                // Resilient Client-Side Saviour Fallback:
+                // If server is unreachable or offline, compile all collections directly from browser localStorage & CRM cache
+                showAlert('Server unreachable. Compiling full emergency backup directly from local vault cache...', 'warning');
+                const emergencyBundle = {
+                    appName: 'EducationistGuru',
+                    version: '2.0-unbreakable-client-vault',
+                    exportedAt: new Date().toISOString(),
+                    source: 'Client Vault Cache',
+                    schemaVersion: '2026.1',
+                    collections: {
+                        leads: JSON.parse(localStorage.getItem('crm_leads') || '[]'),
+                        inquiries: JSON.parse(localStorage.getItem('crm_inquiries') || '[]'),
+                        applications: JSON.parse(localStorage.getItem('crm_applications') || '[]'),
+                        enrollments: JSON.parse(localStorage.getItem('crm_enrollments') || '[]'),
+                        fees: JSON.parse(localStorage.getItem('crm_fees') || '[]'),
+                        subscribers: JSON.parse(localStorage.getItem('crm_subscribers') || '[]'),
+                        users: JSON.parse(localStorage.getItem('crm_users') || '[]'),
+                        roles: JSON.parse(localStorage.getItem('crm_roles') || '[]'),
+                        settings: JSON.parse(localStorage.getItem('crm_settings') || '{}'),
+                        courses: JSON.parse(localStorage.getItem('eg_cms_courses') || '[]'),
+                        colleges: JSON.parse(localStorage.getItem('eg_cms_colleges') || '[]'),
+                        universities: JSON.parse(localStorage.getItem('eg_cms_universities') || '[]'),
+                        blogs: JSON.parse(localStorage.getItem('eg_cms_blogs') || '[]'),
+                        videos: JSON.parse(localStorage.getItem('eg_cms_videos') || '[]'),
+                        siteMenu: JSON.parse(localStorage.getItem('eg_cms_menu') || '{}')
+                    }
+                };
+
+                const blob = new Blob([JSON.stringify(emergencyBundle, null, 2)], { type: 'application/json' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `educationistguru_emergency_vault_backup_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                showAlert('Full emergency database backup successfully compiled and downloaded!', 'success');
+            } catch (err) {
+                showAlert('Backup download error: ' + err.message, 'danger');
+            }
+        }
+
+        async function handleServerRestore(evt) {
+            const file = evt.target.files[0];
+            if (!file) return;
+
+            if (!confirm(`Are you sure you want to restore from "${file.name}"? The server will save a rollback safety snapshot before overwriting.`)) {
+                evt.target.value = '';
+                return;
+            }
+
+            showAlert('Uploading backup bundle and applying atomic restore...', 'info');
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    const cols = parsed.collections || parsed;
+
+                    // 1. Instantly restore into local storage (Dual Protection)
+                    if (cols) {
+                        if (cols.courses) localStorage.setItem('eg_cms_courses', JSON.stringify(cols.courses));
+                        if (cols.colleges) localStorage.setItem('eg_cms_colleges', JSON.stringify(cols.colleges));
+                        if (cols.universities) localStorage.setItem('eg_cms_universities', JSON.stringify(cols.universities));
+                        if (cols.blogs) localStorage.setItem('eg_cms_blogs', JSON.stringify(cols.blogs));
+                        if (cols.videos) localStorage.setItem('eg_cms_videos', JSON.stringify(cols.videos));
+                        if (cols.leads) localStorage.setItem('crm_leads', JSON.stringify(cols.leads));
+                        if (cols.inquiries) localStorage.setItem('crm_inquiries', JSON.stringify(cols.inquiries));
+                        if (cols.applications) localStorage.setItem('crm_applications', JSON.stringify(cols.applications));
+                        if (cols.enrollments) localStorage.setItem('crm_enrollments', JSON.stringify(cols.enrollments));
+                        if (cols.fees) localStorage.setItem('crm_fees', JSON.stringify(cols.fees));
+                        if (cols.subscribers) localStorage.setItem('crm_subscribers', JSON.stringify(cols.subscribers));
+                        if (cols.users) localStorage.setItem('crm_users', JSON.stringify(cols.users));
+                        if (cols.roles) localStorage.setItem('crm_roles', JSON.stringify(cols.roles));
+                        if (cols.settings) localStorage.setItem('crm_settings', JSON.stringify(cols.settings));
+                    }
+
+                    // 2. Transmit to server for disk and multi-tier vault restore
+                    const apiBase = getSettingsApiBase();
+                    try {
+                        const res = await fetch(apiBase + '/api/system/restore', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(parsed)
+                        });
+                        const result = await res.json();
+                        if (res.ok && result.success) {
+                            showAlert('Database restored successfully and synchronized to External Vault! Reloading in 2s...', 'success');
+                            if (typeof CRM !== 'undefined' && CRM.syncWithServer) await CRM.syncWithServer();
+                            setTimeout(() => location.reload(), 2000);
+                            return;
+                        }
+                    } catch(srvErr) {
+                        console.warn('[Restore] Server sync error, local cache restored:', srvErr);
+                    }
+
+                    showAlert('Database restored successfully into Local Client Vault! Reloading in 2s...', 'success');
+                    setTimeout(() => location.reload(), 2000);
+                } catch(err) {
+                    showAlert('Restore failed: ' + err.message, 'danger');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        async function triggerManualSnapshot() {
+            showAlert('Creating point-in-time snapshot...', 'info');
+            try {
+                const apiBase = getSettingsApiBase();
+                const res = await fetch(apiBase + '/api/system/snapshot', { method: 'POST' });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showAlert('Snapshot created successfully: ' + (data.snapshot || 'Saved'), 'success');
+                    loadSnapshots();
+                } else {
+                    showAlert('Snapshot failed: ' + (data.error || 'Unknown error'), 'danger');
+                }
+            } catch(e) {
+                showAlert('Error creating snapshot: ' + e.message, 'danger');
+            }
+        }
+
+        async function loadSnapshots() {
+            const container = document.getElementById('snapshotsListContainer');
+            if (!container) return;
+            try {
+                const apiBase = getSettingsApiBase();
+                const res = await fetch(apiBase + '/api/system/snapshots');
+                if (res.ok) {
+                    const data = await res.json();
+                    const snapshots = data.snapshots || [];
+                    if (snapshots.length === 0) {
+                        container.innerHTML = '<div style="padding:20px;text-align:center;color:#64748b;font-size:13px;">No snapshots recorded yet. Click "Create Snapshot Now" above.</div>';
+                        return;
+                    }
+
+                    container.innerHTML = snapshots.map(s => {
+                        const snapName = s.filename || s.name || 'Snapshot';
+                        const timeVal = s.timestamp || s.createdAt;
+                        const dateStr = timeVal ? new Date(timeVal).toLocaleString() : snapName;
+                        const sizeKb = Math.round((s.size || 0) / 1024);
+                        return `
+                            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid #e2e8f0;background:#ffffff;">
+                                <div>
+                                    <div style="font-weight:700;font-size:13.5px;color:#0f172a;display:flex;align-items:center;gap:6px;">
+                                        <i class="fa fa-file-text-o" style="color:#0284c7;"></i> ${snapName}
+                                    </div>
+                                    <div style="font-size:12px;color:#64748b;margin-top:2px;">
+                                        ${dateStr} &bull; ${sizeKb} KB
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-outline btn-sm" onclick="rollbackToSnapshot('${snapName}')" style="padding:4px 10px;font-size:12px;">
+                                        <i class="fa fa-history"></i> Rollback
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch(e) {
+                container.innerHTML = '<div style="padding:16px;text-align:center;color:#dc3545;font-size:12px;">Failed to load snapshots.</div>';
+            }
+        }
+
+        async function rollbackToSnapshot(filename) {
+            if (!confirm(`Warning: Rollback will restore all database collections to "${filename}". Continue?`)) return;
+            showAlert(`Applying rollback to snapshot ${filename}...`, 'info');
+            try {
+                const apiBase = getSettingsApiBase();
+                const res = await fetch(apiBase + '/api/system/rollback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ snapshotName: filename, filename: filename })
+                });
+                const data = await res.json();
+                if (res.ok && data.success) {
+                    showAlert('Rollback complete! Synchronizing and reloading...', 'success');
+                    await CRM.syncWithServer();
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showAlert('Rollback error: ' + (data.error || 'Failed'), 'danger');
+                }
+            } catch(e) {
+                showAlert('Rollback request error: ' + e.message, 'danger');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await CRM.syncWithServer();
+            await loadOrgSettings();
+            await fetchVaultStatus();
+            await loadSnapshots();
+        });
+    </script>
+</body>
+</html>

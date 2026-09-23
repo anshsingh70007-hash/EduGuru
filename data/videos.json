@@ -1,0 +1,93 @@
+[
+  {
+    "id": 7,
+    "youtubeId": "dQw4w9WgXcQ",
+    "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "title": "Test Admissions Guide 2026",
+    "description": "",
+    "category": "Admissions 2026",
+    "thumbnail": "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg",
+    "duration": "3:45",
+    "views": "Latest",
+    "dateAdded": "2026-09-21T18:01:29.377Z",
+    "isFeatured": false
+  },
+  {
+    "id": 6,
+    "youtubeId": "IV__fByVhSY",
+    "url": "https://www.youtube.com/watch?v=IV__fByVhSY",
+    "title": "AIU (Student Panel Guide)",
+    "description": "Youtube Video education",
+    "category": "Admissions 2025",
+    "thumbnail": "https://img.youtube.com/vi/IV__fByVhSY/hqdefault.jpg",
+    "duration": "4:15",
+    "views": "Latest",
+    "dateAdded": "2026-09-21T14:38:23.014Z",
+    "isFeatured": false
+  },
+  {
+    "id": 1,
+    "youtubeId": "M-habsWCGXY",
+    "url": "https://www.youtube.com/watch?v=M-habsWCGXY",
+    "title": "Thinking about a career in Pharmacy? 💊",
+    "description": "Thinking about a career in Pharmacy? Explore career opportunities, course eligibility, D.Pharm and B.Pharm scope across India.",
+    "category": "Career Guidance",
+    "thumbnail": "https://img.youtube.com/vi/M-habsWCGXY/hqdefault.jpg",
+    "duration": "3:42",
+    "dateAdded": "2026-09-14T10:00:00.000Z",
+    "views": "Latest",
+    "isFeatured": true
+  },
+  {
+    "id": 2,
+    "youtubeId": "VWnp9jiC-WQ",
+    "url": "https://www.youtube.com/watch?v=VWnp9jiC-WQ",
+    "title": "📚 D.Pharm Course Details | Complete Guide for Students",
+    "description": "Complete guide for students on Diploma in Pharmacy (D.Pharm), duration, syllabus, PCI eligibility, job prospects, and admission process.",
+    "category": "Admissions 2025",
+    "thumbnail": "https://img.youtube.com/vi/VWnp9jiC-WQ/hqdefault.jpg",
+    "duration": "4:12",
+    "dateAdded": "2026-09-10T11:30:00.000Z",
+    "views": "Popular",
+    "isFeatured": false
+  },
+  {
+    "id": 3,
+    "youtubeId": "CIzUu3Ix9jU",
+    "url": "https://www.youtube.com/watch?v=CIzUu3Ix9jU",
+    "title": "🔍 Is Subharti University really not approved by DEB?",
+    "description": "Fact-check & reality on Subharti University UGC-DEB recognition status and the legal validity of distance degrees across India.",
+    "category": "Guidance & Awareness",
+    "thumbnail": "https://img.youtube.com/vi/CIzUu3Ix9jU/hqdefault.jpg",
+    "duration": "2:05",
+    "dateAdded": "2026-09-05T14:15:00.000Z",
+    "views": "Verified",
+    "isFeatured": false
+  },
+  {
+    "id": 4,
+    "youtubeId": "IV__fByVhSY",
+    "url": "https://www.youtube.com/watch?v=IV__fByVhSY",
+    "title": "🎓 Asian International University – Student Panel Complete Guide",
+    "description": "Complete walkthrough of Asian International University student panel, examination portal, syllabus, assignment submission, and document verification.",
+    "category": "University Reviews",
+    "thumbnail": "https://img.youtube.com/vi/IV__fByVhSY/hqdefault.jpg",
+    "duration": "12:23",
+    "dateAdded": "2026-08-28T09:00:00.000Z",
+    "views": "Walkthrough",
+    "isFeatured": false
+  },
+  {
+    "id": 5,
+    "youtubeId": "kKUeiqHWe1g",
+    "url": "https://www.youtube.com/watch?v=kKUeiqHWe1g",
+    "title": "SUBHARTI STUDENT PORTAL DOWNLOAD MARKSHEET, ID CARD & DEGREE COMPLETE STEP-BY-STEP GUIDE",
+    "description": "Step-by-step tutorial on how to access Subharti University student portal, download marksheets, student ID card, and degree certificate online.",
+    "category": "Guidance & Awareness",
+    "thumbnail": "https://img.youtube.com/vi/kKUeiqHWe1g/hqdefault.jpg",
+    "duration": "4:32",
+    "dateAdded": "2026-08-20T16:00:00.000Z",
+    "views": "Tutorial",
+    "isFeatured": false
+  }
+]

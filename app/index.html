@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>EducationistGuru - Top Courses & University Admissions App</title>
+  <meta name="description" content="Explore and enroll in 50+ top accredited degree, diploma & professional courses. B.Tech, MBA, Law, Pharmacy, Paramedical, BCA with AIU fee structure and free 1-on-1 counseling.">
+  <link rel="shortcut icon" type="image/x-icon" href="../images/fav.png">
+  
+  <!-- Font Awesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <!-- App Stylesheet -->
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+  <!-- ================= 1. OPENING SPLASH SCREEN WITH ANIMATED LOGO ================= -->
+  <div id="splashScreen" role="dialog" aria-label="Welcome to EducationistGuru">
+    <div class="splash-glow-ring"></div>
+    <div class="splash-content">
+      <div class="splash-logo-box">
+        <img src="../images/logo-stacked.png" alt="EducationistGuru Logo" onerror="this.src='../images/logo.png'">
+      </div>
+      <h1 class="splash-title">EDUCATIONIST<span>GURU</span></h1>
+      <p class="splash-tagline">AIU & UGC Recognized Courses • University Admissions Across India</p>
+      <div class="splash-loader-bar"></div>
+    </div>
+  </div>
+
+  <!-- ================= 2. DESKTOP VIEWPORT MODE SWITCHER ================= -->
+  <aside class="view-mode-toggle-bar" aria-label="Display View Options">
+    <span>View Mode:</span>
+    <button type="button" class="view-mode-btn active" data-mode="mobile"><i class="fa fa-mobile-screen"></i> Mobile App</button>
+    <button type="button" class="view-mode-btn" data-mode="expanded"><i class="fa fa-desktop"></i> Expanded</button>
+  </aside>
+
+  <!-- ================= 3. APP DEVICE WRAPPER ================= -->
+  <div class="app-device-wrapper">
+    <div class="app-frame" id="appFrame">
+
+      <!-- TOP APP HEADER -->
+      <header class="app-header">
+        <div class="header-left">
+          <a href="#" onclick="switchView('home'); return false;" class="brand-logo-wrap">
+            <img src="../images/logo.png" alt="EducationistGuru" class="brand-logo-img">
+            <div class="brand-meta">
+              <div class="brand-name">Educationist<span>Guru</span></div>
+              <div class="brand-badge"><i class="fa fa-circle"></i> AIU / UGC Verified</div>
+            </div>
+          </a>
+        </div>
+        <div class="header-right">
+          <a href="tel:8750477000" class="counselor-call-btn" title="Call Admission Helpline">
+            <i class="fa fa-phone"></i> <span>Counselor</span>
+          </a>
+          <a href="https://api.whatsapp.com/send?phone=918750477000&text=Hello%20EducationistGuru,%20I%20want%20admission%20guidance" target="_blank" class="quick-whatsapp-icon" title="Chat on WhatsApp">
+            <i class="fa fa-whatsapp"></i>
+          </a>
+        </div>
+      </header>
+
+      <!-- SEARCH & GOAL SELECTION BAR -->
+      <section class="app-search-section">
+        <div class="search-and-goal-row">
+          <div class="search-input-box">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text" id="appSearchInput" class="app-search-input" placeholder="Search B.Tech, MBA, Law, AI, Pharmacy..." autocomplete="off">
+            <button type="button" id="searchClearBtn" class="search-clear-btn" title="Clear Search">
+              <i class="fa fa-times-circle"></i>
+            </button>
+          </div>
+          <select id="goalFilterSelect" class="goal-filter-select" aria-label="Select Target Stream">
+            <option value="all">🎯 All Goals</option>
+            <option value="ug">🎓 Undergrad (UG)</option>
+            <option value="pg">📚 Postgrad (PG)</option>
+            <option value="Engineering & Technology">💻 Engineering / AI</option>
+            <option value="Commerce & Management">💼 MBA / BBA / B.Com</option>
+            <option value="Law">⚖️ Law (LL.B / LL.M)</option>
+            <option value="Pharmacy">💊 Pharmacy</option>
+            <option value="Paramedical & Healthcare">🩺 Paramedical</option>
+            <option value="diploma">🛠️ Polytechnic & Diplomas</option>
+            <option value="doctorate">🎓 Ph.D. Research</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- MAIN SCROLLABLE APP BODY -->
+      <main class="app-main-body">
+
+        <!-- ================= A. HOME VIEW ================= -->
+        <div id="homeViewSection">
+
+          <!-- PROMO BANNERS CAROUSEL -->
+          <div class="promo-banners-wrap">
+            <div class="banner-carousel-container">
+              <div class="banner-track" id="bannerTrack">
+                
+                <!-- Slide 1 -->
+                <div class="promo-banner-card bg-1">
+                  <div>
+                    <span class="banner-pill"><i class="fa fa-fire"></i> Admissions 2025-26</span>
+                    <h2 class="banner-title">50+ Accredited Degrees &amp; Direct Allotment</h2>
+                    <p class="banner-sub">Compare AIU approved fees, eligibility, and connect with counselors for 100% free guidance.</p>
+                  </div>
+                  <div class="banner-action-row">
+                    <button type="button" class="banner-btn" onclick="switchView('courses');">
+                      Explore Top Courses <i class="fa fa-arrow-right"></i>
+                    </button>
+                    <span style="font-size:11px;font-weight:700;opacity:0.9;"><i class="fa fa-shield"></i> Verified Degrees</span>
+                  </div>
+                </div>
+
+                <!-- Slide 2 -->
+                <div class="promo-banner-card bg-2">
+                  <div>
+                    <span class="banner-pill"><i class="fa fa-user-graduate"></i> 1-on-1 Guidance</span>
+                    <h2 class="banner-title">Confused About Which Degree To Choose?</h2>
+                    <p class="banner-sub">Speak directly with senior academic advisors. Online, Regular &amp; Distance options.</p>
+                  </div>
+                  <div class="banner-action-row">
+                    <button type="button" class="banner-btn" onclick="window.openEnrollModal(101);">
+                      Book Free Call <i class="fa fa-phone"></i>
+                    </button>
+                    <span style="font-size:11px;font-weight:700;opacity:0.9;">7 Days a Week Support</span>
+                  </div>
+                </div>
+
+                <!-- Slide 3 -->
+                <div class="promo-banner-card bg-3">
+                  <div>
+                    <span class="banner-pill"><i class="fa fa-percent"></i> Flexible Fees</span>
+                    <h2 class="banner-title">Transparent AIU Fee Structure &amp; EMI</h2>
+                    <p class="banner-sub">Zero interest monthly installments available for all premier UG &amp; PG programs.</p>
+                  </div>
+                  <div class="banner-action-row">
+                    <button type="button" class="banner-btn" onclick="switchView('courses');">
+                      Check Fee Rates <i class="fa fa-calculator"></i>
+                    </button>
+                    <span style="font-size:11px;font-weight:700;opacity:0.9;">Starting ₹1,500/mo</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Banner Dots -->
+              <div class="banner-dots">
+                <span class="banner-dot active" data-index="0"></span>
+                <span class="banner-dot" data-index="1"></span>
+                <span class="banner-dot" data-index="2"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUICK STATS STRIP -->
+          <div class="quick-stats-strip">
+            <div class="stat-box">
+              <div class="stat-box-val">50+</div>
+              <div class="stat-box-lbl">Universities</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-val">105+</div>
+              <div class="stat-box-lbl">Programs</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-val">3,600+</div>
+              <div class="stat-box-lbl">Students</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-box-val">100%</div>
+              <div class="stat-box-lbl">Free Counsel</div>
+            </div>
+          </div>
+
+          <!-- TRUST & TRANSPARENCY STRIP (SENIOR LUNA CRITIQUE) -->
+          <div class="trust-guarantee-strip">
+            <div class="trust-item">
+              <i class="fa fa-shield-halved"></i>
+              <div class="trust-text">
+                <strong>100% Free Counsel</strong>
+                <span>Zero service charge</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <i class="fa fa-building-columns"></i>
+              <div class="trust-text">
+                <strong>Direct Univ Fee</strong>
+                <span>Pay directly to college</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <i class="fa fa-award"></i>
+              <div class="trust-text">
+                <strong>UGC &amp; AIU Aligned</strong>
+                <span>100% genuine degrees</span>
+              </div>
+            </div>
+            <div class="trust-item">
+              <i class="fa fa-user-check"></i>
+              <div class="trust-text">
+                <strong>Jatinder Kaur's Team</strong>
+                <span>Personal mentor support</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUICK ELIGIBILITY FINDER BANNER (SENIOR LUNA CRITIQUE) -->
+          <div class="eligibility-cta-card">
+            <div class="eligibility-cta-info">
+              <h4><i class="fa fa-graduation-cap" style="color:#f59e0b;"></i> Check Course Eligibility</h4>
+              <p>Find which of the 50 top accredited degrees match your 12th / Grad marks instantly.</p>
+            </div>
+            <button type="button" class="eligibility-cta-btn" onclick="window.openEligibilityModal();">
+              Check Now <i class="fa fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <!-- FACULTY / CATEGORY SELECTOR PILLS -->
+          <section class="category-section">
+            <div class="section-head-row">
+              <div class="section-title">
+                <i class="fa fa-cubes"></i> Select Stream / Faculty
+              </div>
+              <span class="section-badge">50 Top Courses</span>
+            </div>
+
+            <div class="faculty-scroll-track" id="facultyPillTrack">
+              <button type="button" class="faculty-pill active" data-faculty="all">
+                <i class="fa fa-th-large"></i> All Courses
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Engineering & Technology">
+                <i class="fa fa-laptop-code"></i> Engineering &amp; AI
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Commerce & Management">
+                <i class="fa fa-chart-line"></i> MBA, BBA &amp; Commerce
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Computer Applications & IT">
+                <i class="fa fa-code"></i> BCA, MCA &amp; IT
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Law">
+                <i class="fa fa-scale-balanced"></i> Law (LL.B / LL.M)
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Pharmacy">
+                <i class="fa fa-pills"></i> Pharmacy
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Paramedical & Healthcare">
+                <i class="fa fa-heart-pulse"></i> Paramedical &amp; Health
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Design, Media & Animation">
+                <i class="fa fa-palette"></i> Design &amp; Media
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Humanities & Social Sciences">
+                <i class="fa fa-landmark"></i> Arts &amp; Social Work
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Science">
+                <i class="fa fa-atom"></i> Science &amp; Biotech
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Agriculture Science">
+                <i class="fa fa-wheat-awn"></i> Agriculture
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Yoga & Alternative Medicine">
+                <i class="fa fa-spa"></i> Yoga &amp; Naturopathy
+              </button>
+              <button type="button" class="faculty-pill" data-faculty="Philosophy & Research">
+                <i class="fa fa-certificate"></i> Ph.D. Research
+              </button>
+            </div>
+          </section>
+
+          <!-- HOME FEATURED / TRENDING COURSES (TOP 6 FLAGSHIP) -->
+          <section class="courses-grid-section">
+            <div class="section-head-row" style="margin-bottom:12px;">
+              <div class="section-title">
+                <i class="fa fa-fire" style="color:var(--primary);"></i> Trending &amp; Flagship Programs
+              </div>
+              <button type="button" class="see-all-link" onclick="switchView('courses');">
+                Explore All 50 <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="courses-grid" id="homeFeaturedGrid">
+              <!-- Populated with top 6 flagship courses -->
+            </div>
+
+            <!-- VIEW ALL 50 COURSES CONVERSION BANNER -->
+            <div class="view-all-courses-banner">
+              <h4>Explore All 50+ Accredited Degree Programs</h4>
+              <p>Compare approved AIU fee matrices, UGC recognitions, semester-by-semester syllabi, and eligibility across 12 diverse academic streams.</p>
+              <button type="button" class="btn-view-all-courses" onclick="switchView('courses');">
+                <i class="fa fa-th-large"></i> Open Complete 50 Course Catalog <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+          </section>
+
+          <!-- ================= LEADERSHIP & FOUNDER SPOTLIGHT ================= -->
+          <section class="leadership-spotlight-section">
+            <div class="section-head-row" style="margin-bottom:14px;">
+              <div class="section-title">
+                <i class="fa fa-user-tie"></i> Leadership &amp; Vision
+              </div>
+              <span class="section-badge">Founder's Desk</span>
+            </div>
+
+            <article class="founder-card">
+              <div class="founder-card-media">
+                <img src="../images/team/ceo.jpg" alt="Jatinder Kaur - Founder &amp; CEO, EducationistGuru">
+                <div class="founder-card-media-overlay"></div>
+                <span class="founder-badge">Founder &amp; CEO</span>
+                <div class="founder-name-wrap">
+                  <h3>Jatinder Kaur</h3>
+                  <span>Chief Executive Officer, EducationistGuru</span>
+                </div>
+              </div>
+
+              <div class="founder-card-body">
+                <p class="founder-quote">
+                  "We acknowledge that selecting the right university and academic program is one of the most critical decisions of a student's life. Our mission is to understand each student's personal needs and guide them with complete transparency."
+                </p>
+                <p class="founder-desc">
+                  At EducationistGuru, we envision a world in which higher education is student-centered, designed around the learner, and easy to access across all regions in India. Under the guidance of Jatinder Kaur since July 2023, our commitment is to streamline applications and provide honest, supportive counseling for Online, Regular, and Distance Learning education.
+                </p>
+
+                <div style="display:flex;gap:8px;margin-bottom:14px;align-items:center;">
+                  <a href="https://www.facebook.com/educationistguruEg/" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#f1f5f9;color:#3b5998;display:flex;align-items:center;justify-content:center;font-size:15px;"><i class="fa fa-facebook"></i></a>
+                  <a href="https://www.instagram.com/educationistguru/" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#f1f5f9;color:#e1306c;display:flex;align-items:center;justify-content:center;font-size:15px;"><i class="fa fa-instagram"></i></a>
+                  <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="width:36px;height:36px;border-radius:50%;background:#f1f5f9;color:#ff0000;display:flex;align-items:center;justify-content:center;font-size:15px;"><i class="fa fa-youtube-play"></i></a>
+                  <span style="font-size:11px;color:#64748b;margin-left:auto;font-weight:600;">Direct Access to Expert Counsel</span>
+                </div>
+
+                <button type="button" class="founder-connect-btn" onclick="window.openEnrollModal(201);">
+                  <i class="fa fa-handshake-o"></i> Book Free Consultation with Founder's Advisory Team
+                </button>
+              </div>
+            </article>
+          </section>
+
+          <!-- ================= TOP PARTNER COLLEGES ================= -->
+          <section class="colleges-section">
+            <div class="section-head-row">
+              <div class="section-title">
+                <i class="fa fa-building-columns"></i> Top Partner Universities
+              </div>
+              <button type="button" onclick="switchView('colleges');" style="font-size:12px;font-weight:700;color:var(--primary);">
+                View All <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+
+            <div class="colleges-scroll-track">
+              <div class="college-card">
+                <span class="college-badge">NAAC A+ Accredited</span>
+                <h4 class="college-name">Amity University Online</h4>
+                <div class="college-loc"><i class="fa fa-map-marker"></i> Noida / Pan-India</div>
+                <div style="font-size:11px;color:#64748b;margin-bottom:6px;">Degrees: MBA, BBA, BCA, MCA, B.Com</div>
+                <div class="college-accred"><i class="fa fa-check-circle"></i> UGC-DEB &amp; AIU Approved</div>
+              </div>
+
+              <div class="college-card">
+                <span class="college-badge">NAAC A Grade</span>
+                <h4 class="college-name">Suresh Gyan Vihar University</h4>
+                <div class="college-loc"><i class="fa fa-map-marker"></i> Jaipur, Rajasthan</div>
+                <div style="font-size:11px;color:#64748b;margin-bottom:6px;">Degrees: B.Tech, BBA, MBA, Paramedical</div>
+                <div class="college-accred"><i class="fa fa-check-circle"></i> AIU Recognized University</div>
+              </div>
+
+              <div class="college-card">
+                <span class="college-badge">Affordable Distance</span>
+                <h4 class="college-name">Subharti University (DDE)</h4>
+                <div class="college-loc"><i class="fa fa-map-marker"></i> Meerut / NCR</div>
+                <div style="font-size:11px;color:#64748b;margin-bottom:6px;">Degrees: BA, MA, B.Sc, B.LIS, M.LIS</div>
+                <div class="college-accred"><i class="fa fa-check-circle"></i> UGC Approved Programs</div>
+              </div>
+
+              <div class="college-card">
+                <span class="college-badge">BCI &amp; PCI Approved</span>
+                <h4 class="college-name">Mangalayatan University</h4>
+                <div class="college-loc"><i class="fa fa-map-marker"></i> Aligarh, UP</div>
+                <div style="font-size:11px;color:#64748b;margin-bottom:6px;">Degrees: Pharmacy, Law, Polytechnic, B.Tech</div>
+                <div class="college-accred"><i class="fa fa-check-circle"></i> Statutory Body Recognized</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= GUIDANCE VIDEOS HUB ================= -->
+          <section class="videos-section">
+            <div class="section-head-row" style="margin-bottom:12px;">
+              <div class="section-title">
+                <i class="fa fa-youtube-play" style="color:#ff0000;"></i> Admission Guidance Videos
+              </div>
+              <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="font-size:12px;font-weight:700;color:#ff0000;">
+                Watch on YouTube <i class="fa fa-external-link"></i>
+              </a>
+            </div>
+
+            <div class="video-card-item" onclick="window.open('https://www.youtube.com/watch?v=tzMpWiGL8D8', '_blank')">
+              <div class="video-thumb-box">
+                <img src="../images/blog/1.jpg" alt="Video">
+                <div class="video-play-btn"><i class="fa fa-play-circle"></i></div>
+              </div>
+              <div class="video-info-box">
+                <h4 class="video-title">How to Choose Between Online, Distance &amp; Regular Degrees in 2026</h4>
+                <div class="video-meta">
+                  <span><i class="fa fa-clock-o"></i> 12:45 min</span>
+                  <span>•</span>
+                  <span>18.5K views</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="video-card-item" onclick="window.open('https://www.youtube.com/watch?v=tzMpWiGL8D8', '_blank')">
+              <div class="video-thumb-box">
+                <img src="../images/blog/2.jpg" alt="Video">
+                <div class="video-play-btn"><i class="fa fa-play-circle"></i></div>
+              </div>
+              <div class="video-info-box">
+                <h4 class="video-title">AIU &amp; UGC Recognition Explained: Verify Your University Legitimacy</h4>
+                <div class="video-meta">
+                  <span><i class="fa fa-clock-o"></i> 09:30 min</span>
+                  <span>•</span>
+                  <span>24.2K views</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= STUDENT TESTIMONIALS ================= -->
+          <section style="padding:20px 16px;background:#f8fafc;">
+            <div class="section-head-row" style="margin-bottom:12px;">
+              <div class="section-title">
+                <i class="fa fa-star" style="color:#f59e0b;"></i> Student Success Stories
+              </div>
+              <span class="section-badge" style="background:#ecfdf5;color:#065f46;">Verified Reviews</span>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:10px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <img src="../images/testimonial/1.jpg" alt="Priya Sharma" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <div>
+                  <h5 style="font-size:13px;font-weight:800;color:var(--dark-navy);">Priya Sharma</h5>
+                  <span style="font-size:11px;color:#64748b;">Enrolled in MBA (Finance) • Distance Mode</span>
+                </div>
+                <div style="margin-left:auto;color:#f59e0b;font-size:12px;">★★★★★</div>
+              </div>
+              <p style="font-size:12.5px;color:#475569;line-height:1.5;">
+                "EducationistGuru made my admission process effortless! I was confused between specializations, and their counselor patiently guided me. Application and university verification was done in 4 days."
+              </p>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;">
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                <img src="../images/testimonial/2.jpg" alt="Rohit Verma" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <div>
+                  <h5 style="font-size:13px;font-weight:800;color:var(--dark-navy);">Rohit Verma</h5>
+                  <span style="font-size:11px;color:#64748b;">Enrolled in B.Tech Lateral Entry</span>
+                </div>
+                <div style="margin-left:auto;color:#f59e0b;font-size:12px;">★★★★★</div>
+              </div>
+              <p style="font-size:12.5px;color:#475569;line-height:1.5;">
+                "Working as a polytechnic diploma holder, I needed direct 2nd-year B.Tech admission with flexible class schedules. EducationistGuru connected me to an approved university with transparent installment options."
+              </p>
+            </div>
+          </section>
+
+          <!-- ================= CONTACT & WORKING HOURS FOOTER STRIP ================= -->
+          <section style="padding:22px 16px;background:#0f172a;color:#f8fafc;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+              <img src="../images/logo-white.png" alt="Logo" style="height:32px;">
+              <span style="font-family:var(--font-heading);font-weight:800;font-size:15px;">EducationistGuru</span>
+            </div>
+            <p style="font-size:12px;color:#94a3b8;line-height:1.6;margin-bottom:14px;">
+              Streamlining higher education admissions across India since July 2023. UGC, AIU &amp; statutory body approved programs.
+            </p>
+            <div style="font-size:12px;display:flex;flex-direction:column;gap:6px;color:#cbd5e1;margin-bottom:14px;">
+              <div><i class="fa fa-phone" style="color:var(--primary);margin-right:6px;"></i> <strong>Helpline:</strong> 8750477000, 9738707000</div>
+              <div><i class="fa fa-envelope" style="color:var(--primary);margin-right:6px;"></i> <strong>Email:</strong> info@educationistguru.com</div>
+              <div><i class="fa fa-clock-o" style="color:var(--primary);margin-right:6px;"></i> <strong>Counseling Hours:</strong> 9:30 AM - 6:30 PM (7 Days a Week)</div>
+              <div><i class="fa fa-map-marker" style="color:var(--primary);margin-right:6px;"></i> <strong>Head Office:</strong> India (Pan-India Admission Center)</div>
+            </div>
+            <div style="font-size:11px;color:#64748b;border-top:1px solid #1e293b;padding-top:10px;">
+              &copy; 2026 EducationistGuru. All Rights Reserved. AIU Approved Fee Matrix.
+            </div>
+          </section>
+
+        </div>
+        <!-- END HOME VIEW -->
+
+        <!-- ================= B. FULL COURSES CATALOG VIEW ================= -->
+        <div id="coursesCatalogSection" style="display:none;padding:16px;">
+          <div class="catalog-top-banner">
+            <h2><i class="fa fa-graduation-cap"></i> 50 Curated Degree Programs</h2>
+            <p>Compare AIU &amp; UGC approved fee matrices, semester syllabi, eligibility &amp; 100% free counseling support.</p>
+          </div>
+
+          <!-- STREAM / FACULTY SELECTOR PILLS -->
+          <div class="section-head-row" style="margin-bottom:10px;">
+            <div class="section-title">
+              <i class="fa fa-cubes"></i> Academic Streams
+            </div>
+            <button type="button" onclick="window.resetCourseFilters();" style="background:#f1f5f9;color:var(--primary);font-size:11px;font-weight:700;padding:6px 12px;border-radius:9999px;border:none;cursor:pointer;">
+              <i class="fa fa-undo"></i> Reset Filters
+            </button>
+          </div>
+
+          <div class="faculty-scroll-track" id="catalogFacultyPillTrack" style="margin-bottom:14px;">
+            <button type="button" class="faculty-pill active" data-faculty="all">
+              <i class="fa fa-th-large"></i> All Courses (50)
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Engineering & Technology">
+              <i class="fa fa-laptop-code"></i> Engineering &amp; AI
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Commerce & Management">
+              <i class="fa fa-chart-line"></i> MBA, BBA &amp; Mgmt
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Computer Applications & IT">
+              <i class="fa fa-code"></i> BCA, MCA &amp; IT
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Law">
+              <i class="fa fa-scale-balanced"></i> Law (LL.B / LL.M)
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Pharmacy">
+              <i class="fa fa-pills"></i> Pharmacy
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Paramedical & Healthcare">
+              <i class="fa fa-heart-pulse"></i> Paramedical &amp; Health
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Design, Media & Animation">
+              <i class="fa fa-palette"></i> Design &amp; Media
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Humanities & Social Sciences">
+              <i class="fa fa-landmark"></i> Arts &amp; Social Work
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Science">
+              <i class="fa fa-atom"></i> Science &amp; Biotech
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Agriculture Science">
+              <i class="fa fa-wheat-awn"></i> Agriculture
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Yoga & Alternative Medicine">
+              <i class="fa fa-spa"></i> Yoga &amp; Naturopathy
+            </button>
+            <button type="button" class="faculty-pill" data-faculty="Philosophy & Research">
+              <i class="fa fa-certificate"></i> Ph.D. Research
+            </button>
+          </div>
+
+          <!-- SUB-FILTERS & SORTING BAR -->
+          <div class="sub-filters-bar">
+            <select id="catalogLevelFilterSelect" class="sub-filter-select" aria-label="Filter by Degree Level">
+              <option value="all">Degree Level: All</option>
+              <option value="ug">Undergraduate (UG)</option>
+              <option value="pg">Postgraduate (PG)</option>
+              <option value="diploma">Diploma / Polytechnic</option>
+              <option value="doctorate">Doctorate (Ph.D.)</option>
+            </select>
+
+            <select id="catalogModeFilterSelect" class="sub-filter-select" aria-label="Filter by Study Mode">
+              <option value="all">Study Mode: All</option>
+              <option value="online">Online Mode</option>
+              <option value="regular">Regular Mode</option>
+              <option value="distance">Distance Mode</option>
+            </select>
+
+            <select id="catalogSortFilterSelect" class="sub-filter-select" aria-label="Sort Courses">
+              <option value="popular">Sort: Most Popular</option>
+              <option value="rating">Highest Rated</option>
+              <option value="fee_low">Fee: Low to High</option>
+              <option value="fee_high">Fee: High to Low</option>
+              <option value="name_asc">Name: A to Z</option>
+            </select>
+          </div>
+
+          <!-- RESULTS TELEMETRY -->
+          <div class="results-telemetry-row">
+            <span id="catalogResultsCount">Showing 50 Courses</span>
+            <span class="active-filter-tag" id="catalogActiveFilterTag">All Faculties</span>
+          </div>
+
+          <!-- FULL COURSES CARDS GRID -->
+          <section class="courses-grid-section" style="padding: 0;">
+            <div class="courses-grid" id="catalogCoursesGrid">
+              <!-- Dynamically populated by js/app.js -->
+            </div>
+          </section>
+        </div>
+
+        <!-- ================= C. COLLEGES VIEW ================= -->
+        <div id="collegesViewSection" style="display:none;padding:16px;">
+          <div class="section-head-row" style="margin-bottom:14px;">
+            <h2 style="font-family:var(--font-heading);font-size:18px;font-weight:900;color:var(--dark-navy);">
+              <i class="fa fa-university" style="color:var(--primary);"></i> Recognized Partner Universities
+            </h2>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);">
+              <span class="college-badge">Top Ranked Online</span>
+              <h3 style="font-size:16px;font-weight:800;color:var(--dark-navy);margin-bottom:4px;">Amity University Online</h3>
+              <div style="font-size:12px;color:#64748b;margin-bottom:8px;"><i class="fa fa-map-marker"></i> Noida / Pan-India</div>
+              <p style="font-size:12px;color:#475569;margin-bottom:10px;">
+                Leading university offering fully online UGC-DEB approved degrees in MBA, BBA, BCA, MCA, and B.Com with global placement support.
+              </p>
+              <button type="button" class="btn-enroll-primary" onclick="window.openEnrollModal(201);" style="width:100%;justify-content:center;">
+                Apply for Amity Admissions
+              </button>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);">
+              <span class="college-badge">NAAC A Grade</span>
+              <h3 style="font-size:16px;font-weight:800;color:var(--dark-navy);margin-bottom:4px;">Suresh Gyan Vihar University</h3>
+              <div style="font-size:12px;color:#64748b;margin-bottom:8px;"><i class="fa fa-map-marker"></i> Jaipur, Rajasthan</div>
+              <p style="font-size:12px;color:#475569;margin-bottom:10px;">
+                Premier university renowned for Engineering (B.Tech), Management, and Paramedical studies with industry-oriented curricula.
+              </p>
+              <button type="button" class="btn-enroll-primary" onclick="window.openEnrollModal(101);" style="width:100%;justify-content:center;">
+                Apply for SGVU Admissions
+              </button>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);">
+              <span class="college-badge">Affordable Distance Hub</span>
+              <h3 style="font-size:16px;font-weight:800;color:var(--dark-navy);margin-bottom:4px;">Swami Vivekanand Subharti University</h3>
+              <div style="font-size:12px;color:#64748b;margin-bottom:8px;"><i class="fa fa-map-marker"></i> Meerut / NCR</div>
+              <p style="font-size:12px;color:#475569;margin-bottom:10px;">
+                Affordable recognized degrees in Arts, Commerce, Library Science, Allied Health, and Naturopathy across India.
+              </p>
+              <button type="button" class="btn-enroll-primary" onclick="window.openEnrollModal(209);" style="width:100%;justify-content:center;">
+                Apply for Subharti Admissions
+              </button>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:var(--shadow-sm);">
+              <span class="college-badge">BCI &amp; PCI Approved</span>
+              <h3 style="font-size:16px;font-weight:800;color:var(--dark-navy);margin-bottom:4px;">Mangalayatan University</h3>
+              <div style="font-size:12px;color:#64748b;margin-bottom:8px;"><i class="fa fa-map-marker"></i> Aligarh, Uttar Pradesh</div>
+              <p style="font-size:12px;color:#475569;margin-bottom:10px;">
+                Comprehensive professional courses in Law (LL.B, B.A.-LL.B), Pharmacy (D.Pharm, B.Pharm), and Engineering.
+              </p>
+              <button type="button" class="btn-enroll-primary" onclick="window.openEnrollModal(401);" style="width:100%;justify-content:center;">
+                Apply for Mangalayatan Admissions
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= D. VIDEOS VIEW (OFFICIAL YOUTUBE CHANNEL) ================= -->
+        <div id="videosViewSection" style="display:none;padding:16px;">
+          
+          <!-- OFFICIAL YOUTUBE CHANNEL CARD -->
+          <div class="yt-channel-card">
+            <div class="yt-channel-header">
+              <div class="yt-avatar-box">
+                <img src="../images/fav.png" alt="Educationist Guru Channel" onerror="this.src='../images/logo.png'">
+              </div>
+              <div class="yt-channel-info">
+                <div class="yt-title-row">
+                  <h3>Educationist Guru</h3>
+                  <span class="yt-verified-badge"><i class="fa fa-check-circle"></i> Verified</span>
+                </div>
+                <div class="yt-handle">@Educationistguru</div>
+                <div class="yt-subs">Official YouTube Channel • Admissions, Guidance &amp; UGC Updates</div>
+              </div>
+            </div>
+            <div class="yt-channel-actions">
+              <a href="https://www.youtube.com/@Educationistguru?sub_confirmation=1" target="_blank" class="yt-subscribe-btn">
+                <i class="fa fa-youtube-play"></i> Subscribe Channel
+              </a>
+              <a href="https://www.youtube.com/@Educationistguru" target="_blank" class="yt-refresh-btn">
+                Channel <i class="fa fa-external-link"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- ACTIVE FEATURED EMBEDDED PLAYER -->
+          <div class="yt-featured-player-box" id="ytFeaturedPlayerBox">
+            <div class="yt-player-responsive">
+              <iframe id="ytActivePlayer" src="https://www.youtube.com/embed/sJfRo0eA-do?rel=0" title="EducationistGuru Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="yt-active-video-details">
+              <span class="yt-category-tag"><i class="fa fa-play-circle"></i> Now Playing</span>
+              <h4 id="ytActiveTitle">Educationist Guru | Admission Guidance | Distance &amp; Online Degrees</h4>
+              <p id="ytActiveDesc">Official counseling guide on selecting recognized distance &amp; online universities in India.</p>
+              <div class="yt-player-actions">
+                <a id="ytWatchOnYouTubeLink" href="https://www.youtube.com/watch?v=sJfRo0eA-do" target="_blank" class="yt-open-link-btn">
+                  <i class="fa fa-youtube-play"></i> Watch on YouTube App
+                </a>
+                <button type="button" class="yt-ask-counselor-btn" onclick="window.openEnrollModal(201);">
+                  <i class="fa fa-phone"></i> Discuss with Counselor
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- YOUTUBE VIDEO LIBRARY -->
+          <div class="section-head-row" style="margin-bottom:12px;">
+            <div class="section-title">
+              <i class="fa fa-list-ul" style="color:var(--primary);"></i> Channel Video Library
+            </div>
+            <span class="section-badge">Latest Uploads</span>
+          </div>
+
+          <div class="yt-videos-grid" id="ytVideosGrid">
+            <!-- Dynamically populated by js/app.js with real videos from channel -->
+          </div>
+
+        </div>
+
+        <!-- ================= E. LEADERSHIP & ABOUT VIEW ================= -->
+        <div id="leadershipViewSection" style="display:none;padding:16px;">
+          <div style="text-align:center;margin-bottom:16px;">
+            <div style="display:inline-block;background:var(--primary-light);color:var(--primary);font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;margin-bottom:6px;">
+              MEET OUR FOUNDER &amp; CEO
+            </div>
+            <h2 style="font-family:var(--font-heading);font-size:22px;font-weight:900;color:var(--dark-navy);">Jatinder Kaur</h2>
+            <span style="font-size:13px;color:var(--primary);font-weight:700;">Chief Executive Officer, EducationistGuru</span>
+          </div>
+
+          <div style="border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow-md);">
+            <img src="../images/team/ceo.jpg" alt="Jatinder Kaur" style="width:100%;height:320px;object-fit:cover;object-position:center 15%;display:block;">
+          </div>
+
+          <div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:18px;margin-bottom:16px;">
+            <h4 style="font-family:var(--font-heading);font-size:15px;font-weight:800;color:var(--dark-navy);margin-bottom:8px;">
+              The Story &amp; Commitment
+            </h4>
+            <p style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:12px;">
+              At EducationistGuru, we envision a world in which higher education is user-centered, designed around the student, and easy to access across all regions in India. Under the guidance of Jatinder Kaur, EducationistGuru opened in July 2023 with a clear commitment: to conveniently streamline the application process for students applying to multiple universities across India.
+            </p>
+            <p style="font-size:13px;color:#475569;line-height:1.7;margin-bottom:14px;font-style:italic;border-left:3px solid var(--primary);padding-left:12px;">
+              "We acknowledge that selecting the right university and academic program is one of the most critical decisions of a student's life. Our mission is to understand each student's personal needs and guide them with complete transparency."
+            </p>
+
+            <h4 style="font-family:var(--font-heading);font-size:15px;font-weight:800;color:var(--dark-navy);margin-bottom:8px;">
+              Core Pillars of EducationistGuru
+            </h4>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:#334155;">
+              <div style="padding:10px;background:#f8fafc;border-radius:8px;border-left:3px solid var(--success);">
+                <strong>Student-Centered Counseling:</strong> Tailored academic roadmaps matched to career goals.
+              </div>
+              <div style="padding:10px;background:#f8fafc;border-radius:8px;border-left:3px solid var(--primary);">
+                <strong>University Partnerships:</strong> Direct tie-ups with leading UGC/AIU recognized institutions across India.
+              </div>
+              <div style="padding:10px;background:#f8fafc;border-radius:8px;border-left:3px solid #3b82f6;">
+                <strong>End-to-End Support:</strong> From document evaluation to admission confirmation and ongoing help.
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="modal-cta-submit" onclick="window.openEnrollModal(201);">
+            <i class="fa fa-envelope"></i> Message Founder's Counseling Cell
+          </button>
+        </div>
+
+      </main>
+
+      <!-- ================= 4. BOTTOM NAVIGATION BAR (NATIVE APP FEEL) ================= -->
+      <nav class="app-bottom-nav" aria-label="Mobile Navigation">
+        <button type="button" class="nav-item-btn active" data-view="home">
+          <i class="fa fa-home"></i>
+          <span>Home</span>
+        </button>
+        <button type="button" class="nav-item-btn" data-view="courses">
+          <i class="fa fa-book-open"></i>
+          <span>Courses</span>
+          <span class="nav-badge-pill">50</span>
+        </button>
+        <button type="button" class="nav-item-btn" data-view="colleges">
+          <i class="fa fa-building-columns"></i>
+          <span>Colleges</span>
+        </button>
+        <button type="button" class="nav-item-btn" data-view="videos">
+          <i class="fa fa-circle-play"></i>
+          <span>Videos</span>
+        </button>
+        <button type="button" class="nav-item-btn" data-view="leadership">
+          <i class="fa fa-user-tie"></i>
+          <span>About</span>
+        </button>
+      </nav>
+
+    </div>
+  </div>
+
+  <!-- FLOATING QUICK DIALER -->
+  <a href="tel:8750477000" class="floating-dialer-btn" title="Instant Admission Call">
+    <i class="fa fa-phone"></i> <span>Talk to Expert</span>
+  </a>
+
+  <!-- ================= 5. COURSE DETAILS MODAL DRAWER ================= -->
+  <div class="app-modal-overlay" id="courseDetailsModal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+    <div class="app-modal-sheet">
+      <div class="modal-handle-bar"></div>
+      <div class="modal-header-bar">
+        <span class="modal-header-title" id="detailModalTitle"><i class="fa fa-graduation-cap" style="color:var(--primary);margin-right:6px;"></i> Course Details &amp; Syllabus</span>
+        <button type="button" class="modal-close-btn" onclick="window.closeCourseDetails()" aria-label="Close Dialog">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-scrollable-content" id="courseDetailsContent">
+        <!-- Dynamically injected by js/app.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 6. FAST ENROLLMENT & ADMISSION MODAL ================= -->
+  <div class="app-modal-overlay" id="enrollModal" role="dialog" aria-modal="true" aria-labelledby="enrollModalHeading">
+    <div class="app-modal-sheet">
+      <div class="modal-handle-bar"></div>
+      <div class="modal-header-bar">
+        <span class="modal-header-title" id="enrollModalHeading"><i class="fa fa-bolt" style="color:var(--primary);margin-right:6px;"></i> Course Admission &amp; Counseling</span>
+        <button type="button" class="modal-close-btn" onclick="window.closeEnrollModal()" aria-label="Close Dialog">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-scrollable-content">
+        <div style="background:var(--primary-light);padding:12px;border-radius:10px;margin-bottom:14px;border:1px solid rgba(255,49,21,0.2);">
+          <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;">Selected Course Program</div>
+          <div id="enrollCourseTitle" style="font-family:var(--font-heading);font-size:15px;font-weight:900;color:var(--dark-navy);">
+            Course Name
+          </div>
+          <div id="enrollCourseFee" style="font-size:12px;font-weight:700;color:var(--primary);margin-top:2px;">
+            Fee details
+          </div>
+        </div>
+
+        <form id="enrollForm">
+          <input type="hidden" id="enrollCourseId" value="">
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadName">Full Name *</label>
+            <input type="text" id="leadName" class="form-control-app" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadPhone">Mobile Number (WhatsApp Preferred) *</label>
+            <input type="tel" id="leadPhone" class="form-control-app" placeholder="e.g. 9876543210" required>
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadEmail">Email Address</label>
+            <input type="email" id="leadEmail" class="form-control-app" placeholder="name@example.com">
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadQualification">Highest Educational Qualification</label>
+            <select id="leadQualification" class="form-control-app">
+              <option value="12th Pass (PCM / Science)">12th Pass (PCM / Science)</option>
+              <option value="12th Pass (PCB / Medical)">12th Pass (PCB / Medical)</option>
+              <option value="12th Pass (Commerce)">12th Pass (Commerce)</option>
+              <option value="12th Pass (Arts / Humanities)">12th Pass (Arts / Humanities)</option>
+              <option value="Polytechnic 3-Year Diploma">Polytechnic 3-Year Diploma</option>
+              <option value="Graduate (B.Tech / B.Sc / BCA / B.Com / BA)">Graduate (Any Stream)</option>
+              <option value="Postgraduate (Master's Degree)">Postgraduate (Master's Degree)</option>
+            </select>
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadMode">Preferred Mode of Study</label>
+            <select id="leadMode" class="form-control-app">
+              <option value="Online Learning (Flexible)">Online Learning (Flexible)</option>
+              <option value="Regular Campus">Regular Campus</option>
+              <option value="Distance Education">Distance Education</option>
+            </select>
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="leadCity">Current City / State</label>
+            <input type="text" id="leadCity" class="form-control-app" placeholder="e.g. Delhi, Lucknow, Jaipur...">
+          </div>
+
+          <button type="submit" class="modal-cta-submit">
+            <i class="fa fa-lock"></i> Submit Application &amp; Reserve Seat
+          </button>
+          <div style="font-size:10.5px;text-align:center;color:#64748b;margin-top:8px;">
+            <i class="fa fa-shield"></i> 100% Free Counseling • No Hidden Charges • Direct AIU Fee Rates
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 7. INTERACTIVE ELIGIBILITY CHECKER MODAL (SENIOR LUNA CRITIQUE) ================= -->
+  <div class="app-modal-overlay" id="eligibilityModal" role="dialog" aria-modal="true" aria-labelledby="eligibilityModalHeading">
+    <div class="app-modal-sheet">
+      <div class="modal-handle-bar"></div>
+      <div class="modal-header-bar">
+        <span class="modal-header-title" id="eligibilityModalHeading">
+          <i class="fa fa-graduation-cap" style="color:var(--primary);margin-right:6px;"></i> Eligibility &amp; Stream Matcher
+        </span>
+        <button type="button" class="modal-close-btn" onclick="window.closeEligibilityModal()" aria-label="Close Dialog">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-scrollable-content">
+        <div style="background:#f8fafc;padding:12px 14px;border-radius:10px;margin-bottom:14px;border:1px solid #e2e8f0;">
+          <div style="font-size:13px;font-weight:700;color:var(--dark-navy);margin-bottom:4px;">
+            Find Every Degree You Qualify For
+          </div>
+          <div style="font-size:11.5px;color:#64748b;line-height:1.4;">
+            Answer 2 simple questions about your previous education. We will filter the 50 top programs to match your exact academic eligibility under UGC/AIU guidelines.
+          </div>
+        </div>
+
+        <form id="eligibilityCheckerForm" onsubmit="event.preventDefault(); window.runEligibilityMatch();">
+          <div class="form-group-app">
+            <label class="form-label-app" for="eligStream">Your Completed / Current Education *</label>
+            <select id="eligStream" class="form-control-app" required>
+              <option value="pcm">12th Science with PCM (Physics, Chem, Maths)</option>
+              <option value="pcb">12th Science with PCB (Physics, Chem, Biology)</option>
+              <option value="commerce">12th Commerce</option>
+              <option value="arts">12th Arts / Humanities</option>
+              <option value="polytechnic">Polytechnic 3-Year Engineering Diploma</option>
+              <option value="grad_any">Graduate in Any Stream (BA, B.Com, B.Sc, B.Tech)</option>
+              <option value="grad_tech">Graduate in CS/IT (BCA, B.Sc CS, B.Tech)</option>
+              <option value="grad_law">Law Graduate (LL.B.)</option>
+            </select>
+          </div>
+
+          <div class="form-group-app">
+            <label class="form-label-app" for="eligPercentage">Aggregate Percentage Marks (Approx) *</label>
+            <input type="number" id="eligPercentage" class="form-control-app" placeholder="e.g. 58" min="35" max="100" value="55" required>
+          </div>
+
+          <button type="submit" class="modal-cta-submit" style="margin-top:10px;">
+            <i class="fa fa-filter"></i> Show My Eligible Courses
+          </button>
+        </form>
+
+        <div id="eligibilityFeedbackBox" style="display:none;margin-top:14px;padding:12px;border-radius:10px;background:#ecfdf5;border:1px solid #a7f3d0;font-size:12px;color:#065f46;">
+          <strong>Match Found!</strong> <span id="eligMatchCountText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="appToast" class="app-toast-box" role="status" aria-live="polite"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/courses-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

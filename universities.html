@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    // Only inject base tag on web server when URL has deep sub-path (e.g. /courses/b-tech-ai)
+    // NEVER inject under file: protocol so local file browsing works 100% cleanly
+    if (window.location.protocol !== 'file:' && window.location.pathname.split('/').filter(Boolean).length > 1) {
+        var b = document.createElement('base');
+        b.href = '/';
+        document.head.prepend(b);
+    }
+    </script>
+    
+    <meta charset="utf-8">
+    <title>Top Partner Universities | UGC & AIU Recognized | EducationistGuru</title>
+    <meta name="description" content="Explore UGC-DEB and AIU approved partner universities across India offering Online, Distance, and Regular degree courses with Educationist Guru admission support.">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="images/fav.png">
+    
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome 4.7 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Base & Responsive CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- Smooth UI & Card Styles -->
+    <link rel="stylesheet" href="css/smooth-ui.css">
+    <!-- Elevated Colleges & Universities Styles -->
+    <link rel="stylesheet" href="css/colleges-universities.css?v=3.5.1">
+    <!-- Dynamic Site Mega-Menu & Custom Headers CSS -->
+    <link rel="stylesheet" href="css/site-menu.css?v=1.0.0">
+</head>
+<body class="inner-page">
+
+    <!-- Full width header Start -->
+    <div class="full-width-header">
+        <!-- Toolbar Start -->
+        <div class="rs-toolbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-left">
+                            <div class="welcome-message">
+                                <i class="fa fa-bank"></i><span>Welcome to EducationistGuru</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-right">
+                            <div class="toolbar-share-icon">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="callback-btn" onclick="if(window.openCallbackModal)window.openCallbackModal();return false;" style="margin-right:8px;background:#25D366;border-color:#25D366;color:#fff;padding:7px 14px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;display:inline-block;"><i class="fa fa-phone" style="margin-right:4px;"></i> Request Callback</a>
+                            <a href="#" class="apply-btn" onclick="if(window.openCallbackModal)window.openCallbackModal({source:'Header Apply Now'});return false;">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Toolbar End -->
+
+        <!-- Header Start -->
+        <header id="rs-header" class="rs-header">
+            <div class="rs-header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact">
+                                <div id="info-details" class="widget-text">
+                                    <i class="fa fa-envelope" style="font-size:35px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text">
+                                        <a href="mailto:info@educationistguru.com">
+                                            <span>Mail Us</span>info@educationistguru.com
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="logo-area text-center">
+                                <a href="index.html"><img src="images/logo.png" alt="EducationistGuru Logo"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact pull-right">
+                                <div id="phone-details" class="widget-text">
+                                    <i class="fa fa-phone" style="font-size:35px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text">
+                                        <a href="tel:8750477000">
+                                            <span>Call Us</span>8750477000
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation Menu -->
+            <div class="menu-area menu-sticky">
+                <div class="container">
+                    <div class="main-menu">
+                        <div class="row relative">
+                            <div class="col-sm-12">
+                                <a class="rs-menu-toggle"><i class="fa fa-bars"></i> Menu</a>
+                                <nav class="rs-menu">
+                                    <ul class="nav-menu">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="courses.html">Courses</a></li>
+                                        <li><a href="colleges.html">Colleges</a></li>
+                                        <li class="current-menu-item"><a href="universities.html">Universities</a></li>
+                                        <li><a href="youtube.html"><i class="fa fa-youtube-play text-danger" style="margin-right:4px;"></i>Videos</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                                <div class="right-bar-icon text-right">
+                                    <a class="hidden-xs rs-search" data-toggle="modal" data-target=".search-modal"><i class="fa fa-search"></i></a>
+                                    <a id="nav-expander" class="nav-expander fixed"><i class="fa fa-bars fa-lg white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="rs-breadcrumbs">
+        <div class="container">
+            <div class="breadcrumbs-inner">
+                <h1 class="page-title">Recognized Partner Universities</h1>
+                <div class="breadcrumbs-text">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li>Universities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN UNIVERSITIES DIRECTORY SECTION ================= -->
+    <section class="eg-dir-wrapper" id="univDirectorySection">
+        <div class="container">
+            
+            <!-- Hero Banner with Key Metrics -->
+            <div class="eg-dir-hero">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 col-12">
+                        <span class="eg-hero-tag"><i class="fa fa-university"></i> UGC &bull; AIU &bull; DEB &bull; AICTE Recognized</span>
+                        <h1 class="eg-hero-title">Premier <span>Universities</span> Across India</h1>
+                        <p class="eg-hero-desc">
+                            Explore partner universities authorized to offer UGC-approved degrees through Online, Regular, and Distance learning modes. Valid for all government examinations, corporate career advancement, and international credentials.
+                        </p>
+                        <div class="eg-hero-stats">
+                            <div class="eg-stat-item"><i class="fa fa-university"></i> <strong>10+</strong> Partner Universities</div>
+                            <div class="eg-stat-item"><i class="fa fa-certificate"></i> <strong>UGC &bull; DEB &bull; AIU Approved</strong></div>
+                            <div class="eg-stat-item"><i class="fa fa-laptop"></i> <strong>Online, Regular &amp; Distance</strong></div>
+                            <div class="eg-stat-item"><i class="fa fa-check-circle" style="color:#10b981;"></i> <strong>100% Free Guidance</strong></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-12 text-lg-right text-left mt-4 mt-lg-0">
+                        <a href="contact.html" class="eg-hero-cta-btn">
+                            <i class="fa fa-phone"></i> Talk to a Counselor
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search, Filter & Sorting Control Toolbar -->
+            <div class="eg-search-control-panel">
+                <div class="eg-search-row">
+                    <!-- 1. Search Bar for All Universities -->
+                    <div class="eg-search-input-wrap">
+                        <i class="fa fa-search search-icon"></i>
+                        <input type="text" id="univSearchInput" class="eg-search-input" placeholder="Search universities by name, state, degree (e.g. Subharti, AIU, MBA, MCA)..." autocomplete="off" aria-label="Search all universities">
+                        <button type="button" id="univSearchClearBtn" class="eg-search-clear" title="Clear search text">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+
+                    <!-- 2. Type / Accreditation Filter Dropdown -->
+                    <div>
+                        <select id="univTypeSelect" class="eg-filter-select" aria-label="Filter by University Type">
+                            <option value="all">All Types / Accreditations</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. Learning Mode Filter Dropdown -->
+                    <div>
+                        <select id="univModeSelect" class="eg-filter-select" aria-label="Filter by Learning Mode">
+                            <option value="all">All Learning Modes</option>
+                            <option value="online">Online Mode</option>
+                            <option value="distance">Distance (UGC-DEB)</option>
+                            <option value="regular">Regular On-Campus</option>
+                        </select>
+                    </div>
+
+                    <!-- 4. Sort Options Dropdown -->
+                    <div>
+                        <select id="univSortSelect" class="eg-filter-select" aria-label="Sort Universities">
+                            <option value="featured">Featured First</option>
+                            <option value="name_asc">Name: A to Z</option>
+                            <option value="name_desc">Name: Z to A</option>
+                            <option value="rating_desc">Rating: High to Low</option>
+                        </select>
+                    </div>
+
+                    <!-- 5. Reset Button -->
+                    <div>
+                        <button type="button" id="univResetBtn" class="eg-reset-btn" title="Reset all search queries and filters">
+                            <i class="fa fa-undo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telemetry & Active Filters Bar -->
+            <div class="eg-telemetry-bar" id="univTelemetryBar">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <span id="univResultsCountText" class="eg-results-count">
+                        Showing <strong>1–6</strong> of <strong>...</strong> universities
+                    </span>
+                    <div id="univActiveFilterChips" class="eg-active-badge-wrap"></div>
+                </div>
+                <div>
+                    <span id="univPageIndicatorText" class="eg-page-indicator">Page 1</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Universities Grid (Strictly 6 Cards per Page) -->
+            <div class="row" id="eg-universities-grid">
+                <!-- Dynamically populated by js/universities-manager.js -->
+                <div class="col-12 text-center py-5">
+                    <i class="fa fa-spinner fa-spin" style="font-size: 32px; color: #ff3115;"></i>
+                    <p style="margin-top: 12px; color: #64748b; font-weight:600;">Loading recognized universities directory...</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Pagination Section (Pages 1 till N) -->
+            <div class="eg-pagination-section" id="univPaginationSection"></div>
+
+        </div>
+    </section>
+
+    <!-- Footer Start -->
+    <footer id="rs-footer" class="bg3 rs-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+                        <div class="about-widget">
+                            <img src="images/logo-footer.png" alt="Footer Logo" style="max-height:55px;">
+                            <p>Streamlining admissions for Online, Regular &amp; Distance Learning programs across top universities in India since July 2023.</p>
+                            <p class="margin-remove">100% Free Counseling &bull; AIU Verified</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">QUICK LINKS</h5>
+                        <ul class="sitemap-widget">
+                            <li class="active"><a href="index.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Home</a></li>
+                            <li><a href="about.html"><i class="fa fa-angle-right" aria-hidden="true"></i>About Us</a></li>
+                            <li><a href="courses.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Courses</a></li>
+                            <li><a href="colleges.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Colleges</a></li>
+                            <li><a href="universities.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Universities</a></li>
+                            <li><a href="blog.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Blog</a></li>
+                            <li><a href="contact.html"><i class="fa fa-angle-right" aria-hidden="true"></i>Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">RECENT POSTS</h5>
+                        <div class="recent-post-widget">
+                            <!-- Populated dynamically by cms-content.js -->
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">CONTACT US</h5>
+                        <ul class="footer-contact">
+                            <li><i class="fa fa-phone"></i><a href="tel:8750477000">8750477000 / 9738707000</a></li>
+                            <li><i class="fa fa-envelope"></i><a href="mailto:info@educationistguru.com">info@educationistguru.com</a></li>
+                            <li><i class="fa fa-clock-o"></i>9:30 AM - 6:30 PM (Mon - Sun)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="copyright">
+                            <p>&copy; 2026 <a href="index.html">EducationistGuru</a>. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Canvas Menu start -->
+    <nav class="right_menu_togle">
+        <div class="close-btn"><span id="nav-close" class="text-center">x</span></div>
+        <div class="canvas-logo"><a href="index.html"><img src="images/logo-white.png" alt="logo"></a></div>
+        <div class="canvas-about">
+            <p>At Educationist Guru, we streamline the application process for students to apply to multiple universities across India.</p>
+        </div>
+        <ul class="sidebarnav_menu list-unstyled main-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="colleges.html">Colleges</a></li>
+            <li><a href="universities.html">Universities</a></li>
+            <li><a href="youtube.html"><i class="fa fa-youtube-play text-danger" style="margin-right:4px;"></i>Videos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="canvas-contact">
+            <h5 class="canvas-title">Contact Info</h5>
+            <ul class="contact-list">
+                <li><i class="fa fa-map-marker"></i><span>India</span></li>
+                <li><i class="fa fa-phone"></i><span>8750477000 / 9738707000</span></li>
+                <li><i class="fa fa-envelope"></i><span>info@educationistguru.com</span></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="modal fade search-modal" tabindex="-1"><button type="button" class="close" data-dismiss="modal"><span class="fa fa-close"></span></button><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="search-block clearfix"><form><div class="form-group"><input class="form-control" placeholder="Search courses or colleges..." type="text"></div></form></div></div></div></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cms-content.js?v=3.5.2"></script>
+    <script src="js/universities-manager.js?v=3.5.2"></script>
+    <script src="js/crm-integration.js?v=3.5.2"></script>
+    <!-- Lenis Silky Smooth Scroll -->
+    <script src="js/smooth-scroll.js"></script>
+    <!-- Dynamic Site Mega-Menu & Custom Headers Hydration -->
+    <script src="js/site-menu.js?v=1.0.0"></script>
+</body>
+</html>

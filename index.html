@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>EducationistGuru | Responsive Education HTML5 Template</title>
+    <meta name="description" content="EducationistGuru - A premium education template for universities, colleges, and online learning platforms.">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="images/fav.png">
+    <!-- Bootstrap 4 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <!-- Font Awesome 4.7 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Owl Carousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/motion-welcome.css">
+    <link rel="stylesheet" href="css/smooth-ui.css">
+    <!-- Dynamic Site Mega-Menu & Custom Headers CSS -->
+    <link rel="stylesheet" href="css/site-menu.css?v=1.0.0">
+</head>
+<body class="home1">
+
+    <!-- ================= AE MOTION GRAPHICS WELCOME SCREEN ================= -->
+    <div id="eg-motion-welcome" aria-hidden="true">
+        <div class="eg-welcome-stage">
+            <div class="eg-kinetic-ring-box">
+                <svg class="eg-kinetic-svg" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="eg-circle-track" cx="70" cy="70" r="64" stroke-width="2"/>
+                    <circle class="eg-circle-dash" cx="70" cy="70" r="64" stroke="url(#egOrangeGrad)" stroke-width="3" stroke-linecap="round"/>
+                    <circle class="eg-circle-accent" cx="70" cy="70" r="54" stroke="rgba(255,107,0,0.3)" stroke-width="1.5" stroke-dasharray="8 12"/>
+                    <defs>
+                        <linearGradient id="egOrangeGrad" x1="0" y1="0" x2="140" y2="140" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#FF6B00"/>
+                            <stop offset="1" stop-color="#FFA800"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="eg-kinetic-logo-mark">
+                    <img src="images/logo.png" alt="EducationistGuru" class="eg-logo-img">
+                </div>
+            </div>
+            <div class="eg-kinetic-copy">
+                <div class="eg-mask-line">
+                    <span class="eg-text-slide eg-delay-1">Welcome to</span>
+                </div>
+                <div class="eg-mask-line eg-mask-line-lg">
+                    <span class="eg-text-slide text-orange eg-delay-2">EducationistGuru</span>
+                </div>
+                <div class="eg-mask-sub">
+                    <span class="eg-text-sub eg-delay-3">Higher Education Admissions &amp; Counseling</span>
+                </div>
+            </div>
+        </div>
+        <div class="eg-welcome-meta">
+            <div class="eg-meta-status">
+                <span class="eg-live-dot"></span>
+                <span>Initializing Portal</span>
+            </div>
+            <div class="eg-counter-box">
+                <span id="eg-welcome-counter">00</span><span class="eg-counter-symbol">%</span>
+            </div>
+        </div>
+        <div class="eg-progress-track">
+            <div id="eg-progress-bar" class="eg-progress-bar"></div>
+        </div>
+    </div>
+    <!-- ================= END AE MOTION WELCOME SCREEN ================= -->
+
+    <!--Full width header Start-->
+    <div class="full-width-header">
+
+        <!-- Toolbar Start -->
+        <div class="rs-toolbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-left">
+                            <div class="welcome-message">
+                                <i class="fa fa-bank"></i><span>Welcome to EducationistGuru</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-right">
+                            <div class="toolbar-share-icon">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="callback-btn" onclick="if(window.openCallbackModal)window.openCallbackModal();return false;" style="margin-right:8px;background:#25D366;border-color:#25D366;color:#fff;padding:7px 14px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;display:inline-block;"><i class="fa fa-phone" style="margin-right:4px;"></i> Request Callback</a>
+                            <a href="#" class="apply-btn">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Toolbar End -->
+
+        <!--Header Start-->
+        <header id="rs-header" class="rs-header">
+            <!-- Header Top Start -->
+            <div class="rs-header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact">
+                                <div id="info-details" class="widget-text">
+                                    <i class="fa fa-envelope" style="font-size:35px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text">
+                                        <a href="mailto:info@educationistguru.com">
+                                            <span>Mail Us</span>info@educationistguru.com
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="logo-area text-center">
+                                <a href="index.html"><img src="images/logo.png" alt="EducationistGuru Logo"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact pull-right">
+                                <div id="phone-details" class="widget-text">
+                                    <i class="fa fa-phone" style="font-size:35px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text">
+                                        <a href="tel:8750477000">
+                                            <span>Call Us</span>8750477000
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Header Top End -->
+
+            <!-- Menu Start -->
+            <div class="menu-area menu-sticky">
+                <div class="container">
+                    <div class="main-menu">
+                        <div class="row relative">
+                            <div class="col-sm-12">
+                                <a class="rs-menu-toggle"><i class="fa fa-bars"></i> Menu</a>
+                                <nav class="rs-menu">
+                                    <ul class="nav-menu">
+                                        <li class="current-menu-item"><a href="index.html">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="courses.html">Courses</a></li>
+                                        <li><a href="colleges.html">Colleges</a></li>
+                                        <li><a href="universities.html">Universities</a></li>
+                                        <li><a href="youtube.html"><i class="fa fa-youtube-play text-danger" style="margin-right:4px;"></i>Videos</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                                <div class="right-bar-icon text-right">
+                                    <a class="hidden-xs rs-search" data-toggle="modal" data-target=".search-modal"><i class="fa fa-search"></i></a>
+                                    <a id="nav-expander" class="nav-expander fixed"><i class="fa fa-bars fa-lg white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu End -->
+        </header>
+        <!--Header End-->
+    </div>
+    <!--Full width header End-->
+
+    <!-- Slider Area Start -->
+    <div id="rs-slider" class="slider-overlay-2">
+        <div id="home-slider" class="rs-carousel owl-carousel" data-loop="true" data-items="1" data-margin="0" data-autoplay="true" data-autoplay-timeout="5000" data-smart-speed="1200" data-dots="false" data-nav="true" data-mobile-device="1" data-mobile-device-nav="true" data-ipad-device="1" data-ipad-device-nav="true" data-md-device="1" data-md-device-nav="true">
+            <div class="item active">
+                <img src="images/slider/home1/slide1.jpg" alt="Welcome to EducationistGuru">
+                <div class="slide-content">
+                    <div class="display-table">
+                        <div class="display-table-cell">
+                            <div class="container text-center">
+                                <h1 class="slider-title">WELCOME TO EducationistGuru</h1>
+                                <p class="slider-desc">Streamlining admissions for Online, Regular &amp; Distance Learning programs across top universities in India.<br>Expert guidance and transparent counseling for your academic journey.</p>
+                                <a href="courses.html" class="sl-readmore-btn mr-30">EXPLORE COURSES</a>
+                                <a href="contact.html" class="sl-get-started-btn">GET ADMISSION HELP</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/slider/home1/slide2.jpg" alt="Are You Ready to Apply?">
+                <div class="slide-content">
+                    <div class="display-table">
+                        <div class="display-table-cell">
+                            <div class="container text-center">
+                                <h1 class="slider-title">ARE YOU READY TO APPLY?</h1>
+                                <p class="slider-desc">Transparent counseling, eligibility assessments, and complete support from course selection to university enrollment.<br>Over 80+ recognized programs across 15 faculties tailored for your career.</p>
+                                <a href="courses.html" class="sl-readmore-btn mr-30">VIEW ALL COURSES</a>
+                                <a href="contact.html" class="sl-get-started-btn">APPLY NOW</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <img src="images/slider/home1/slide3.jpg" alt="Graduate with Excellence">
+                <div class="slide-content">
+                    <div class="display-table">
+                        <div class="display-table-cell">
+                            <div class="container text-center">
+                                <h1 class="slider-title">GRADUATE WITH EXCELLENCE</h1>
+                                <p class="slider-desc">Unlock your potential with UGC &amp; AICTE approved degrees through flexible learning options.<br>Complete admission support from first counseling to final university enrollment.</p>
+                                <a href="about.html" class="sl-readmore-btn mr-30">ABOUT US</a>
+                                <a href="contact.html" class="sl-get-started-btn">CONTACT COUNSELOR</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Slider Area End -->
+
+    <!-- Services Start -->
+    <div class="rs-services rs-services-style1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="services-item rs-animation-hover">
+                        <div class="services-icon">
+                            <i class="fa fa-compass rs-animation-scale-up"></i>
+                        </div>
+                        <div class="services-desc">
+                            <h4 class="services-title">Trending Programs</h4>
+                            <p>Industry-aligned degrees &amp; executive diplomas selected for modern career growth.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="services-item rs-animation-hover">
+                        <div class="services-icon">
+                            <i class="fa fa-university rs-animation-scale-up"></i>
+                        </div>
+                        <div class="services-desc">
+                            <h4 class="services-title">Top Universities</h4>
+                            <p>Verified admissions support across top UGC-DEB and NAAC accredited institutions.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="services-item rs-animation-hover">
+                        <div class="services-icon">
+                            <i class="fa fa-user-circle-o rs-animation-scale-up"></i>
+                        </div>
+                        <div class="services-desc">
+                            <h4 class="services-title">1-on-1 Mentorship</h4>
+                            <p>Unbiased guidance from experienced mentors to map your ideal academic trajectory.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="services-item rs-animation-hover">
+                        <div class="services-icon">
+                            <i class="fa fa-graduation-cap rs-animation-scale-up"></i>
+                        </div>
+                        <div class="services-desc">
+                            <h4 class="services-title">Valid Degrees</h4>
+                            <p>Recognized academic credentials meeting all government and corporate employment norms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+
+    <!-- About Us Start -->
+    <div id="rs-about" class="rs-about sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2>ABOUT US</h2>
+                <p>Explore 80+ programs across 15 faculties — from Engineering & Management to Law, Pharmacy & Yoga Sciences.</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="about-img rs-animation-hover">
+                        <img src="images/about/about.jpg" alt="About EducationistGuru">
+                        <a class="popup-youtube" href="https://www.youtube.com/@Educationistguru" title="Video Icon"></a>
+                        <div class="overly-border"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12">
+                    <div class="about-desc">
+                        <h3>WELCOME TO EducationistGuru</h3>
+                        <p>At Educationist Guru, we envision a world in which education is user-centered, designed around the student, and easy for students to access across all regions in India.</p>
+                    </div>
+                    <div id="accordion" class="rs-accordion-style1">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h3 class="acdn-title" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true">
+                                    Our History
+                                </h3>
+                            </div>
+                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                <div class="card-body">
+                                    We opened in July of 2023. Our business is conveniently streamlining the application process for students to apply to multiple universities. We assist students on their entire admissions journey — from university and course selection to eligibility assessments, admissions counseling, and application support.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h3 class="acdn-title collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false">
+                                    Our Mission
+                                </h3>
+                            </div>
+                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Our mission is to provide convenient admissions support and transparent counseling to students, to help them overcome challenges to access higher education. We acknowledge that the selection of one's university and program is a crucial part of one's career.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="headingThree">
+                                <h3 class="acdn-title collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false">
+                                    Our Vision
+                                </h3>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    We aim to give students the freedom to choose the education pathway that suits their personal academic needs and career goals the best. We do this by administering admissions support for online, regular, and distance learning educational programs.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About Us End -->
+
+    <!-- Courses Start -->
+    <div id="rs-courses" class="rs-courses sec-color sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2>OUR POPULAR COURSES</h2>
+                <p>Explore 80+ programs across 15 faculties — from Engineering & Management to Law, Pharmacy & Yoga Sciences.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="rs-carousel owl-carousel" data-loop="true" data-items="3" data-margin="30" data-autoplay="false" data-dots="true" data-nav="true" data-mobile-device="1" data-ipad-device="2" data-md-device="3">
+                        <div class="cource-item">
+                            <div class="cource-img">
+                                <img src="images/courses/1.jpg" alt="MBA">
+                                <a class="image-link" href="courses-details.html"><i class="fa fa-link"></i></a>
+                                
+                            </div>
+                            <div class="course-body">
+                                <a href="#" class="course-category">Science</a>
+                                <h4 class="course-title"><a href="courses-details.html">MBA</a></h4>
+                                <div class="review-wrap">
+                                    <ul class="rating">
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star-half-empty"></li>
+                                    </ul>
+                                    <span class="review">25 Reviews</span>
+                                </div>
+                                <div class="course-desc"><p>Multiple specializations available. Contact us for details.</p></div>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-time"><span class="label">Duration</span><span class="desc">2 Years</span></div>
+                                <div class="course-student"><span class="label">Students</span><span class="desc">95</span></div>
+                                <div class="class-duration"><span class="label">Eligibility</span><span class="desc">See Details</span></div>
+                            </div>
+                        </div>
+                        <div class="cource-item">
+                            <div class="cource-img">
+                                <img src="images/courses/2.jpg" alt="B.Tech">
+                                <a class="image-link" href="courses-details.html"><i class="fa fa-link"></i></a>
+                                
+                            </div>
+                            <div class="course-body">
+                                <a href="#" class="course-category">Science</a>
+                                <h4 class="course-title"><a href="courses-details.html">B.Tech (Engineering)</a></h4>
+                                <div class="review-wrap">
+                                    <ul class="rating">
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star-half-empty"></li>
+                                    </ul>
+                                    <span class="review">39 Reviews</span>
+                                </div>
+                                <div class="course-desc"><p>Multiple specializations available. Contact us for details.</p></div>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-time"><span class="label">Duration</span><span class="desc">4 Years</span></div>
+                                <div class="course-student"><span class="label">Students</span><span class="desc">99</span></div>
+                                <div class="class-duration"><span class="label">Eligibility</span><span class="desc">See Details</span></div>
+                            </div>
+                        </div>
+                        <div class="cource-item">
+                            <div class="cource-img">
+                                <img src="images/courses/3.jpg" alt="BA BSc">
+                                <a class="image-link" href="courses-details.html"><i class="fa fa-link"></i></a>
+                                
+                            </div>
+                            <div class="course-body">
+                                <a href="#" class="course-category">Science</a>
+                                <h4 class="course-title"><a href="courses-details.html">BA / B.Sc (Arts & Science)</a></h4>
+                                <div class="review-wrap">
+                                    <ul class="rating">
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star"></li>
+                                        <li class="fa fa-star-half-empty"></li>
+                                    </ul>
+                                    <span class="review">22 Reviews</span>
+                                </div>
+                                <div class="course-desc"><p>Multiple specializations available. Contact us for details.</p></div>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-time"><span class="label">Duration</span><span class="desc">3 Years</span></div>
+                                <div class="course-student"><span class="label">Students</span><span class="desc">80</span></div>
+                                <div class="class-duration"><span class="label">Eligibility</span><span class="desc">See Details</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Courses End -->
+
+    <!-- Counter Section Start -->
+    <div class="rs-counter pt-100 pb-70 bg3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <div class="counter-content">
+                        <h2 class="counter-title">ACHIEVEMENTS</h2>
+                        <div class="counter-text">
+                            <p>Guiding thousands of aspirants every academic season toward accredited universities and career-defining programs.</p>
+                        </div>
+                        <div class="counter-img rs-image-effect-shine">
+                            <img src="images/counter/1.jpg" alt="Counter">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 mt-80">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="rs-counter-list">
+                                <h2 class="counter-number plus">50</h2>
+                                <h4 class="counter-desc">UNIVERSITIES</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="rs-counter-list">
+                                <h2 class="counter-number plus">40</h2>
+                                <h4 class="counter-desc">COURSES</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="rs-counter-list">
+                                <h2 class="counter-number plus">900</h2>
+                                <h4 class="counter-desc">STUDENTS</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="rs-counter-list">
+                                <h2 class="counter-number plus">3675</h2>
+                                <h4 class="counter-desc">Satisfied Client</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Counter Section End -->
+
+    <!-- Events Start -->
+    <div id="rs-events" class="rs-events sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2>OUR UPCOMING EVENTS</h2>
+                <p>Participate in our university counseling seminars, webinars, and admission workshops.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="rs-carousel owl-carousel" data-loop="true" data-items="3" data-margin="30" data-dots="true" data-nav="true" data-mobile-device="1" data-ipad-device="2" data-md-device="3">
+                        <div class="event-item">
+                            <div class="event-img">
+                                <img src="images/events/1.jpg" alt="Higher Education Admission Seminar">
+                                <a class="image-link" href="events-details.html"><i class="fa fa-link"></i></a>
+                            </div>
+                            <div class="events-details sec-color">
+                                <div class="event-date"><i class="fa fa-calendar"></i><span>15 Oct 2026</span></div>
+                                <h4 class="event-title"><a href="events-details.html">HIGHER EDUCATION ADMISSION SEMINAR 2026</a></h4>
+                                <div class="event-meta">
+                                    <div class="event-time"><i class="fa fa-clock-o"></i><span>10.30AM-02.30PM</span></div>
+                                    <div class="event-location"><i class="fa fa-map-marker"></i><span>Online Webinar & Counseling</span></div>
+                                </div>
+                                <div class="event-btn"><a href="events-details.html">Join Event <i class="fa fa-angle-double-right"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-img">
+                                <img src="images/events/2.jpg" alt="Distance & Online Learning Masterclass">
+                                <a class="image-link" href="events-details.html"><i class="fa fa-link"></i></a>
+                            </div>
+                            <div class="events-details sec-color">
+                                <div class="event-date"><i class="fa fa-calendar"></i><span>05 Nov 2026</span></div>
+                                <h4 class="event-title"><a href="events-details.html">DISTANCE &amp; ONLINE LEARNING MASTERCLASS</a></h4>
+                                <div class="event-meta">
+                                    <div class="event-time"><i class="fa fa-clock-o"></i><span>11.00AM-01.30PM</span></div>
+                                    <div class="event-location"><i class="fa fa-map-marker"></i><span>Virtual Interactive Session</span></div>
+                                </div>
+                                <div class="event-btn"><a href="events-details.html">Join Event <i class="fa fa-angle-double-right"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-img">
+                                <img src="images/events/3.jpg" alt="Career Roadmap & Admission Fair">
+                                <a class="image-link" href="events-details.html"><i class="fa fa-link"></i></a>
+                            </div>
+                            <div class="events-details sec-color">
+                                <div class="event-date"><i class="fa fa-calendar"></i><span>20 Nov 2026</span></div>
+                                <h4 class="event-title"><a href="events-details.html">CAREER ROADMAP &amp; ADMISSION FAIR</a></h4>
+                                <div class="event-meta">
+                                    <div class="event-time"><i class="fa fa-clock-o"></i><span>10.00AM-04.00PM</span></div>
+                                    <div class="event-location"><i class="fa fa-map-marker"></i><span>EducationistGuru Center</span></div>
+                                </div>
+                                <div class="event-btn"><a href="events-details.html">Join Event <i class="fa fa-angle-double-right"></i></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Events End -->
+
+    <!-- Leadership Start -->
+    <div id="rs-team" class="rs-team sec-color sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2>OUR LEADERSHIP</h2>
+                <p>Guiding students across India toward their ideal academic future and career success.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-9 col-md-11">
+                    <div style="background: #ffffff; border-radius: 16px; box-shadow: 0 10px 35px rgba(0,0,0,0.07); overflow: hidden; border: 1px solid #eee;">
+                        <div class="row no-gutters align-items-stretch">
+                            <div class="col-md-5">
+                                <div style="height: 100%; min-height: 420px; overflow: hidden; position: relative;">
+                                    <img src="images/team/ceo.jpg" alt="Jatinder Kaur - Founder &amp; CEO" style="width: 100%; height: 100%; object-fit: cover; object-position: center 15%; display: block;">
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div style="padding: 40px 35px; display: flex; flex-direction: column; justify-content: center; height: 100%;">
+                                    <div style="display: inline-block; align-self: flex-start; background: #fff0ed; color: #ff3115; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 5px 14px; border-radius: 20px; margin-bottom: 15px;">Founder &amp; CEO</div>
+                                    <h3 style="font-size: 26px; font-weight: 800; color: #1a1a2e; margin: 0 0 5px;">Jatinder Kaur</h3>
+                                    <span style="color: #ff3115; font-size: 15px; font-weight: 600; margin-bottom: 18px; display: block;">Chief Executive Officer, EducationistGuru</span>
+                                    <p style="color: #555; font-size: 14px; line-height: 1.8; margin-bottom: 15px;">
+                                        At EducationistGuru, we envision a world in which higher education is student-centered, transparent, and effortlessly accessible across all regions in India. Founded in July 2023, our mission is to streamline the admissions journey and give students clarity to achieve their career goals.
+                                    </p>
+                                    <p style="color: #666; font-size: 14px; line-height: 1.7; margin-bottom: 22px; font-style: italic; border-left: 3px solid #ff3115; padding-left: 12px;">
+                                        "Our focus is giving students complete freedom and clarity to choose the right academic path, with unwavering support from application to admission."
+                                    </p>
+                                    <div style="display: flex; gap: 10px; align-items: center;">
+                                        <a href="https://www.facebook.com/educationistguruEg/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f4f9; color: #3b5998; display: flex; align-items: center; justify-content: center; font-size: 15px; text-decoration: none;"><i class="fa fa-facebook"></i></a>
+                                        <a href="https://www.instagram.com/educationistguru/" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f4f9; color: #e1306c; display: flex; align-items: center; justify-content: center; font-size: 15px; text-decoration: none;"><i class="fa fa-instagram"></i></a>
+                                        <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="width: 38px; height: 38px; border-radius: 50%; background: #f0f4f9; color: #ff0000; display: flex; align-items: center; justify-content: center; font-size: 15px; text-decoration: none;"><i class="fa fa-youtube-play"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Leadership End -->
+
+    <!-- Call to Action Start -->
+    <div id="rs-calltoaction" class="rs-calltoaction sec-spacer bg4">
+        <div class="container">
+            <div class="rs-cta-inner text-center">
+                <div class="sec-title mb-50 text-center">
+                    <h2 class="white-color">START YOUR ADMISSION JOURNEY TODAY</h2>
+                    <p class="white-color">Streamlining admissions for Online, Regular, and Distance Learning programs across top universities in India.</p>
+                </div>
+                <a class="cta-button" href="contact.html">Apply Now</a>
+            </div>
+        </div>
+    </div>
+    <!-- Call to Action End -->
+
+    <!-- YouTube Admission Guidance Videos Showcase Start -->
+    <div id="rs-video-showcase" class="rs-video-showcase sec-spacer" style="background:#f8fafc;padding:70px 0;">
+        <div class="container">
+            <div class="sec-title mb-40 text-center">
+                <span style="background:#fff0ed;color:#ff3115;font-weight:700;font-size:12px;text-transform:uppercase;padding:4px 14px;border-radius:20px;letter-spacing:1px;display:inline-block;margin-bottom:10px;"><i class="fa fa-youtube-play"></i> OFFICIAL VIDEO GUIDANCE</span>
+                <h2 style="font-size:32px;font-weight:800;color:#0f172a;margin-bottom:8px;">LATEST ADMISSION GUIDANCE VIDEOS</h2>
+                <p style="color:#64748b;font-size:15px;max-width:650px;margin:0 auto;">Watch authentic counseling advice, program insights, and university admission guidelines from EducationistGuru advisors.</p>
+            </div>
+            <div class="row" id="homeVideoContainer">
+                <!-- Initial fallback cards populated instantly, dynamic data synchronized via API -->
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
+                    <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,0.06);border:1px solid #e2e8f0;height:100%;display:flex;flex-direction:column;">
+                        <div style="position:relative;height:190px;overflow:hidden;background:#000;">
+                            <img src="images/blog/1.jpg" alt="Video Preview" style="width:100%;height:100%;object-fit:cover;opacity:0.85;">
+                            <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;background:#ff3115;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;">
+                                <i class="fa fa-play" style="margin-left:3px;"></i>
+                            </a>
+                            <span style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">Featured</span>
+                        </div>
+                        <div style="padding:18px;flex:1;display:flex;flex-direction:column;justify-content:space-between;">
+                            <div>
+                                <span style="background:#fff0ed;color:#ff3115;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;">Admission Guidance</span>
+                                <h4 style="font-size:16px;font-weight:700;color:#0f172a;margin:10px 0 8px;line-height:1.4;">
+                                    <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="color:#0f172a;text-decoration:none;">How to Choose the Right University Program in 2025</a>
+                                </h4>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9;font-size:12px;color:#64748b;">
+                                <span><i class="fa fa-eye"></i> Latest</span>
+                                <a href="https://www.youtube.com/@Educationistguru" target="_blank" style="color:#ff3115;font-weight:700;text-decoration:none;">Watch Video <i class="fa fa-external-link"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="margin-top:35px;">
+                <a href="youtube.html" class="readon" style="background:#ff3115;color:#fff;padding:12px 30px;border-radius:30px;font-weight:700;display:inline-flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 6px 20px rgba(255,49,21,0.25);">
+                    <i class="fa fa-play-circle"></i> View All Channel Videos on YouTube Hub <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- YouTube Admission Guidance Videos Showcase End -->
+
+    <!-- Latest News Start -->
+    <div id="rs-latest-news" class="rs-latest-news sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2>OUR LATEST NEWS</h2>
+                <p>Stay updated with university admission alerts, exam dates, and educational insights.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="news-normal-block">
+                        <div class="news-img"><a href="#"><img src="images/blog/1.jpg" alt="Blog"></a></div>
+                        <div class="news-date"><i class="fa fa-calendar-check-o"></i><span>July 15, 2025</span></div>
+                        <h4 class="news-title"><a href="blog-details.html">How to Choose the Right University for Your Career</a></h4>
+                        <div class="news-desc"><p>Choosing the right university is one of the most important decisions a student makes. Learn how to evaluate programs, accreditation, and career outcomes.</p></div>
+                        <div class="news-btn"><a href="#">Read More</a></div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="news-list-block">
+                        <div class="news-list-item">
+                            <div class="news-img"><a href="#"><img src="images/blog/2.jpg" alt="Blog"></a></div>
+                            <div class="news-content">
+                                <h5 class="news-title"><a href="blog-details.html">Benefits of Distance Learning in 2025</a></h5>
+                                <div class="news-date"><i class="fa fa-calendar-check-o"></i><span>July 15, 2025</span></div>
+                                <div class="news-desc"><p>Explore our latest insights on education, admissions, and career guidance for students across India.</p></div>
+                            </div>
+                        </div>
+                        <div class="news-list-item">
+                            <div class="news-img"><a href="#"><img src="images/blog/3.jpg" alt="Blog"></a></div>
+                            <div class="news-content">
+                                <h5 class="news-title"><a href="blog-details.html">Top In-Demand Courses for Students in India</a></h5>
+                                <div class="news-date"><i class="fa fa-calendar-check-o"></i><span>July 15, 2025</span></div>
+                                <div class="news-desc"><p>Explore our latest insights on education, admissions, and career guidance for students across India.</p></div>
+                            </div>
+                        </div>
+                        <div class="news-list-item">
+                            <div class="news-img"><a href="#"><img src="images/blog/4.jpg" alt="Blog"></a></div>
+                            <div class="news-content">
+                                <h5 class="news-title"><a href="blog-details.html">Why Educationist Guru is Your Best Admission Partner</a></h5>
+                                <div class="news-date"><i class="fa fa-calendar-check-o"></i><span>July 15, 2025</span></div>
+                                <div class="news-desc"><p>Explore our latest insights on education, admissions, and career guidance for students across India.</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Latest News End -->
+
+
+
+    <!-- Testimonial Start -->
+    <div id="rs-testimonial" class="rs-testimonial bg5 sec-spacer">
+        <div class="container">
+            <div class="sec-title mb-50 text-center">
+                <h2 class="white-color">WHAT PEOPLE SAYS</h2>
+                <p class="white-color">Hear from students who transformed their educational journey with EducationistGuru.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="rs-carousel owl-carousel" data-loop="true" data-items="2" data-margin="30" data-autoplay="true" data-dots="true" data-nav="true" data-mobile-device="1" data-ipad-device="2" data-md-device="2">
+                        <div class="testimonial-item">
+                            <div class="testi-img"><img src="images/testimonial/1.jpg" alt="Priya Sharma"></div>
+                            <div class="testi-desc">
+                                <h4 class="testi-name">Priya Sharma</h4>
+                                <p>Educationist Guru made my admission process so smooth! I was confused about which MBA specialization to choose, and their counselors helped me find the perfect program. Within a week, my application was submitted to three universities. Highly recommended!</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-item">
+                            <div class="testi-img"><img src="images/testimonial/2.jpg" alt="Rohit Verma"></div>
+                            <div class="testi-desc">
+                                <h4 class="testi-name">Rohit Verma</h4>
+                                <p>I was a working professional looking for a distance learning B.Tech program. Educationist Guru connected me with the right university and handled all the paperwork. Their team is available 7 days a week and always responsive. Best education consultancy!</p>
+                            </div>
+                        </div>
+                        <div class="testimonial-item">
+                            <div class="testi-img"><img src="images/testimonial/3.jpg" alt="Sneha Patel"></div>
+                            <div class="testi-desc">
+                                <h4 class="testi-name">Sneha Patel</h4>
+                                <p>As a first-generation college student, I had no idea where to start with my applications. Educationist Guru guided me through everything — from choosing B.Sc. Nursing to getting admitted. Their support from 9:30 AM to 6:30 PM every day was a lifesaver!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Testimonial End -->
+
+    <!-- Partner Start -->
+    <div id="rs-partner" class="rs-partner pt-70 pb-70">
+        <div class="container">
+            <div class="rs-carousel owl-carousel" data-loop="true" data-items="5" data-margin="80" data-autoplay="true" data-dots="false" data-nav="false" data-mobile-device="2" data-ipad-device="4" data-md-device="5">
+                <div class="partner-item"><a href="#"><img src="images/partner/1.png" alt="Partner"></a></div>
+                <div class="partner-item"><a href="#"><img src="images/partner/2.png" alt="Partner"></a></div>
+                <div class="partner-item"><a href="#"><img src="images/partner/3.png" alt="Partner"></a></div>
+                <div class="partner-item"><a href="#"><img src="images/partner/4.png" alt="Partner"></a></div>
+                <div class="partner-item"><a href="#"><img src="images/partner/5.png" alt="Partner"></a></div>
+            </div>
+        </div>
+    </div>
+    <!-- Partner End -->
+
+    <!-- Footer Start -->
+    <footer id="rs-footer" class="bg3 rs-footer">
+        <div class="container">
+            <div>
+                <div class="row footer-contact-desc">
+                    <div class="col-md-4">
+                        <div class="contact-inner">
+                            <i class="fa fa-map-marker"></i>
+                            <h4 class="contact-title">Address</h4>
+                            <p class="contact-desc">India</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="contact-inner">
+                            <i class="fa fa-phone"></i>
+                            <h4 class="contact-title">Phone Number</h4>
+                            <p class="contact-desc">8750477000<br>9738707000</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="contact-inner">
+                            <i class="fa fa-envelope"></i>
+                            <h4 class="contact-title">Email Address</h4>
+                            <p class="contact-desc">info@educationistguru.com<br>www.educationistguru.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+                        <div class="about-widget">
+                            <img src="images/logo-footer.png" alt="Footer Logo">
+                            <p>At Educationist Guru, we streamline the application process for students to apply to multiple universities across India, offering support for online, regular, and distance learning programs.</p>
+                            <p class="margin-remove">Admissions support since July 2023.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">RECENT POSTS</h5>
+                        <div class="recent-post-widget">
+                            <div class="post-item">
+                                <div class="post-date"><span>28</span><span>June</span></div>
+                                <div class="post-desc">
+                                    <h5 class="post-title"><a href="#">Benefits of Distance Learning in 2025</a></h5>
+                                    <span class="post-category">Keyword Analysis</span>
+                                </div>
+                            </div>
+                            <div class="post-item">
+                                <div class="post-date"><span>28</span><span>June</span></div>
+                                <div class="post-desc">
+                                    <h5 class="post-title"><a href="#">Top In-Demand Courses for Students in India</a></h5>
+                                    <span class="post-category">Spoken English</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">OUR SITEMAP</h5>
+                        <ul class="sitemap-widget">
+                            <li class="active"><a href="index.html"><i class="fa fa-angle-right"></i>Home</a></li>
+                            <li><a href="about.html"><i class="fa fa-angle-right"></i>About</a></li>
+                            <li><a href="courses.html"><i class="fa fa-angle-right"></i>Courses</a></li>
+                            <li><a href="courses-details.html"><i class="fa fa-angle-right"></i>Courses Details</a></li>
+                            <li><a href="events.html"><i class="fa fa-angle-right"></i>Events</a></li>
+                            <li><a href="events-details.html"><i class="fa fa-angle-right"></i>Events Details</a></li>
+                            <li><a href="blog.html"><i class="fa fa-angle-right"></i>Blog</a></li>
+                            <li><a href="blog-details.html"><i class="fa fa-angle-right"></i>Blog Details</a></li>
+                            <li><a href="teachers.html"><i class="fa fa-angle-right"></i>Leadership</a></li>
+                            <li><a href="teachers-single.html"><i class="fa fa-angle-right"></i>Teachers Details</a></li>
+                            <li><a href="contact.html"><i class="fa fa-angle-right"></i>Contact</a></li>
+                            <li><a href="error-404.html"><i class="fa fa-angle-right"></i>Error 404</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">NEWSLETTER</h5>
+                        <p>Sign Up to Our Newsletter to Get Latest Updates &amp; Services</p>
+                        <form class="news-form">
+                            <input type="text" class="form-input" placeholder="Enter Your Email">
+                            <button type="submit" class="form-button"><i class="fa fa-arrow-right"></i></button>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer-share">
+                    <ul>
+                        <li><a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="copyright">
+                    <p>&copy; 2025 <a href="#">EducationistGuru</a>. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer End -->
+
+    <!-- Scroll Up -->
+    <div id="scrollUp"><i class="fa fa-angle-up"></i></div>
+
+    <!-- Canvas Menu -->
+    <nav class="right_menu_togle">
+        <div class="close-btn"><span id="nav-close" class="text-center">x</span></div>
+        <div class="canvas-logo"><a href="index.html"><img src="images/logo-white.png" alt="logo"></a></div>
+        <div class="canvas-about">
+            <p>At Educationist Guru, we streamline the application process for students to apply to multiple universities across India. We support online, regular, and distance learning programs.</p>
+        </div>
+        <ul class="sidebarnav_menu list-unstyled main-menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="colleges.html">Colleges</a></li>
+            <li><a href="universities.html">Universities</a></li>
+            <li><a href="youtube.html"><i class="fa fa-youtube-play text-danger" style="margin-right:4px;"></i>Videos</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="canvas-contact">
+            <h5 class="canvas-title">Contact Info</h5>
+            <ul class="contact-list">
+                <li><i class="fa fa-map-marker"></i><span>India</span></li>
+                <li><i class="fa fa-phone"></i><span>8750477000 / 9738707000</span></li>
+                <li><i class="fa fa-envelope"></i><span>info@educationistguru.com</span></li>
+                <li><i class="fa fa-clock-o"></i><span>9:30 AM - 6:30 PM, 7 Days</span></li>
+            </ul>
+        </div>
+        <div class="canvas-social">
+            <a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a>
+            <a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="modal fade search-modal" tabindex="-1" role="dialog">
+        <button type="button" class="close" data-dismiss="modal"><span class="fa fa-close"></span></button>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="search-block clearfix">
+                    <form>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="eg: Computer Technology" type="text">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/5.0.0/imagesloaded.pkgd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cms-content.js?v=3.5.0"></script>
+    <script src="js/crm-integration.js?v=3.5.0"></script>
+    <script>
+        (async function loadHomeAdmissionVideos() {
+            const container = document.getElementById('homeVideoContainer');
+            if (!container) return;
+            try {
+                if (window.location.protocol !== 'file:') {
+                    try {
+                        const res = await fetch('/api/youtube/videos');
+                        if (res.ok) {
+                            const data = await res.json();
+                            videos = data.videos || [];
+                        }
+                    } catch (e) {}
+                }
+                if (!videos.length) {
+                    const fRes = await fetch('data/videos.json');
+                    if (fRes.ok) videos = await fRes.json();
+                }
+                if (videos && videos.length > 0) {
+                    container.innerHTML = videos.slice(0, 3).map(v => `
+                        <div class="col-lg-4 col-md-6 col-12 mb-4">
+                            <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,0.06);border:1px solid #e2e8f0;height:100%;display:flex;flex-direction:column;transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='none'">
+                                <div style="position:relative;height:190px;overflow:hidden;background:#000;">
+                                    <img src="${v.thumbnail || 'https://img.youtube.com/vi/' + v.youtubeId + '/hqdefault.jpg'}" alt="${v.title}" style="width:100%;height:100%;object-fit:cover;opacity:0.9;" onerror="this.src='images/blog/1.jpg'">
+                                    <a href="${v.url || 'https://www.youtube.com/watch?v=' + v.youtubeId}" target="_blank" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;background:#ff3115;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;text-decoration:none;box-shadow:0 4px 15px rgba(255,49,21,0.5);">
+                                        <i class="fa fa-play" style="margin-left:3px;"></i>
+                                    </a>
+                                    <span style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.8);color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">${v.duration || 'Video'}</span>
+                                </div>
+                                <div style="padding:18px;flex:1;display:flex;flex-direction:column;justify-content:space-between;">
+                                    <div>
+                                        <span style="background:#fff0ed;color:#ff3115;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;">${v.category || 'Admission Guide'}</span>
+                                        <h4 style="font-size:16px;font-weight:700;color:#0f172a;margin:10px 0 8px;line-height:1.4;">
+                                            <a href="${v.url || 'https://www.youtube.com/watch?v=' + v.youtubeId}" target="_blank" style="color:#0f172a;text-decoration:none;">${v.title}</a>
+                                        </h4>
+                                    </div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid #f1f5f9;font-size:12px;color:#64748b;">
+                                        <span><i class="fa fa-eye"></i> ${v.views || 'Latest'}</span>
+                                        <a href="${v.url || 'https://www.youtube.com/watch?v=' + v.youtubeId}" target="_blank" style="color:#ff3115;font-weight:700;text-decoration:none;">Watch Video <i class="fa fa-external-link"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {}
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="js/smooth-scroll.js"></script>
+    <script src="js/motion-welcome.js"></script>
+    <!-- Dynamic Site Mega-Menu & Custom Headers Hydration -->
+    <script src="js/site-menu.js?v=1.0.0"></script>
+</body>
+</html>

@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Content Manager | EducationistGuru /edit</title>
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/edit/css/edit.css?v=5.6.0">
+    <style>
+    /* ================= FAIL-SAFE EXECUTIVE MODAL STYLES ================= */
+    .modal-dialog {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        width: 100% !important;
+        max-width: 860px !important;
+        max-height: 92vh !important;
+        border-radius: 18px !important;
+        box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        position: relative !important;
+        margin: 16px !important;
+    }
+    /* Allow fullscreen editor to cleanly break out of modal constraints */
+    .fullscreen-modal-active .modal-dialog,
+    body.has-fullscreen-editor .modal-dialog {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 0 !important;
+        z-index: 99999 !important;
+    }
+    body.has-fullscreen-editor .modal-overlay,
+    .fullscreen-modal-active.modal-overlay {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .modal-header {
+        padding: 22px 28px !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: #ffffff !important;
+    }
+    .modal-header h3 {
+        font-size: 19px !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    .modal-body {
+        padding: 26px 28px !important;
+        overflow-y: auto !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        background: #ffffff !important;
+    }
+    .modal-footer {
+        padding: 18px 28px !important;
+        border-top: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 12px !important;
+        background: #f8fafc !important;
+    }
+    .form-section-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 18px 20px !important;
+        margin-bottom: 20px !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+    }
+    .form-section-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+    .form-section-title {
+        font-size: 14.5px !important;
+        font-weight: 700 !important;
+        color: #0f172a !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    .form-section-title i {
+        color: #ff6b00 !important;
+        font-size: 15px !important;
+    }
+    .form-section-badge {
+        font-size: 11px !important;
+        font-weight: 600 !important;
+        padding: 2px 8px !important;
+        border-radius: 12px !important;
+        background: #f1f5f9 !important;
+        color: #64748b !important;
+    }
+    .form-section-badge.active {
+        background: #ecfdf5 !important;
+        color: #059669 !important;
+        border: 1px solid #a7f3d0 !important;
+    }
+    .form-section-desc {
+        font-size: 12px !important;
+        color: #64748b !important;
+        margin-top: -6px !important;
+        margin-bottom: 14px !important;
+    }
+    .stream-toggle-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)) !important;
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        max-height: 250px !important;
+        overflow-y: auto !important;
+        padding-right: 4px !important;
+    }
+    .stream-card {
+        background: #f8fafc !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 9px !important;
+        padding: 8px 12px !important;
+        cursor: pointer !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+        user-select: none !important;
+        transition: all 0.18s ease !important;
+    }
+    .stream-card:hover {
+        border-color: #cbd5e1 !important;
+        background: #f1f5f9 !important;
+        transform: translateY(-1px) !important;
+    }
+    .stream-card-left {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        min-width: 0 !important;
+    }
+    .stream-card-icon {
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 13px !important;
+        color: #64748b !important;
+        flex-shrink: 0 !important;
+    }
+    .stream-card-text {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0 !important;
+    }
+    .stream-card-name {
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        color: #1e293b !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .stream-card-meta {
+        font-size: 10.5px !important;
+        color: #94a3b8 !important;
+    }
+    .stream-card-check {
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        border: 1.5px solid #cbd5e1 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 10px !important;
+        color: transparent !important;
+        flex-shrink: 0 !important;
+    }
+    .stream-card.active {
+        background: #ecfdf5 !important;
+        border-color: #10b981 !important;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15) !important;
+    }
+    .stream-card.active .stream-card-icon {
+        background: #10b981 !important;
+        border-color: #10b981 !important;
+        color: #ffffff !important;
+    }
+    .stream-card.active .stream-card-name {
+        color: #065f46 !important;
+        font-weight: 700 !important;
+    }
+    .stream-card.active .stream-card-check {
+        background: #10b981 !important;
+        border-color: #10b981 !important;
+        color: #ffffff !important;
+    }
+    .stream-card.univ-stream.active {
+        background: #f5f3ff !important;
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 2px 6px rgba(139, 92, 246, 0.15) !important;
+    }
+    .stream-card.univ-stream.active .stream-card-icon {
+        background: #8b5cf6 !important;
+        border-color: #8b5cf6 !important;
+        color: #ffffff !important;
+    }
+    .stream-card.univ-stream.active .stream-card-name {
+        color: #5b21b6 !important;
+        font-weight: 700 !important;
+    }
+    .stream-card.univ-stream.active .stream-card-check {
+        background: #8b5cf6 !important;
+        border-color: #8b5cf6 !important;
+        color: #ffffff !important;
+    }
+    .custom-stream-row {
+        display: flex !important;
+        gap: 8px !important;
+        align-items: center !important;
+        margin-top: 8px !important;
+    }
+    .custom-stream-row input {
+        flex: 1 !important;
+        padding: 7px 12px !important;
+        font-size: 12.5px !important;
+        border: 1px dashed #cbd5e1 !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+    }
+    .program-selector-wrap {
+        background: #fafbfc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 14px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    .selected-programs-header {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 10px !important;
+    }
+    .selected-programs-count {
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+    .selected-programs-count .count-pill {
+        background: #0ea5e9 !important;
+        color: #fff !important;
+        padding: 1px 7px !important;
+        border-radius: 10px !important;
+        font-size: 11px !important;
+    }
+    .btn-clear-all-tags {
+        background: none !important;
+        border: none !important;
+        color: #ef4444 !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+        cursor: pointer !important;
+        padding: 2px 6px !important;
+        border-radius: 4px !important;
+    }
+    .btn-clear-all-tags:hover {
+        background: #fee2e2 !important;
+    }
+    .selected-programs-box {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        min-height: 40px !important;
+        padding: 8px !important;
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        max-height: 140px !important;
+        overflow-y: auto !important;
+    }
+    .selected-tag-item {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        background: #f0fdf4 !important;
+        color: #15803d !important;
+        border: 1px solid #bbf7d0 !important;
+        padding: 3px 10px !important;
+        border-radius: 20px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+    }
+    .selected-tag-item.univ {
+        background: #f5f3ff !important;
+        color: #6d28d9 !important;
+        border-color: #ddd6fe !important;
+    }
+    .selected-tag-remove {
+        cursor: pointer !important;
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 13px !important;
+        color: #86efac !important;
+    }
+    .selected-tag-remove:hover {
+        background: #ef4444 !important;
+        color: #ffffff !important;
+    }
+    .program-stream-tabs {
+        display: flex !important;
+        gap: 6px !important;
+        overflow-x: auto !important;
+        padding-bottom: 4px !important;
+    }
+    .program-stream-tab {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 5px !important;
+        padding: 5px 11px !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+        border-radius: 20px !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        color: #64748b !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+    }
+    .program-stream-tab:hover {
+        background: #f8fafc !important;
+        color: #1e293b !important;
+        border-color: #cbd5e1 !important;
+    }
+    .program-stream-tab.active {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        border-color: #0f172a !important;
+    }
+    .program-search-row {
+        display: flex !important;
+        gap: 8px !important;
+        align-items: center !important;
+    }
+    .program-search-wrap {
+        position: relative !important;
+        flex: 1 !important;
+    }
+    .program-search-wrap i {
+        position: absolute !important;
+        left: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        color: #94a3b8 !important;
+        font-size: 12px !important;
+    }
+    .program-search-input {
+        width: 100% !important;
+        padding: 7px 10px 7px 30px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 6px !important;
+        font-size: 12px !important;
+        background: #ffffff !important;
+        outline: none !important;
+    }
+    .program-pills-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        max-height: 180px !important;
+        overflow-y: auto !important;
+        padding: 2px !important;
+    }
+    .program-pill {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        padding: 5px 12px !important;
+        font-size: 11.5px !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        color: #334155 !important;
+        cursor: pointer !important;
+    }
+    .program-pill:hover {
+        background: #f8fafc !important;
+        border-color: #94a3b8 !important;
+        color: #0f172a !important;
+    }
+    .program-pill.selected {
+        background: #ecfdf5 !important;
+        border-color: #10b981 !important;
+        color: #065f46 !important;
+    }
+    .program-pill.univ-pill.selected {
+        background: #f5f3ff !important;
+        border-color: #8b5cf6 !important;
+        color: #5b21b6 !important;
+    }
+    .program-custom-add-row {
+        display: flex !important;
+        gap: 8px !important;
+        align-items: center !important;
+        margin-top: 4px !important;
+    }
+    .program-custom-add-row input {
+        flex: 1 !important;
+        padding: 7px 12px !important;
+        font-size: 12px !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 6px !important;
+        background: #ffffff !important;
+    }
+    .preset-campus-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+        gap: 10px !important;
+        margin-top: 10px !important;
+    }
+    .preset-campus-card {
+        position: relative !important;
+        border-radius: 8px !important;
+        overflow: hidden !important;
+        border: 2px solid #e2e8f0 !important;
+        cursor: pointer !important;
+        background: #f8fafc !important;
+        aspect-ratio: 16/10 !important;
+        width: 100% !important;
+        max-height: 95px !important;
+    }
+    .preset-campus-card:hover {
+        border-color: #cbd5e1 !important;
+        transform: translateY(-2px) !important;
+    }
+    .preset-campus-card img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        display: block !important;
+    }
+    .preset-campus-card.active {
+        border-color: #10b981 !important;
+        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3), 0 4px 12px rgba(16, 185, 129, 0.15) !important;
+    }
+    .preset-campus-card.univ.active {
+        border-color: #8b5cf6 !important;
+        box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3), 0 4px 12px rgba(139, 92, 246, 0.15) !important;
+    }
+    .preset-campus-label {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0) 100%) !important;
+        color: #ffffff !important;
+        font-size: 10px !important;
+        font-weight: 600 !important;
+        padding: 12px 6px 4px 6px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    .preset-campus-badge {
+        position: absolute !important;
+        top: 4px !important;
+        right: 4px !important;
+        width: 18px !important;
+        height: 18px !important;
+        border-radius: 50% !important;
+        background: #10b981 !important;
+        color: #fff !important;
+        display: none !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 9px !important;
+    }
+    .preset-campus-card.univ .preset-campus-badge {
+        background: #8b5cf6 !important;
+    }
+    .preset-campus-card.active .preset-campus-badge {
+        display: flex !important;
+    }
+    </style>
+</head>
+<body>
+    <!-- ================= LOGIN SCREEN VIEW ================= -->
+    <div class="edit-login-wrapper" id="editLoginView" style="display:flex;">
+        <div class="edit-login-card">
+            <div class="edit-login-header">
+                <img src="../images/logo.png" alt="EducationistGuru" class="edit-login-logo" onerror="this.src='/images/logo.png'">
+                <div><span class="edit-login-badge"><i class="fa fa-lock"></i> Content Studio Access</span></div>
+                <h2 class="edit-login-title">Admin Sign In</h2>
+                <p class="edit-login-subtitle">Sign in to edit courses, colleges, universities, blogs &amp; videos</p>
+            </div>
+
+            <div class="edit-login-error" id="editLoginError">
+                <i class="fa fa-exclamation-circle"></i>
+                <span id="editLoginErrorMsg">Invalid email or password.</span>
+            </div>
+
+            <form id="editLoginForm">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="editEmailInput" placeholder="admin@educationistguru.com" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Admin Password</label>
+                    <div class="edit-pass-wrap">
+                        <input type="password" class="form-control" id="editPassInput" placeholder="Enter CRM admin password" required>
+                        <button type="button" class="edit-pass-toggle" id="editPassToggle" title="Toggle password visibility">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:12.5px;">
+                    <label style="display:flex; align-items:center; gap:6px; cursor:pointer; color:#475569;">
+                        <input type="checkbox" id="editRememberMe" checked> Remember session
+                    </label>
+                    <span style="color:#64748b; font-size:11.5px;"><i class="fa fa-shield"></i> CRM Verified</span>
+                </div>
+
+                <button type="submit" class="edit-login-submit" id="editLoginBtn">
+                    <i class="fa fa-sign-in"></i> Sign In to Content Studio
+                </button>
+            </form>
+
+            <div class="edit-login-footer">
+                Back to <a href="../index.html">EducationistGuru Website</a> &bull; <a href="../CRM/index.html">CRM Portal</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PROTECTED CONTENT STUDIO ================= -->
+    <div class="edit-app" id="editApp" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="edit-sidebar">
+            <div class="sidebar-brand">
+                <img src="images/logo-white.png" alt="EducationistGuru" style="height: 34px; max-width: 140px; object-fit: contain;">
+                <span class="brand-badge">/edit</span>
+            </div>
+
+            <!-- Admin Profile Widget -->
+            <div class="edit-user-profile" id="editUserProfile">
+                <div class="edit-user-avatar" id="editUserAvatar">JK</div>
+                <div class="edit-user-info">
+                    <div class="edit-user-name" id="editUserName">Jatinder Kaur</div>
+                    <div class="edit-user-role" id="editUserRole">Super Admin</div>
+                </div>
+                <button type="button" class="edit-btn-signout" id="editSignOutBtn" title="Sign Out" onclick="window.handleEditSignOut(event)">
+                    <i class="fa fa-sign-out"></i>
+                </button>
+            </div>
+
+            <!-- 5 Specified Editing Options in exact order -->
+            <div class="sidebar-menu">
+                <div class="menu-label">Website Editing Options</div>
+                
+                <a class="menu-item active" data-tab="courses">
+                    <i class="fa fa-graduation-cap" style="color: #0ea5e9;"></i>
+                    <span>1. Courses</span>
+                    <span class="menu-count" id="sidebarCourseCount">0</span>
+                </a>
+                
+                <a class="menu-item" data-tab="colleges">
+                    <i class="fa fa-building-o" style="color: #10b981;"></i>
+                    <span>2. Colleges</span>
+                    <span class="menu-count" id="sidebarCollegeCount">0</span>
+                </a>
+                
+                <a class="menu-item" data-tab="universities">
+                    <i class="fa fa-university" style="color: #8b5cf6;"></i>
+                    <span>3. Universities</span>
+                    <span class="menu-count" id="sidebarUnivCount">0</span>
+                </a>
+                
+                <a class="menu-item" data-tab="blogs">
+                    <i class="fa fa-newspaper-o" style="color: #ff3115;"></i>
+                    <span>4. Blog</span>
+                    <span class="menu-count" id="sidebarBlogCount">0</span>
+                </a>
+                
+                <a class="menu-item" data-tab="youtube">
+                    <i class="fa fa-youtube-play" style="color: #ef4444;"></i>
+                    <span>5. YouTube</span>
+                    <span class="menu-count" id="sidebarVideoCount">0</span>
+                </a>
+
+                <a class="menu-item" data-tab="headers">
+                    <i class="fa fa-bars" style="color: #f59e0b;"></i>
+                    <span>6. Headers &amp; Menu</span>
+                    <span class="menu-count" id="sidebarHeaderCount" style="background:#fef3c7;color:#d97706;">Live</span>
+                </a>
+                
+                <div class="menu-label" style="margin-top: 20px;">System &amp; Metrics</div>
+                <a class="menu-item" data-tab="overview">
+                    <i class="fa fa-dashboard" style="color: #f59e0b;"></i>
+                    <span>Overview &amp; Activity</span>
+                </a>
+
+                <div class="menu-label" style="margin-top: 20px;">Quick Creation</div>
+                <a class="menu-item" onclick="window.openCourseModal()">
+                    <i class="fa fa-plus-circle" style="color: #0ea5e9;"></i>
+                    <span>Add New Course</span>
+                </a>
+                <a class="menu-item" onclick="window.openCollegeModal()">
+                    <i class="fa fa-plus-circle" style="color: #10b981;"></i>
+                    <span>Add New College</span>
+                </a>
+                <a class="menu-item" onclick="window.openUnivModal()">
+                    <i class="fa fa-plus-circle" style="color: #8b5cf6;"></i>
+                    <span>Add New University</span>
+                </a>
+                <a class="menu-item" onclick="window.openBlogModal()">
+                    <i class="fa fa-plus-circle" style="color: #ff3115;"></i>
+                    <span>Add New Blog Post</span>
+                </a>
+                <a class="menu-item" onclick="window.openVideoModal()">
+                    <i class="fa fa-plus-circle" style="color: #ef4444;"></i>
+                    <span>Add YouTube Video</span>
+                </a>
+                <a class="menu-item" onclick="window.openHeaderModal()">
+                    <i class="fa fa-plus-circle" style="color: #f59e0b;"></i>
+                    <span>Add Custom Header</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <a href="../index.html" class="quick-link-btn" target="_blank">
+                    <i class="fa fa-globe" style="color: #10b981;"></i>
+                    <span>View Public Website</span>
+                </a>
+                <a href="../CRM/dashboard.html" class="quick-link-btn">
+                    <i class="fa fa-users" style="color: #ff3115;"></i>
+                    <span>Go to CRM Dashboard</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="edit-main">
+            <!-- Topbar -->
+            <header class="edit-topbar">
+                <div class="topbar-title">
+                    <h1>
+                        <i class="fa fa-pencil-square-o" style="color: #ff3115;"></i>
+                        EducationistGuru Content Studio
+                    </h1>
+                    <p>Live management panel for Courses, Colleges, Universities, Blogs &amp; YouTube Channel</p>
+                </div>
+                <div class="topbar-actions">
+                    <div id="serverStatusBadge" class="server-status-pill online" title="Checking server connection...">
+                        <span class="server-status-dot"></span>
+                        <span>Checking server...</span>
+                    </div>
+                    <div class="live-badge">
+                        <span class="live-dot"></span>
+                        <span>Live Sync Active</span>
+                    </div>
+                    <a href="/api/system/backup" download class="btn btn-outline btn-sm" style="display:inline-flex;align-items:center;gap:6px;border-color:#10b981;color:#059669;background:#ecfdf5;text-decoration:none;" title="Download complete database vault backup (colleges, universities, blogs, courses, CRM data)">
+                        <i class="fa fa-shield"></i> Vault Backup
+                    </a>
+                    <button class="btn btn-outline btn-sm" onclick="window.location.reload()">
+                        <i class="fa fa-refresh"></i> Refresh
+                    </button>
+                    <button class="btn btn-outline btn-sm edit-btn-signout" id="editTopSignOutBtn" style="border-color:#ef4444;color:#ef4444;" onclick="window.handleEditSignOut(event)">
+                        <i class="fa fa-sign-out"></i> Sign Out
+                    </button>
+                </div>
+            </header>
+
+            <div class="edit-content">
+                <!-- ================= TAB 1: COURSES ================= -->
+                <section class="tab-pane active" id="tab-courses">
+                    <div class="section-header">
+                        <div>
+                            <h2>1. Courses &amp; Academic Programs</h2>
+                            <p>Manage curriculum, eligibility, duration, and specializations across all 15 faculties.</p>
+                        </div>
+                        <button class="btn btn-primary" id="openAddCourseBtn">
+                            <i class="fa fa-plus"></i> Add New Course
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="courseSearch" placeholder="Search courses by degree title, faculty, or stream...">
+                        </div>
+                        <select class="filter-select" id="courseFacultyFilter">
+                            <option value="">All 15 Faculties</option>
+                            <option value="Faculty of Commerce & Management">Faculty of Commerce & Management</option>
+                            <option value="Faculty of Engineering & Technology">Faculty of Engineering & Technology</option>
+                            <option value="Faculty of Computer Applications & IT">Faculty of Computer Applications & IT</option>
+                            <option value="Faculty of Law">Faculty of Law</option>
+                            <option value="Faculty of Paramedical Sciences">Faculty of Paramedical Sciences</option>
+                            <option value="Faculty of Pharmacy">Faculty of Pharmacy</option>
+                            <option value="Faculty of Yoga Science">Faculty of Yoga Science</option>
+                            <option value="Faculty of Humanities & Social Science">Faculty of Humanities & Social Science</option>
+                            <option value="Faculty of Science">Faculty of Science</option>
+                            <option value="Faculty of Education & Sports">Faculty of Education & Sports</option>
+                            <option value="Faculty of Journalism & Mass Communication">Faculty of Journalism & Mass Communication</option>
+                            <option value="Faculty of Fashion & Animation">Faculty of Fashion & Animation</option>
+                            <option value="Faculty of Agriculture Science">Faculty of Agriculture Science</option>
+                            <option value="Faculty of Vocational Education">Faculty of Vocational Education</option>
+                            <option value="Faculty of Library & Information Science">Faculty of Library & Information Science</option>
+                            <option value="Faculty of Philosophy & Research">Faculty of Philosophy & Research</option>
+                        </select>
+                    </div>
+
+                    <!-- Courses Grid -->
+                    <div class="cards-grid" id="coursesGrid"></div>
+                </section>
+
+                <!-- ================= TAB 2: COLLEGES ================= -->
+                <section class="tab-pane" id="tab-colleges">
+                    <div class="section-header">
+                        <div>
+                            <h2>2. Colleges Directory</h2>
+                            <p>Manage affiliated and recognized colleges, pharmacy institutes, engineering campuses, and legal academies.</p>
+                        </div>
+                        <button class="btn btn-primary" id="openAddCollegeBtn" style="background:#10b981; border-color:#10b981;">
+                            <i class="fa fa-plus"></i> Add New College
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="collegeSearch" placeholder="Search colleges by name, city, or courses offered...">
+                        </div>
+                        <select class="filter-select" id="collegeCategoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="Faculty of Pharmacy">Pharmacy Colleges</option>
+                            <option value="Faculty of Engineering & Technology">Engineering Colleges</option>
+                            <option value="Faculty of Commerce and Management">Management Institutes</option>
+                            <option value="Faculty of Law">Law Colleges</option>
+                            <option value="Faculty of Paramedical Sciences">Paramedical Institutions</option>
+                            <option value="Faculty of Education & Sports">Education & Sports</option>
+                        </select>
+                    </div>
+
+                    <!-- Colleges Grid -->
+                    <div class="cards-grid" id="collegesGrid"></div>
+                </section>
+
+                <!-- ================= TAB 3: UNIVERSITIES ================= -->
+                <section class="tab-pane" id="tab-universities">
+                    <div class="section-header">
+                        <div>
+                            <h2>3. Partner Universities</h2>
+                            <p>Manage UGC, AIU, and DEB recognized partner universities (AIU, Subharti, Mangalayatan, etc.).</p>
+                        </div>
+                        <button class="btn btn-primary" id="openAddUnivBtn" style="background:#8b5cf6; border-color:#8b5cf6;">
+                            <i class="fa fa-plus"></i> Add New University
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="univSearch" placeholder="Search universities by name, approvals, or location...">
+                        </div>
+                        <select class="filter-select" id="univModeFilter">
+                            <option value="">All University Types &amp; Modes</option>
+                            <option value="Distance">UGC-DEB Distance</option>
+                            <option value="Online">Online Degree Programs</option>
+                            <option value="Regular">Regular Campus</option>
+                            <option value="State Private">State Private Universities</option>
+                        </select>
+                    </div>
+
+                    <!-- Universities Grid -->
+                    <div class="cards-grid" id="universitiesGrid"></div>
+                </section>
+
+                <!-- ================= TAB 4: BLOGS ================= -->
+                <section class="tab-pane" id="tab-blogs">
+                    <div class="section-header">
+                        <div>
+                            <h2>4. Blog Articles &amp; Posts</h2>
+                            <p>Publish and update admission guides, educational insights, career articles, and news.</p>
+                        </div>
+                        <button class="btn btn-primary" id="openAddBlogBtn">
+                            <i class="fa fa-plus"></i> Add New Blog Post
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="blogSearch" placeholder="Search blogs by title, topic, or keyword...">
+                        </div>
+                        <select class="filter-select" id="blogCategoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="University Admissions">University Admissions</option>
+                            <option value="Distance Learning">Distance Learning</option>
+                            <option value="Career Guidance">Career Guidance</option>
+                            <option value="Online Degrees">Online Degrees</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+
+                    <!-- Blogs Grid -->
+                    <div class="cards-grid" id="blogsGrid"></div>
+                </section>
+
+                <!-- ================= TAB 5: YOUTUBE ================= -->
+                <section class="tab-pane" id="tab-youtube">
+                    <div class="section-header">
+                        <div>
+                            <h2>5. YouTube Channel Videos</h2>
+                            <p>Manage official YouTube guidance videos, student portal tutorials, and university reviews.</p>
+                        </div>
+                        <button class="btn btn-primary" id="openAddVideoBtn" style="background:#ef4444; border-color:#ef4444;">
+                            <i class="fa fa-youtube-play"></i> Add YouTube Video
+                        </button>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="videoSearch" placeholder="Search videos by title or topic...">
+                        </div>
+                        <select class="filter-select" id="videoCategoryFilter">
+                            <option value="">All Video Categories</option>
+                            <option value="Admissions 2025">Admissions 2025</option>
+                            <option value="Career Guidance">Career Guidance</option>
+                            <option value="University Reviews">University Reviews</option>
+                            <option value="Guidance & Awareness">Guidance &amp; Awareness</option>
+                        </select>
+                    </div>
+
+                    <!-- YouTube Videos Grid -->
+                    <div class="cards-grid" id="videosGrid"></div>
+                </section>
+
+                <!-- ================= TAB 6: HEADERS & MEGA-MENU ================= -->
+                <section class="tab-pane" id="tab-headers">
+                    <div class="section-header">
+                        <div>
+                            <h2>6. Navigation Headers &amp; Mega-Menu</h2>
+                            <p>Manage all website navigation items, mega-menu dropdowns, custom sub-links, and top announcement ribbon.</p>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline" id="saveAnnouncementBtn" onclick="window.saveAnnouncementSettings()">
+                                <i class="fa fa-bullhorn"></i> Save Announcement
+                            </button>
+                            <button class="btn btn-primary" id="openAddHeaderBtn" onclick="window.openHeaderModal()" style="background:#ff3115; border-color:#ff3115;">
+                                <i class="fa fa-plus-circle"></i> Add Navigation Header
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Top Announcement Ribbon Configuration Card -->
+                    <div class="form-section-card" style="margin-bottom:24px;">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-bullhorn text-primary"></i> Top Announcement Ribbon Bar</span>
+                            <span class="form-section-badge active" id="announcementStatusBadge">Active on Website</span>
+                        </div>
+                        <p class="form-section-desc">Displays a sleek top banner across all public pages with a live pulsing dot and quick action button.</p>
+                        
+                        <!-- Live Preview Card -->
+                        <div id="announcementLivePreviewContainer" style="margin-bottom:14px; padding:10px 14px; background:linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #ff3115 100%); border-radius:8px; display:flex; align-items:center; justify-content:space-between; color:#fff; font-size:12.5px;">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 0 2px rgba(16,185,129,0.4); display:inline-block;"></span>
+                                <span id="announcementPreviewText">🎓 Admissions Open 2026-27 | Call EducationistGuru Helpline: +91 87504 77000</span>
+                            </div>
+                            <span id="announcementPreviewCta" style="background:rgba(255,255,255,0.2); padding:3px 10px; border-radius:12px; font-weight:700; font-size:11.5px;">Apply Now &rarr;</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group" style="flex:2;">
+                                <label>Announcement Message</label>
+                                <input type="text" id="announcementTextInput" class="form-control" placeholder="e.g. 🎓 Admissions Open 2026-27 | Call EducationistGuru Helpline: +91 87504 77000" oninput="window.updateAnnouncementPreview()">
+                            </div>
+                            <div class="form-group" style="flex:1;">
+                                <label>Button CTA Text</label>
+                                <input type="text" id="announcementCtaInput" class="form-control" placeholder="e.g. Apply Now" oninput="window.updateAnnouncementPreview()">
+                            </div>
+                            <div class="form-group" style="flex:1;">
+                                <label>Button Target Link</label>
+                                <input type="text" id="announcementLinkInput" class="form-control" placeholder="contact.html">
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:10px;">
+                            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:600; font-size:13px; margin:0;">
+                                <input type="checkbox" id="announcementEnableToggle" checked onchange="window.updateAnnouncementPreview()"> Enable Top Announcement Ribbon
+                            </label>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="window.saveAnnouncementSettings()" style="background:#10b981; border-color:#10b981;">
+                                <i class="fa fa-check"></i> Save &amp; Publish Announcement Bar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- All Navigation Headers Management Card -->
+                    <div class="form-section-card" style="margin-bottom:24px;">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-bars text-primary"></i> Main Website Navigation Headers</span>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" class="btn btn-sm btn-primary" onclick="window.openHeaderModal()" style="background:#ff3115; border-color:#ff3115;">
+                                    <i class="fa fa-plus"></i> Add New Header
+                                </button>
+                            </div>
+                        </div>
+                        <p class="form-section-desc">Manage the top navigation menu. Edit titles, links, badges, toggle visibility on the live website, and configure dropdown sub-links.</p>
+                        
+                        <div id="allNavHeadersContainer" style="margin-top:16px;">
+                            <!-- Dynamically populated interactive headers table -->
+                            <div style="text-align:center; padding:30px; color:#64748b;">
+                                <i class="fa fa-refresh fa-spin" style="font-size:20px; color:#ff3115;"></i> Loading Navigation Headers...
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Synchronized Headers Insight Cards -->
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                        <div class="form-section-card">
+                            <div class="form-section-header">
+                                <span class="form-section-title"><i class="fa fa-graduation-cap text-primary"></i> Courses Mega-Menu Sync</span>
+                                <span class="form-section-badge active">Auto-Syncing</span>
+                            </div>
+                            <p style="font-size:13px; color:#64748b; line-height:1.5; margin-bottom:12px;">
+                                Courses added in Content Studio are automatically organized into 4 academic pillars (Management, IT &amp; Tech, Medical &amp; Pharmacy, Law &amp; Teaching).
+                            </p>
+                            <div id="coursesMegaMenuPreview" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12.5px; color:#334155;">
+                                <i class="fa fa-refresh fa-spin"></i> Synchronizing courses...
+                            </div>
+                        </div>
+
+                        <div class="form-section-card">
+                            <div class="form-section-header">
+                                <span class="form-section-title"><i class="fa fa-university text-primary"></i> Partner Universities Header Sync</span>
+                                <span class="form-section-badge active">Auto-Syncing</span>
+                            </div>
+                            <p style="font-size:13px; color:#64748b; line-height:1.5; margin-bottom:12px;">
+                                Universities added in Content Studio automatically appear in the navigation dropdown with their UGC/NAAC accreditations and direct profile links.
+                            </p>
+                            <div id="univsHeaderPreview" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; font-size:12.5px; color:#334155;">
+                                <i class="fa fa-refresh fa-spin"></i> Synchronizing universities...
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 7: OVERVIEW ================= -->
+                <section class="tab-pane" id="tab-overview">
+                    <div class="section-header">
+                        <div>
+                            <h2>Content Overview &amp; Telemetry</h2>
+                            <p>Real-time count of all 5 website content areas with verification shortcuts.</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-row" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
+                        <div class="stat-box">
+                            <div class="stat-icon courses"><i class="fa fa-graduation-cap"></i></div>
+                            <div>
+                                <div class="stat-val" id="totalCoursesCount">0</div>
+                                <div class="stat-text">Active Courses</div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="background:#ecfdf5; color:#10b981;"><i class="fa fa-building-o"></i></div>
+                            <div>
+                                <div class="stat-val" id="totalCollegesCount">0</div>
+                                <div class="stat-text">Partner Colleges</div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="background:#f5f3ff; color:#8b5cf6;"><i class="fa fa-university"></i></div>
+                            <div>
+                                <div class="stat-val" id="totalUnivCount">0</div>
+                                <div class="stat-text">Partner Universities</div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon blogs"><i class="fa fa-newspaper-o"></i></div>
+                            <div>
+                                <div class="stat-val" id="totalBlogsCount">0</div>
+                                <div class="stat-text">Published Blogs</div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-icon" style="background:#fef2f2; color:#ef4444;"><i class="fa fa-youtube-play"></i></div>
+                            <div>
+                                <div class="stat-val" id="totalVideosCount">0</div>
+                                <div class="stat-text">YouTube Videos</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background:#fff; border-radius:12px; border:1px solid var(--border-color); padding:24px; box-shadow:var(--shadow-sm); margin-bottom:24px;">
+                        <h3 style="font-size:16px; margin-bottom:12px; font-weight:700;">Public Page Verification Shortcuts</h3>
+                        <p style="font-size:13px; color:#64748b; margin-bottom:16px;">Preview live website pages updated via Content Studio:</p>
+                        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+                            <a href="../courses.html" target="_blank" class="btn btn-outline"><i class="fa fa-graduation-cap"></i> View courses.html</a>
+                            <a href="../colleges.html" target="_blank" class="btn btn-outline" style="border-color:#10b981; color:#10b981;"><i class="fa fa-building-o"></i> View colleges.html</a>
+                            <a href="../universities.html" target="_blank" class="btn btn-outline" style="border-color:#8b5cf6; color:#8b5cf6;"><i class="fa fa-university"></i> View universities.html</a>
+                            <a href="../blog.html" target="_blank" class="btn btn-outline"><i class="fa fa-newspaper-o"></i> View blog.html</a>
+                            <a href="../youtube.html" target="_blank" class="btn btn-outline" style="border-color:#ef4444; color:#ef4444;"><i class="fa fa-youtube-play"></i> View youtube.html</a>
+                            <a href="../index.html" target="_blank" class="btn btn-outline"><i class="fa fa-home"></i> View Homepage</a>
+                        </div>
+                    </div>
+
+                    <div style="background:#fff; border-radius:12px; border:1px solid var(--border-color); padding:24px; box-shadow:var(--shadow-sm);">
+                        <h3 style="font-size:16px; margin-bottom:16px; font-weight:700;"><i class="fa fa-clock-o" style="color:#ff3115; margin-right:8px;"></i> Recent Content Updates</h3>
+                        <div id="recentActivityList"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= ADD / EDIT COURSE MODAL ================= -->
+    <div class="modal-overlay" id="courseModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="courseModalTitle">Add New Course</h3>
+                <button class="modal-close" onclick="window.closeCourseModal()">&times;</button>
+            </div>
+            <form id="courseForm">
+                <div class="modal-body">
+                    <!-- 1. Title -->
+                    <div class="form-group">
+                        <label><strong>1. Title (Course / Degree Title)</strong> <span class="req">*</span></label>
+                        <input type="text" id="courseNameInput" class="form-control" placeholder="e.g. MBA in Financial Management &amp; Project Management" required>
+                    </div>
+
+                    <!-- 2. Meta Description -->
+                    <div class="form-group">
+                        <label><strong>2. Meta Description (SEO Google Snippet)</strong></label>
+                        <textarea id="courseMetaDescInput" class="form-control" rows="2" maxlength="200" placeholder="e.g. Admissions Open for MBA in Financial Management &amp; Project Management. UGC-DEB approved degree program with full curriculum and counseling details."></textarea>
+                        <div class="meta-counter"><span id="courseMetaCount">0 / 160 characters</span><span>Recommended: 120-160 characters for search rankings</span></div>
+                    </div>
+
+                    <!-- 3, 4, 5. Tags ++, Categories ++, Keywords ++ -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><strong>3. Tags (+ +)</strong></label>
+                            <div class="chip-input-wrapper">
+                                <input type="text" id="courseTagInput" class="form-control" placeholder="e.g. Subharti">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('course', 'tag')"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="chips-container" id="courseTagsChips"></div>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>4. Categories (+ +)</strong></label>
+                            <div class="chip-input-wrapper">
+                                <input type="text" id="courseCategoryInput" class="form-control" placeholder="e.g. Management">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('course', 'cat')"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="chips-container" id="courseCategoriesChips"></div>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>5. Keywords (+ +)</strong></label>
+                            <div class="chip-input-wrapper">
+                                <input type="text" id="courseKeywordInput" class="form-control" placeholder="e.g. Distance MBA">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('course', 'kw')"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="chips-container" id="courseKeywordsChips"></div>
+                        </div>
+                    </div>
+
+                    <!-- Academic Metadata -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Faculty / Department <span class="req">*</span></label>
+                            <input type="text" id="courseFacultyInput" class="form-control" placeholder="Faculty of Commerce &amp; Management" list="facultyList" required>
+                            <datalist id="facultyList">
+                                <option value="Faculty of Commerce &amp; Management">
+                                <option value="Faculty of Engineering &amp; Technology">
+                                <option value="Faculty of Computer Applications &amp; IT">
+                                <option value="Faculty of Law">
+                                <option value="Faculty of Paramedical Sciences">
+                                <option value="Faculty of Pharmacy">
+                                <option value="Faculty of Yoga Science">
+                                <option value="Faculty of Humanities &amp; Social Science">
+                                <option value="Faculty of Science">
+                                <option value="Faculty of Education &amp; Sports">
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="courseDurationInput" class="form-control" placeholder="e.g. 2 Years (4 Sem)">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Eligibility Criteria</label>
+                            <input type="text" id="courseEligibilityInput" class="form-control" placeholder="e.g. Graduation in any stream (min 45%)">
+                        </div>
+                        <div class="form-group">
+                            <label>Learning Mode</label>
+                            <input type="text" id="courseModeInput" class="form-control" placeholder="Online / Regular / Distance">
+                        </div>
+                        <div class="form-group">
+                            <label>Fee Structure</label>
+                            <input type="text" id="courseFeeInput" class="form-control" placeholder="e.g. ₹32,000 / year">
+                        </div>
+                    </div>
+
+                    <!-- 6. Feature Image and Image (Gallery) -->
+                    <div class="form-section-card" style="margin-top:12px; margin-bottom:16px;">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-picture-o text-primary"></i> <strong>6. Feature Image &amp; Additional Images (Gallery)</strong></span>
+                        </div>
+                        
+                        <!-- Main Feature Image -->
+                        <div class="form-group upload-box-container" style="margin-top:10px;">
+                            <label>Main Feature Image (Card &amp; Header Banner)</label>
+                            <div class="file-drop-zone" id="courseDropZone" data-target="courseImageInput" data-preview="courseImagePreview" data-file-input="courseFileInput">
+                                <input type="file" id="courseFileInput" class="local-device-file" accept="image/*" style="display:none;">
+                                <div class="drop-zone-content">
+                                    <div class="drop-zone-icon"><i class="fa fa-cloud-upload"></i></div>
+                                    <div class="drop-zone-text">
+                                        <span class="drop-title"><strong>Upload Main Feature Image from Device</strong> or drag &amp; drop</span>
+                                        <span class="drop-hint">PNG, JPG, WEBP (Saved directly to server)</span>
+                                    </div>
+                                    <button type="button" class="btn btn-outline btn-sm btn-browse-local" style="margin-left:auto; flex-shrink:0;">
+                                        <i class="fa fa-folder-open"></i> Browse Device
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="courseImageInput" value="images/courses/1.jpg">
+
+                            <!-- Active Preview Card -->
+                            <div id="courseImagePreview" class="active-thumb-preview" style="display:none; margin-top:10px;">
+                                <div class="thumb-card">
+                                    <img src="" alt="Thumbnail preview" class="thumb-preview-img" onerror="this.src='../images/courses/1.jpg'">
+                                    <div class="thumb-meta">
+                                        <span class="thumb-name">Active Feature Image</span>
+                                        <span class="thumb-badge"><i class="fa fa-check-circle"></i> Ready</span>
+                                    </div>
+                                    <button type="button" class="thumb-clear-btn" data-target="courseImageInput" data-preview="courseImagePreview" title="Clear image">&times;</button>
+                                </div>
+                            </div>
+
+                            <!-- Preset Images Gallery -->
+                            <div style="margin-top:12px;">
+                                <span style="font-size:11.5px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">Or choose a preset feature image:</span>
+                                <div class="preset-images">
+                                    <div class="preset-thumb active" data-target="courseImageInput" data-preview="courseImagePreview" data-src="images/courses/1.jpg"><img src="../images/courses/1.jpg" alt="1" onerror="this.src='/images/courses/1.jpg'"></div>
+                                    <div class="preset-thumb" data-target="courseImageInput" data-preview="courseImagePreview" data-src="images/courses/2.jpg"><img src="../images/courses/2.jpg" alt="2" onerror="this.src='/images/courses/2.jpg'"></div>
+                                    <div class="preset-thumb" data-target="courseImageInput" data-preview="courseImagePreview" data-src="images/courses/3.jpg"><img src="../images/courses/3.jpg" alt="3" onerror="this.src='/images/courses/3.jpg'"></div>
+                                    <div class="preset-thumb" data-target="courseImageInput" data-preview="courseImagePreview" data-src="images/courses/4.jpg"><img src="../images/courses/4.jpg" alt="4" onerror="this.src='/images/courses/4.jpg'"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Gallery Images -->
+                        <div style="margin-top:14px; border-top:1px dashed #e2e8f0; padding-top:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <label style="margin:0; font-weight:700; font-size:13px; color:#1e293b;">Additional Course / Campus Media Images</label>
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addGalleryRow('course')">
+                                    <i class="fa fa-plus"></i> Add Gallery Image
+                                </button>
+                            </div>
+                            <div id="courseGalleryRows" style="display:flex; flex-direction:column; gap:8px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 7: REFINED & SPACIOUS VISUAL WYSIWYG DOCUMENT EDITOR -->
+                    <div class="form-section-card" style="padding: 12px 14px; background:#f8fafc; margin-top:14px;">
+                        <div class="form-section-header" style="margin-bottom:8px;">
+                            <span class="form-section-title"><i class="fa fa-edit text-primary"></i> 7. Course Overview &amp; Curriculum Description (Spacious Document Canvas)</span>
+                            <span style="font-size:12px; color:#64748b;">Highlight text &amp; format directly. Click <strong>⛶ Expand</strong> for full-screen writing.</span>
+                        </div>
+
+                        <div class="visual-editor-container" id="courseEditorContainer">
+                            <!-- Multi-tier Visual Toolbar with Selection Protection -->
+                            <div class="visual-editor-toolbar" style="flex-direction:column; gap:8px; padding:10px 12px; background:#0f172a; border-radius:8px 8px 0 0;">
+                                <!-- Row 1: Typography, Headings & Alignment -->
+                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; width:100%;">
+                                    <div class="toolbar-group">
+                                        <select class="tool-select" onchange="window.applyHeadingStyle('courseVisualEditor', this.value); this.value='';" style="background:#1e293b; color:#fff; border:1px solid #334155; padding:4px 8px; border-radius:6px; font-size:12px;">
+                                            <option value="" disabled selected>Heading / Style</option>
+                                            <option value="p">Paragraph (Normal Text)</option>
+                                            <option value="h1">Heading 1 (Main Title)</option>
+                                            <option value="h2">Heading 2 (Major Section)</option>
+                                            <option value="h3">Heading 3 (Sub Section)</option>
+                                            <option value="h4">Heading 4 (Topic Header)</option>
+                                            <option value="blockquote">Blockquote (Quote)</option>
+                                        </select>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('courseVisualEditor', 'h1')" title="Heading 1">H1</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('courseVisualEditor', 'h2')" title="Heading 2">H2</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('courseVisualEditor', 'h3')" title="Heading 3">H3</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('courseVisualEditor', 'h4')" title="Heading 4">H4</button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Inline Formats -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'bold')" title="Bold" style="font-weight:900;"><b>B</b></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'italic')" title="Italic" style="font-style:italic; font-family:serif;"><i>I</i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'underline')" title="Underline"><u>U</u></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'strikeThrough')" title="Strikethrough"><s>S</s></button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Color Highlights -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('courseVisualEditor', 'yellow')" title="Highlight Yellow" style="background:#fef08a; color:#854d0e; font-weight:800; padding:2px 7px;">🟨</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('courseVisualEditor', 'green')" title="Highlight Green" style="background:#bbf7d0; color:#166534; font-weight:800; padding:2px 7px;">🟩</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('courseVisualEditor', 'blue')" title="Highlight Blue" style="background:#bfdbfe; color:#1e40af; font-weight:800; padding:2px 7px;">🟦</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('courseVisualEditor', 'pink')" title="Highlight Pink" style="background:#fbcfe8; color:#9d174d; font-weight:800; padding:2px 7px;">🟥</button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Lists & Alignment -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'insertUnorderedList')" title="Bullet List">• List</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'insertOrderedList')" title="Numbered List">1. List</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'justifyLeft')" title="Align Left"><i class="fa fa-align-left"></i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'justifyCenter')" title="Align Center"><i class="fa fa-align-center"></i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('courseVisualEditor', 'justifyRight')" title="Align Right"><i class="fa fa-align-right"></i></button>
+                                    </div>
+                                    <!-- Fullscreen Expand -->
+                                    <button type="button" class="btn-visual-tool" id="courseFullscreenBtn" onmousedown="event.preventDefault()" onclick="window.toggleEditorFullscreen('courseEditorContainer')" title="Toggle Fullscreen Writing Mode" style="margin-left:auto; background:#3b82f6; border-color:#2563eb; color:#fff; font-weight:700;">
+                                        <i class="fa fa-arrows-alt"></i> ⛶ Fullscreen
+                                    </button>
+                                </div>
+
+                                <!-- Row 2: Rich Inserts, Pre-Made Templates & Media -->
+                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; width:100%; border-top:1px solid #1e293b; padding-top:6px;">
+                                    <!-- Templates Dropdown -->
+                                    <div class="toolbar-group">
+                                        <select class="tool-select" onchange="window.insertEditorTemplate('courseVisualEditor', this.value); this.value='';" style="background:#ff3115; color:#fff; border:1px solid #ff3115; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                            <option value="" disabled selected>⚡ Insert Course Template</option>
+                                            <option value="course_guide">📘 Complete Course &amp; Career Guide</option>
+                                            <option value="univ_review">🏛️ Comprehensive Syllabus &amp; Curriculum</option>
+                                            <option value="admission_notice">📢 Admission Announcement &amp; Eligibility</option>
+                                        </select>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Rich Components -->
+                                    <div class="toolbar-group" style="gap:4px;">
+                                        <button type="button" class="btn-visual-tool btn-tool-lead" onmousedown="event.preventDefault()" onclick="window.insertVisualInquiryBox('courseVisualEditor')" title="Insert Admission Inquiry Callout Box"><i class="fa fa-paper-plane"></i> + Inquiry Box</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorTable('courseVisualEditor')" title="Insert Curriculum / Fee Table"><i class="fa fa-table"></i> + Table</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorNotice('courseVisualEditor')" title="Insert Important Notice Box"><i class="fa fa-info-circle"></i> + Notice</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorKeyHighlights('courseVisualEditor')" title="Insert 2-Column Key Highlights Grid" style="background:#8b5cf6; border-color:#7c3aed; color:#fff;"><i class="fa fa-star"></i> + Highlights</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorFaq('courseVisualEditor')" title="Insert FAQ Accordion Block" style="background:#059669; border-color:#047857; color:#fff;"><i class="fa fa-question-circle"></i> + FAQ</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorQuote('courseVisualEditor')" title="Insert Stylized Quote Block"><i class="fa fa-quote-left"></i> + Quote</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorImage('courseVisualEditor')" title="Insert Image with Caption"><i class="fa fa-image"></i> + Image</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorDivider('courseVisualEditor')" title="Insert Section Break Divider">― Divider</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorLink('courseVisualEditor')" title="Insert Link"><i class="fa fa-link"></i> Link</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-clear" onmousedown="event.preventDefault()" onclick="window.clearEditorFormatting('courseVisualEditor')" title="Clear Formatting"><i class="fa fa-eraser"></i> Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spacious Visual Document Canvas -->
+                            <div id="courseVisualEditor" class="visual-editor-canvas" contenteditable="true" spellcheck="true" placeholder="Start writing comprehensive course details here... Highlight text and click H1, H2, or Bold to format directly!"></div>
+                            <input type="hidden" id="courseDescriptionInput">
+
+                            <!-- Live Document Statistics Bar -->
+                            <div class="visual-editor-statusbar" id="courseEditorStatusbar">
+                                <span class="statusbar-stat"><i class="fa fa-file-text-o"></i> <span id="courseWordCount">0 words</span></span>
+                                <span class="statusbar-stat"><i class="fa fa-font"></i> <span id="courseCharCount">0 characters</span></span>
+                                <span class="statusbar-stat"><i class="fa fa-clock-o"></i> <span id="courseReadingTime">~1 min read</span></span>
+                                <span class="statusbar-stat" style="margin-left:auto; color:#10b981;"><i class="fa fa-check-circle"></i> Visual Canvas Ready</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Specializations / Career Highlights</label>
+                        <input type="text" id="courseSpecializationsInput" class="form-control" placeholder="e.g. Financial Management, Project Lifecycle Planning, Capital Budgeting">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Curriculum Syllabus Modules (One per line)</label>
+                        <textarea id="courseCurriculumInput" class="form-control" rows="3" placeholder="Module 1: Mathematical Foundations &amp; Economics&#10;Module 2: Advanced Financial Management&#10;Module 3: Project Formulation &amp; Risk Analytics&#10;Module 4: Capstone Industry Dissertation"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeCourseModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save &amp; Publish Course</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ADD / EDIT COLLEGE MODAL ================= -->
+    <div class="modal-overlay" id="collegeModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="collegeModalTitle"><i class="fa fa-university text-primary"></i> Add New College</h3>
+                <button class="modal-close" onclick="window.closeCollegeModal()">&times;</button>
+            </div>
+            <form id="collegeForm">
+                <div class="modal-body">
+
+                    <!-- SECTION 1: BASIC INSTITUTION DETAILS -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-university"></i> 1. Institution Profile</span>
+                            <span class="form-section-badge">Required</span>
+                        </div>
+                        <div class="form-group">
+                            <label>College Name <span class="req">*</span></label>
+                            <input type="text" id="collegeNameInput" class="form-control" placeholder="e.g. Metro Institute of Pharmaceutical Sciences" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Affiliation / Approvals</label>
+                                <input type="text" id="collegeAffiliationInput" class="form-control" placeholder="e.g. Affiliated to GGSIPU / AICTE Approved">
+                            </div>
+                            <div class="form-group">
+                                <label>Location (City, State)</label>
+                                <input type="text" id="collegeLocationInput" class="form-control" placeholder="e.g. New Delhi, Delhi">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Established Year</label>
+                                <input type="text" id="collegeEstablishedInput" class="form-control" placeholder="e.g. 2008">
+                            </div>
+                            <div class="form-group">
+                                <label>Accreditation / Recognitions</label>
+                                <input type="text" id="collegeAccreditationInput" class="form-control" placeholder="e.g. PCI Approved, AICTE, NAAC A+">
+                            </div>
+                        </div>
+
+                        <!-- 2. Meta Description (SEO Google Snippet) -->
+                        <div class="form-group" style="margin-top:14px;">
+                            <label><strong>2. Meta Description (SEO Google Snippet)</strong></label>
+                            <textarea id="collegeMetaDescInput" class="form-control" rows="2" maxlength="200" placeholder="e.g. Admissions Open at Metro Institute of Pharmaceutical Sciences. Approved by PCI & AICTE with 100% placement support."></textarea>
+                            <div class="meta-counter"><span id="collegeMetaCount">0 / 160 characters</span><span>Recommended: 120-160 characters for search rankings</span></div>
+                        </div>
+
+                        <!-- 3 & 4. Tags ++ and Keywords ++ -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><strong>3. Tags (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="collegeTagInput" class="form-control" placeholder="e.g. Top Pharmacy College">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('college', 'tag')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="collegeTagsChips"></div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>4. Keywords (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="collegeKeywordInput" class="form-control" placeholder="e.g. B.Pharm Admission Delhi">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('college', 'kw')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="collegeKeywordsChips"></div>
+                            </div>
+                        </div>
+
+                        <!-- 5. Campus Facilities (++ Chips & 1-Click Preset Toggles) -->
+                        <div class="form-group" style="margin-top:12px;">
+                            <label><strong>5. Campus Facilities (+ +)</strong> <span style="font-weight:400; color:#64748b;">(Add custom or tap quick presets below)</span></label>
+                            <div class="chip-input-wrapper">
+                                <input type="text" id="collegeFacilityInput" class="form-control" placeholder="e.g. Wi-Fi Campus, Modern Computer Labs, AC Hostel">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('college', 'fac')"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="chips-container" id="collegeFacilitiesChips" style="margin-top:6px;"></div>
+
+                            <!-- 1-Click Quick Facility Toggles -->
+                            <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Wi-Fi Campus')"><i class="fa fa-wifi"></i> + Wi-Fi Campus</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Boys & Girls Hostel')"><i class="fa fa-bed"></i> + Hostel</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Advanced Research Labs')"><i class="fa fa-flask"></i> + Modern Labs</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Digital Library & E-Books')"><i class="fa fa-book"></i> + Central Library</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Sports Complex & Gym')"><i class="fa fa-futbol-o"></i> + Sports Complex</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Cafeteria & Mess')"><i class="fa fa-cutlery"></i> + Cafeteria</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Placement Cell & Tie-ups')"><i class="fa fa-briefcase"></i> + Placement Cell</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Auditorium & Seminars')"><i class="fa fa-users"></i> + Auditorium</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('college', 'Medical Support & Ambulance')"><i class="fa fa-heartbeat"></i> + Medical Center</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: FACULTY DOMAINS / CATEGORIES -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-th-large"></i> 2. Academic Faculties &amp; Domains</span>
+                            <span class="form-section-badge active" id="collegeCategoryCountBadge">0 Domains Selected</span>
+                        </div>
+                        <p class="form-section-desc">Click domain cards to toggle. Selecting faculties automatically filters recommended degree programs below.</p>
+                        
+                        <div class="stream-toggle-grid" id="collegeCategoryCardsGrid">
+                            <!-- Dynamically populated stream cards with live counts -->
+                        </div>
+
+                        <!-- Custom category input -->
+                        <div class="custom-stream-row">
+                            <input type="text" id="collegeCustomCategoryInput" placeholder="+ Add custom faculty domain (e.g. Faculty of Aeronautical Sciences)...">
+                            <button type="button" class="btn btn-sm btn-outline" id="collegeAddCustomCatBtn" style="flex-shrink:0;">
+                                <i class="fa fa-plus"></i> Add Domain
+                            </button>
+                        </div>
+                        <input type="hidden" id="collegeCategoryInput" required>
+                    </div>
+
+                    <!-- SECTION 3: COURSES & DEGREES OFFERED -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-graduation-cap"></i> 3. Courses &amp; Programs Offered</span>
+                            <span class="form-section-badge active" id="collegeCoursesCountBadge">0 Programs Selected</span>
+                        </div>
+                        <p class="form-section-desc">Select degree programs offered at this college. Dynamically synced across all courses in catalog.</p>
+                        
+                        <div class="program-selector-wrap">
+                            <!-- Active Selected Tags -->
+                            <div class="selected-programs-header">
+                                <span class="selected-programs-count">
+                                    Active Programs <span class="count-pill" id="collegeSelectedCount">0</span>
+                                </span>
+                                <button type="button" class="btn-clear-all-tags" id="collegeClearCoursesBtn">
+                                    <i class="fa fa-trash-o"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="selected-programs-box" id="collegeCoursesTagsBox">
+                                <!-- Dynamically populated selected program chips -->
+                            </div>
+
+                            <!-- Stream Filter Tabs Bar -->
+                            <div class="program-stream-tabs" id="collegeProgramStreamTabs">
+                                <!-- Dynamically populated stream filter tabs -->
+                            </div>
+
+                            <!-- Instant Search Bar -->
+                            <div class="program-search-row">
+                                <div class="program-search-wrap">
+                                    <i class="fa fa-search"></i>
+                                    <input type="text" id="collegeProgramSearchInput" class="program-search-input" placeholder="Search degrees (e.g. B.Tech AI, MBA, D.Pharm, MCA, BMLT, LL.B)...">
+                                </div>
+                            </div>
+
+                            <!-- Program Pills Grid (1-Click Toggle) -->
+                            <div class="program-pills-grid" id="collegeProgramPillsGrid">
+                                <!-- Dynamically populated degree pills with checkmarks -->
+                            </div>
+
+                            <!-- Custom Program Adder -->
+                            <div class="program-custom-add-row">
+                                <input type="text" id="collegeCourseNewInput" placeholder="Type a custom course / degree title...">
+                                <button type="button" class="btn btn-sm btn-outline" id="collegeAddCourseBtn" style="flex-shrink:0;">
+                                    <i class="fa fa-plus"></i> Add Custom
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="collegeCoursesInput">
+                    </div>
+
+                    <!-- SECTION 4: ADMISSIONS & FEES -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-money"></i> 4. Fee Structure &amp; Rating</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Fee Structure Range</label>
+                                <input type="text" id="collegeFeeInput" class="form-control" placeholder="e.g. ₹55,000 - ₹95,000 / year">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa fa-star text-primary"></i> Rating (Out of 5.0)</label>
+                                <input type="text" id="collegeRatingInput" class="form-control" placeholder="4.8">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: CAMPUS PHOTOS & MEDIA -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-picture-o"></i> 5. College Campus Imagery</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fa fa-link text-primary"></i> Image URL / Server Path</label>
+                            <input type="text" id="collegeImageInput" class="form-control" placeholder="images/courses/1.jpg or /images/uploads/...">
+                        </div>
+
+                        <!-- Local Device Upload Dropzone -->
+                        <div class="file-drop-zone" id="collegeDropZone" data-target="collegeImageInput" data-preview="collegeImagePreview" data-file-input="collegeFileInput">
+                            <input type="file" id="collegeFileInput" class="local-device-file" accept="image/*" style="display:none;">
+                            <div class="drop-zone-content">
+                                <div class="drop-zone-icon"><i class="fa fa-cloud-upload"></i></div>
+                                <div class="drop-zone-text">
+                                    <span class="drop-title"><strong>Upload Campus Photo from Device</strong> or drag &amp; drop</span>
+                                    <span class="drop-hint">PNG, JPG, WEBP, SVG or GIF</span>
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm btn-browse-local" style="margin-left:auto; flex-shrink:0;">
+                                    <i class="fa fa-folder-open"></i> Browse Device
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Active Preview Card -->
+                        <div id="collegeImagePreview" class="active-thumb-preview" style="display:none; margin-top:10px;">
+                            <div class="thumb-card">
+                                <img src="" alt="Thumbnail preview" class="thumb-preview-img" onerror="this.src='../images/courses/1.jpg'">
+                                <div class="thumb-meta">
+                                    <span class="thumb-name">Active Thumbnail</span>
+                                    <span class="thumb-badge"><i class="fa fa-check-circle"></i> Ready</span>
+                                </div>
+                                <button type="button" class="thumb-clear-btn" data-target="collegeImageInput" data-preview="collegeImagePreview" title="Clear image">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- Visual Preset Photos Gallery (Working root-relative paths!) -->
+                        <div style="margin-top:14px;">
+                            <span style="font-size:11.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:8px;">
+                                Or choose a curated campus photo:
+                            </span>
+                            <div class="preset-campus-grid">
+                                <div class="preset-campus-card active" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/1.jpg">
+                                    <img src="../images/courses/1.jpg" alt="Campus 1" onerror="this.src='/images/courses/1.jpg'">
+                                    <div class="preset-campus-label">Tech &amp; AI Campus</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/2.jpg">
+                                    <img src="../images/courses/2.jpg" alt="Campus 2" onerror="this.src='/images/courses/2.jpg'">
+                                    <div class="preset-campus-label">Academic Quad</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/3.jpg">
+                                    <img src="../images/courses/3.jpg" alt="Campus 3" onerror="this.src='/images/courses/3.jpg'">
+                                    <div class="preset-campus-label">Green Campus Block</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/4.jpg">
+                                    <img src="../images/courses/4.jpg" alt="Campus 4" onerror="this.src='/images/courses/4.jpg'">
+                                    <div class="preset-campus-label">Central Library &amp; Labs</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/5.jpg">
+                                    <img src="../images/courses/5.jpg" alt="Campus 5" onerror="this.src='/images/courses/5.jpg'">
+                                    <div class="preset-campus-label">Executive Block</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card" data-target="collegeImageInput" data-preview="collegeImagePreview" data-src="images/courses/6.jpg">
+                                    <img src="../images/courses/6.jpg" alt="Campus 6" onerror="this.src='/images/courses/6.jpg'">
+                                    <div class="preset-campus-label">Auditorium &amp; Grounds</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 6: OVERVIEW & HIGHLIGHTS -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-file-text-o"></i> 6. Overview &amp; Placement Highlights</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Overview &amp; Facilities Description</label>
+                            <textarea id="collegeDescriptionInput" class="form-control" rows="3" placeholder="Explain campus facilities, laboratories, placement track record, tie-ups..."></textarea>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="collegeFeaturedInput" style="cursor:pointer;">
+                            <label for="collegeFeaturedInput" style="margin:0; cursor:pointer; font-weight:600; font-size:13px; color:#1e293b;">Mark as Featured College</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeCollegeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background:#10b981; border-color:#10b981;"><i class="fa fa-check"></i> Save &amp; Publish College</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ADD / EDIT UNIVERSITY MODAL ================= -->
+    <div class="modal-overlay" id="univModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="univModalTitle"><i class="fa fa-graduation-cap text-primary"></i> Add New University</h3>
+                <button class="modal-close" onclick="window.closeUnivModal()">&times;</button>
+            </div>
+            <form id="univForm">
+                <div class="modal-body">
+
+                    <!-- SECTION 1: BASIC UNIVERSITY PROFILE -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-institution"></i> 1. University Profile &amp; Governance</span>
+                            <span class="form-section-badge">Required</span>
+                        </div>
+                        <div class="form-group">
+                            <label>University Name <span class="req">*</span></label>
+                            <input type="text" id="univNameInput" class="form-control" placeholder="e.g. Asian International University (AIU)" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>University Type</label>
+                                <input type="text" id="univTypeInput" class="form-control" placeholder="e.g. State Private University" list="univTypeList">
+                                <datalist id="univTypeList">
+                                    <option value="State Private University">
+                                    <option value="Central University">
+                                    <option value="Deemed-to-be University">
+                                    <option value="Autonomous University">
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label>Approvals &amp; Recognitions</label>
+                                <input type="text" id="univApprovalsInput" class="form-control" placeholder="e.g. UGC Recognized, AIU Member, AICTE Approved">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Campus Location (City, State)</label>
+                                <input type="text" id="univLocationInput" class="form-control" placeholder="e.g. Manipur &amp; Pan-India Centers">
+                            </div>
+                            <div class="form-group">
+                                <label>Established Year</label>
+                                <input type="text" id="univEstablishedInput" class="form-control" placeholder="e.g. 2021">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>NAAC Grade / UGC Section</label>
+                                <input type="text" id="univNaacInput" class="form-control" placeholder="e.g. NAAC A+ Grade / UGC 2(f)">
+                            </div>
+                            <div class="form-group">
+                                <label>Learning Modes</label>
+                                <input type="text" id="univModesInput" class="form-control" placeholder="e.g. Online / Regular / Distance Learning">
+                            </div>
+                        </div>
+
+                        <!-- 2. Meta Description (SEO Google Snippet) -->
+                        <div class="form-group" style="margin-top:14px;">
+                            <label><strong>2. Meta Description (SEO Google Snippet)</strong></label>
+                            <textarea id="univMetaDescInput" class="form-control" rows="2" maxlength="200" placeholder="e.g. Swami Vivekanand Subharti University Admissions 2026. UGC-DEB approved degrees in MBA, BA, B.Com, MCA with transparent fees."></textarea>
+                            <div class="meta-counter"><span id="univMetaCount">0 / 160 characters</span><span>Recommended: 120-160 characters for search rankings</span></div>
+                        </div>
+
+                        <!-- 3 & 4. Tags ++ and Keywords ++ -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><strong>3. Tags (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="univTagInput" class="form-control" placeholder="e.g. UGC-DEB University">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('univ', 'tag')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="univTagsChips"></div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>4. Keywords (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="univKeywordInput" class="form-control" placeholder="e.g. Distance Degree Government Valid">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('univ', 'kw')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="univKeywordsChips"></div>
+                            </div>
+                        </div>
+
+                        <!-- 5. University Facilities (++ Chips & 1-Click Preset Toggles) -->
+                        <div class="form-group" style="margin-top:12px;">
+                            <label><strong>5. University Campus Facilities (+ +)</strong> <span style="font-weight:400; color:#64748b;">(Add custom or tap quick presets below)</span></label>
+                            <div class="chip-input-wrapper">
+                                <input type="text" id="univFacilityInput" class="form-control" placeholder="e.g. Student LMS Portal, Digital Evaluation, Smart Campus">
+                                <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('univ', 'fac')"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <div class="chips-container" id="univFacilitiesChips" style="margin-top:6px;"></div>
+
+                            <!-- 1-Click Quick Facility Toggles -->
+                            <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:6px;">
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Online Student LMS Portal')"><i class="fa fa-laptop"></i> + Student LMS</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Wi-Fi Enabled Campus')"><i class="fa fa-wifi"></i> + Wi-Fi Campus</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'E-Library & Study Portals')"><i class="fa fa-book"></i> + E-Library</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Hostel Accommodations')"><i class="fa fa-bed"></i> + Campus Hostels</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Central Placement Cell')"><i class="fa fa-briefcase"></i> + Placement Cell</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Medical & Healthcare Center')"><i class="fa fa-heartbeat"></i> + Medical Hospital</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Sports Complex & Stadium')"><i class="fa fa-trophy"></i> + Sports Stadium</span>
+                                <span class="facility-preset-pill" onclick="window.addPresetFacility('univ', 'Global Alumni Network')"><i class="fa fa-globe"></i> + Alumni Cell</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: POPULAR DEGREE STREAMS -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-th-large"></i> 2. Popular Degree Streams</span>
+                            <span class="form-section-badge active" id="univStreamCountBadge">0 Streams Selected</span>
+                        </div>
+                        <p class="form-section-desc">Click stream cards to toggle. Selecting streams updates recommended degrees below.</p>
+
+                        <div class="stream-toggle-grid" id="univStreamCardsGrid">
+                            <!-- Dynamically populated stream cards with live counts -->
+                        </div>
+
+                        <!-- Custom stream input -->
+                        <div class="custom-stream-row">
+                            <input type="text" id="univCustomStreamInput" placeholder="+ Add custom stream (e.g. Agriculture Science, Aviation Management)...">
+                            <button type="button" class="btn btn-sm btn-outline" id="univAddCustomStreamBtn" style="flex-shrink:0;">
+                                <i class="fa fa-plus"></i> Add Stream
+                            </button>
+                        </div>
+                        <input type="hidden" id="univStreamsInput">
+                    </div>
+
+                    <!-- SECTION 3: COURSES & DEGREES OFFERED -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-graduation-cap"></i> 3. Courses &amp; Degrees Offered</span>
+                            <span class="form-section-badge active" id="univCoursesCountBadge">0 Degrees Selected</span>
+                        </div>
+                        <p class="form-section-desc">Select academic degrees available for direct admission. Dynamically synced with all courses.</p>
+
+                        <div class="program-selector-wrap">
+                            <!-- Active Selected Tags -->
+                            <div class="selected-programs-header">
+                                <span class="selected-programs-count">
+                                    Active Degrees <span class="count-pill" id="univSelectedCount" style="background:#8b5cf6;">0</span>
+                                </span>
+                                <button type="button" class="btn-clear-all-tags" id="univClearCoursesBtn">
+                                    <i class="fa fa-trash-o"></i> Clear All
+                                </button>
+                            </div>
+                            <div class="selected-programs-box" id="univCoursesTagsBox">
+                                <!-- Dynamically populated selected degree chips -->
+                            </div>
+
+                            <!-- Stream Filter Tabs Bar -->
+                            <div class="program-stream-tabs" id="univProgramStreamTabs">
+                                <!-- Dynamically populated stream filter tabs -->
+                            </div>
+
+                            <!-- Instant Search Bar -->
+                            <div class="program-search-row">
+                                <div class="program-search-wrap">
+                                    <i class="fa fa-search"></i>
+                                    <input type="text" id="univProgramSearchInput" class="program-search-input" placeholder="Search degrees (e.g. MBA, MCA, B.Sc, B.Com, MA, M.Sc, Ph.D)...">
+                                </div>
+                            </div>
+
+                            <!-- Program Pills Grid (1-Click Toggle) -->
+                            <div class="program-pills-grid" id="univProgramPillsGrid">
+                                <!-- Dynamically populated degree pills with checkmarks -->
+                            </div>
+
+                            <!-- Custom Program Adder -->
+                            <div class="program-custom-add-row">
+                                <input type="text" id="univCourseNewInput" placeholder="Type a degree (e.g. MBA Online, MCA, B.Sc, Ph.D)...">
+                                <button type="button" class="btn btn-sm btn-outline" id="univAddCourseBtn" style="flex-shrink:0;">
+                                    <i class="fa fa-plus"></i> Add Degree
+                                </button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="univCoursesInput">
+                    </div>
+
+                    <!-- SECTION 4: FEE SCHEDULE & HIGHLIGHTS -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-money"></i> 4. Fee Guidance &amp; Key Advantages</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fa fa-money text-primary"></i> Fee Schedule Guidance</label>
+                                <input type="text" id="univFeeInput" class="form-control" placeholder="e.g. Affordable Semester Installments (AIU Scheme)">
+                            </div>
+                            <div class="form-group">
+                                <label>Key Highlights / Advantages</label>
+                                <input type="text" id="univHighlightsInput" class="form-control" placeholder="e.g. Valid for all Govt Jobs, AIU Equivalence">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 5: UNIVERSITY CAMPUS BANNER & IMAGERY -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-picture-o"></i> 5. University Campus Banner &amp; Thumbnail</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fa fa-link text-primary"></i> Image URL / Server Path</label>
+                            <input type="text" id="univImageInput" class="form-control" placeholder="images/slider/home1/slide1.jpg or /images/uploads/...">
+                        </div>
+
+                        <!-- Local Device Upload Dropzone -->
+                        <div class="file-drop-zone" id="univDropZone" data-target="univImageInput" data-preview="univImagePreview" data-file-input="univFileInput">
+                            <input type="file" id="univFileInput" class="local-device-file" accept="image/*" style="display:none;">
+                            <div class="drop-zone-content">
+                                <div class="drop-zone-icon"><i class="fa fa-cloud-upload"></i></div>
+                                <div class="drop-zone-text">
+                                    <span class="drop-title"><strong>Upload University Photo from Device</strong> or drag &amp; drop</span>
+                                    <span class="drop-hint">PNG, JPG, WEBP, SVG or GIF</span>
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm btn-browse-local" style="margin-left:auto; flex-shrink:0;">
+                                    <i class="fa fa-folder-open"></i> Browse Device
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Active Preview Card -->
+                        <div id="univImagePreview" class="active-thumb-preview" style="display:none; margin-top:10px;">
+                            <div class="thumb-card">
+                                <img src="" alt="Thumbnail preview" class="thumb-preview-img" onerror="this.src='../images/slider/home1/slide1.jpg'">
+                                <div class="thumb-meta">
+                                    <span class="thumb-name">Active Thumbnail</span>
+                                    <span class="thumb-badge"><i class="fa fa-check-circle"></i> Ready</span>
+                                </div>
+                                <button type="button" class="thumb-clear-btn" data-target="univImageInput" data-preview="univImagePreview" title="Clear image">&times;</button>
+                            </div>
+                        </div>
+
+                        <!-- Visual Preset Photos Gallery (Working root-relative paths!) -->
+                        <div style="margin-top:14px;">
+                            <span style="font-size:11.5px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:8px;">
+                                Or choose a curated university banner:
+                            </span>
+                            <div class="preset-campus-grid">
+                                <div class="preset-campus-card univ active" data-target="univImageInput" data-preview="univImagePreview" data-src="images/slider/home1/slide1.jpg">
+                                    <img src="../images/slider/home1/slide1.jpg" alt="Banner 1" onerror="this.src='/images/slider/home1/slide1.jpg'">
+                                    <div class="preset-campus-label">University Grand Campus</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card univ" data-target="univImageInput" data-preview="univImagePreview" data-src="images/slider/home1/slide2.jpg">
+                                    <img src="../images/slider/home1/slide2.jpg" alt="Banner 2" onerror="this.src='/images/slider/home1/slide2.jpg'">
+                                    <div class="preset-campus-label">Academic Main Block</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                                <div class="preset-campus-card univ" data-target="univImageInput" data-preview="univImagePreview" data-src="images/slider/home1/slide3.jpg">
+                                    <img src="../images/slider/home1/slide3.jpg" alt="Banner 3" onerror="this.src='/images/slider/home1/slide3.jpg'">
+                                    <div class="preset-campus-label">Central Library &amp; Quad</div>
+                                    <div class="preset-campus-badge"><i class="fa fa-check"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 6: OVERVIEW DESCRIPTION & STATUS -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-file-text-o"></i> 6. University Overview &amp; Status</span>
+                        </div>
+                        <div class="form-group">
+                            <label>University Overview Description</label>
+                            <textarea id="univDescriptionInput" class="form-control" rows="3" placeholder="Provide background on university vision, accreditation, and student support services..."></textarea>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <input type="checkbox" id="univFeaturedInput" checked style="cursor:pointer;">
+                            <label for="univFeaturedInput" style="margin:0; cursor:pointer; font-weight:600; font-size:13px; color:#1e293b;">Mark as Featured Partner University</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeUnivModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background:#8b5cf6; border-color:#8b5cf6;"><i class="fa fa-check"></i> Save &amp; Publish University</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ADD / EDIT BLOG MODAL ================= -->
+    <div class="modal-overlay" id="blogModal">
+        <div class="modal-dialog" style="max-width: 940px;">
+            <div class="modal-header">
+                <h3 id="blogModalTitle"><i class="fa fa-newspaper-o text-primary"></i> Add New Blog Post</h3>
+                <button class="modal-close" onclick="window.closeBlogModal()">&times;</button>
+            </div>
+            <form id="blogForm">
+                <div class="modal-body">
+                    <!-- SECTION 1: TITLE & SEO METADATA -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-search text-primary"></i> 1. SEO &amp; Article Metadata</span>
+                            <span class="form-section-badge active">Google Search Ranking Ready</span>
+                        </div>
+
+                        <!-- 1. Title -->
+                        <div class="form-group">
+                            <label><strong>1. Blog Post Title</strong> <span class="req">*</span></label>
+                            <input type="text" id="blogTitleInput" class="form-control" placeholder="e.g. MBA in Financial &amp; Project Management - Subharti University Complete Guide" required>
+                        </div>
+
+                        <!-- 2. Meta Description -->
+                        <div class="form-group">
+                            <label><strong>2. Meta Description (SEO Google Snippet)</strong></label>
+                            <textarea id="blogMetaDescInput" class="form-control" rows="2" maxlength="200" placeholder="e.g. Complete admissions guide for MBA in Financial &amp; Project Management at Subharti University: UGC-DEB approvals, fee structure, eligibility, syllabus breakdown, and counselor helpline."></textarea>
+                            <div class="meta-counter"><span id="blogMetaCount">0 / 160 characters</span><span>Recommended: 120-160 characters for search rankings</span></div>
+                        </div>
+
+                        <!-- 3, 4, 5. Tags ++, Categories ++, Keywords ++ -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><strong>3. Tags (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="blogTagInput" class="form-control" placeholder="e.g. Subharti MBA">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('blog', 'tag')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="blogTagsChips"></div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>4. Categories (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="blogCategoryInput" class="form-control" placeholder="e.g. University Admissions" list="catList">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('blog', 'cat')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="blogCategoriesChips"></div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>5. Keywords (+ +)</strong></label>
+                                <div class="chip-input-wrapper">
+                                    <input type="text" id="blogKeywordInput" class="form-control" placeholder="e.g. Distance MBA Admission">
+                                    <button type="button" class="btn btn-sm btn-outline" onclick="window.addChip('blog', 'kw')"><i class="fa fa-plus"></i></button>
+                                </div>
+                                <div class="chips-container" id="blogKeywordsChips"></div>
+                            </div>
+                        </div>
+
+                        <!-- Author, Date, Featured Toggle -->
+                        <div class="form-row" style="margin-top:10px;">
+                            <div class="form-group">
+                                <label>Author</label>
+                                <input type="text" id="blogAuthorInput" class="form-control" placeholder="Educationist Guru Academic Advisory">
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fa fa-calendar text-primary"></i> Publication Date</label>
+                                <input type="text" id="blogDateInput" class="form-control" placeholder="e.g. September 22, 2026">
+                            </div>
+                            <div class="form-group" style="display:flex; align-items:flex-end; padding-bottom:10px;">
+                                <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer; font-weight:700; color:#1e293b; font-size:13.5px;">
+                                    <input type="checkbox" id="blogFeaturedInput" style="cursor:pointer; width:18px; height:18px;">
+                                    <span>Mark as Featured Article</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: ARTICLE THUMBNAIL & MEDIA -->
+                    <div class="form-section-card">
+                        <div class="form-section-header">
+                            <span class="form-section-title"><i class="fa fa-picture-o text-primary"></i> 2. Article Featured Image &amp; Banner</span>
+                        </div>
+                        <div class="form-group upload-box-container">
+                            <div class="file-drop-zone" id="blogDropZone" data-target="blogImageInput" data-preview="blogImagePreview" data-file-input="blogFileInput">
+                                <input type="file" id="blogFileInput" class="local-device-file" accept="image/*" style="display:none;">
+                                <div class="drop-zone-content">
+                                    <div class="drop-zone-icon"><i class="fa fa-cloud-upload"></i></div>
+                                    <div class="drop-zone-text">
+                                        <span class="drop-title"><strong>Upload Article Image from Device</strong> or drag &amp; drop</span>
+                                        <span class="drop-hint">PNG, JPG, WEBP (Saved directly to server)</span>
+                                    </div>
+                                    <button type="button" class="btn btn-outline btn-sm btn-browse-local" style="margin-left:auto; flex-shrink:0;">
+                                        <i class="fa fa-folder-open"></i> Browse Device
+                                    </button>
+                                </div>
+                            </div>
+                            <input type="hidden" id="blogImageInput" value="images/blog/1.jpg">
+
+                            <!-- Active Preview Card -->
+                            <div id="blogImagePreview" class="active-thumb-preview" style="display:none; margin-top:10px;">
+                                <div class="thumb-card">
+                                    <img src="" alt="Thumbnail preview" class="thumb-preview-img">
+                                    <div class="thumb-meta">
+                                        <span class="thumb-name">Active Thumbnail</span>
+                                        <span class="thumb-badge"><i class="fa fa-check-circle"></i> Ready</span>
+                                    </div>
+                                    <button type="button" class="thumb-clear-btn" data-target="blogImageInput" data-preview="blogImagePreview" title="Clear image">&times;</button>
+                                </div>
+                            </div>
+
+                            <!-- Preset Images Gallery -->
+                            <div style="margin-top:12px;">
+                                <span style="font-size:11.5px; font-weight:600; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px;">Or select a preset blog image:</span>
+                                <div class="preset-images">
+                                    <div class="preset-thumb active" data-target="blogImageInput" data-preview="blogImagePreview" data-src="images/blog/1.jpg"><img src="images/blog/1.jpg" alt="1"></div>
+                                    <div class="preset-thumb" data-target="blogImageInput" data-preview="blogImagePreview" data-src="images/blog/2.jpg"><img src="images/blog/2.jpg" alt="2"></div>
+                                    <div class="preset-thumb" data-target="blogImageInput" data-preview="blogImagePreview" data-src="images/blog/3.jpg"><img src="images/blog/3.jpg" alt="3"></div>
+                                    <div class="preset-thumb" data-target="blogImageInput" data-preview="blogImagePreview" data-src="images/blog/4.jpg"><img src="images/blog/4.jpg" alt="4"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top:12px;">
+                            <label>Short Excerpt (Summary for Cards &amp; Listings)</label>
+                            <textarea id="blogExcerptInput" class="form-control" rows="2" placeholder="Brief 1-2 sentence preview to display on blog listings and social shares..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: REFINED & SPACIOUS VISUAL WYSIWYG DOCUMENT EDITOR -->
+                    <div class="form-section-card" style="padding: 12px 14px; background:#f8fafc;">
+                        <div class="form-section-header" style="margin-bottom:8px;">
+                            <span class="form-section-title"><i class="fa fa-edit text-primary"></i> 3. Full Blog Article Content (Spacious Document Canvas)</span>
+                            <span style="font-size:12px; color:#64748b;">Highlight text &amp; format directly. Click <strong>⛶ Expand</strong> for full-screen writing.</span>
+                        </div>
+
+                        <div class="visual-editor-container" id="blogEditorContainer">
+                            <!-- Multi-tier Visual Toolbar with Selection Protection -->
+                            <div class="visual-editor-toolbar" style="flex-direction:column; gap:8px; padding:10px 12px; background:#0f172a; border-radius:8px 8px 0 0;">
+                                <!-- Row 1: Typography, Headings & Alignment -->
+                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; width:100%;">
+                                    <div class="toolbar-group">
+                                        <select class="tool-select" onchange="window.applyHeadingStyle('blogVisualEditor', this.value); this.value='';" style="background:#1e293b; color:#fff; border:1px solid #334155; padding:4px 8px; border-radius:6px; font-size:12px;">
+                                            <option value="" disabled selected>Heading / Style</option>
+                                            <option value="p">Paragraph (Normal Text)</option>
+                                            <option value="h1">Heading 1 (Main Title)</option>
+                                            <option value="h2">Heading 2 (Major Section)</option>
+                                            <option value="h3">Heading 3 (Sub Section)</option>
+                                            <option value="h4">Heading 4 (Topic Header)</option>
+                                            <option value="blockquote">Blockquote (Quote)</option>
+                                        </select>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('blogVisualEditor', 'h1')" title="Heading 1">H1</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('blogVisualEditor', 'h2')" title="Heading 2">H2</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('blogVisualEditor', 'h3')" title="Heading 3">H3</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-h" onmousedown="event.preventDefault()" onclick="window.applyHeadingStyle('blogVisualEditor', 'h4')" title="Heading 4">H4</button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Inline Formats -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'bold')" title="Bold" style="font-weight:900;"><b>B</b></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'italic')" title="Italic" style="font-style:italic; font-family:serif;"><i>I</i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'underline')" title="Underline"><u>U</u></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'strikeThrough')" title="Strikethrough"><s>S</s></button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Color Highlights -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('blogVisualEditor', 'yellow')" title="Highlight Yellow" style="background:#fef08a; color:#854d0e; font-weight:800; padding:2px 7px;">🟨</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('blogVisualEditor', 'green')" title="Highlight Green" style="background:#bbf7d0; color:#166534; font-weight:800; padding:2px 7px;">🟩</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('blogVisualEditor', 'blue')" title="Highlight Blue" style="background:#bfdbfe; color:#1e40af; font-weight:800; padding:2px 7px;">🟦</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorHighlight('blogVisualEditor', 'pink')" title="Highlight Pink" style="background:#fbcfe8; color:#9d174d; font-weight:800; padding:2px 7px;">🟥</button>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Lists & Alignment -->
+                                    <div class="toolbar-group" style="gap:3px;">
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'insertUnorderedList')" title="Bullet List">• List</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'insertOrderedList')" title="Numbered List">1. List</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'justifyLeft')" title="Align Left"><i class="fa fa-align-left"></i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'justifyCenter')" title="Align Center"><i class="fa fa-align-center"></i></button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.execEditorCmd('blogVisualEditor', 'justifyRight')" title="Align Right"><i class="fa fa-align-right"></i></button>
+                                    </div>
+                                    <!-- Fullscreen Expand -->
+                                    <button type="button" class="btn-visual-tool" id="blogFullscreenBtn" onmousedown="event.preventDefault()" onclick="window.toggleEditorFullscreen('blogEditorContainer')" title="Toggle Fullscreen Writing Mode" style="margin-left:auto; background:#3b82f6; border-color:#2563eb; color:#fff; font-weight:700;">
+                                        <i class="fa fa-arrows-alt"></i> ⛶ Fullscreen
+                                    </button>
+                                </div>
+
+                                <!-- Row 2: Rich Inserts, Pre-Made Article Templates & Media -->
+                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; width:100%; border-top:1px solid #1e293b; padding-top:6px;">
+                                    <!-- Article Templates Dropdown -->
+                                    <div class="toolbar-group">
+                                        <select class="tool-select" onchange="window.insertEditorTemplate('blogVisualEditor', this.value); this.value='';" style="background:#ff3115; color:#fff; border:1px solid #ff3115; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                            <option value="" disabled selected>⚡ Insert Article Template</option>
+                                            <option value="course_guide">📘 Complete Course &amp; Career Guide</option>
+                                            <option value="univ_review">🏛️ Comprehensive University Review</option>
+                                            <option value="admission_notice">📢 Admission Announcement &amp; Dates</option>
+                                        </select>
+                                    </div>
+                                    <div class="toolbar-divider" style="height:18px; width:1px; background:#334155; margin:0 2px;"></div>
+                                    <!-- Rich Components -->
+                                    <div class="toolbar-group" style="gap:4px;">
+                                        <button type="button" class="btn-visual-tool btn-tool-lead" onmousedown="event.preventDefault()" onclick="window.insertVisualInquiryBox('blogVisualEditor')" title="Insert Admission Inquiry Callout Box"><i class="fa fa-paper-plane"></i> + Inquiry Box</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorTable('blogVisualEditor')" title="Insert Curriculum / Fee Table"><i class="fa fa-table"></i> + Table</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorNotice('blogVisualEditor')" title="Insert Important Notice Box"><i class="fa fa-info-circle"></i> + Notice</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorKeyHighlights('blogVisualEditor')" title="Insert 2-Column Key Highlights Grid" style="background:#8b5cf6; border-color:#7c3aed; color:#fff;"><i class="fa fa-star"></i> + Highlights</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorFaq('blogVisualEditor')" title="Insert FAQ Accordion Block" style="background:#059669; border-color:#047857; color:#fff;"><i class="fa fa-question-circle"></i> + FAQ</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorQuote('blogVisualEditor')" title="Insert Stylized Quote Block"><i class="fa fa-quote-left"></i> + Quote</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorImage('blogVisualEditor')" title="Insert Image with Caption"><i class="fa fa-image"></i> + Image</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorDivider('blogVisualEditor')" title="Insert Section Break Divider">― Divider</button>
+                                        <button type="button" class="btn-visual-tool" onmousedown="event.preventDefault()" onclick="window.insertEditorLink('blogVisualEditor')" title="Insert Link"><i class="fa fa-link"></i> Link</button>
+                                        <button type="button" class="btn-visual-tool btn-tool-clear" onmousedown="event.preventDefault()" onclick="window.clearEditorFormatting('blogVisualEditor')" title="Clear Formatting"><i class="fa fa-eraser"></i> Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Spacious Visual Document Canvas -->
+                            <div id="blogVisualEditor" class="visual-editor-canvas" contenteditable="true" spellcheck="true" placeholder="Start writing comprehensive blog article here... Highlight text and click H1, H2, or Bold to format directly!"></div>
+                            <input type="hidden" id="blogContentInput">
+
+                            <!-- Live Document Statistics Bar -->
+                            <div class="visual-editor-statusbar" id="blogEditorStatusbar">
+                                <span class="statusbar-stat"><i class="fa fa-file-text-o"></i> <span id="blogWordCount">0 words</span></span>
+                                <span class="statusbar-stat"><i class="fa fa-font"></i> <span id="blogCharCount">0 characters</span></span>
+                                <span class="statusbar-stat"><i class="fa fa-clock-o"></i> <span id="blogReadingTime">~1 min read</span></span>
+                                <span class="statusbar-stat" style="margin-left:auto; color:#10b981;"><i class="fa fa-check-circle"></i> Visual Canvas Ready</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeBlogModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Save &amp; Publish Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= ADD YOUTUBE VIDEO MODAL ================= -->
+    <div class="modal-overlay" id="videoModal">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="videoModalTitle"><i class="fa fa-youtube-play" style="color:#ef4444;margin-right:8px;"></i> Add YouTube Video</h3>
+                <button class="modal-close" onclick="window.closeVideoModal()">&times;</button>
+            </div>
+            <form id="videoForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>YouTube Video Link or Video ID <span class="req">*</span></label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="videoUrlInput" class="form-control" placeholder="e.g. https://www.youtube.com/watch?v=M-habsWCGXY" required>
+                            <button type="button" class="btn btn-outline" id="fetchVideoInfoBtn" style="flex-shrink:0;">
+                                <i class="fa fa-magic"></i> Auto-Fetch
+                            </button>
+                        </div>
+                        <span style="font-size:11.5px; color:#64748b; margin-top:4px; display:block;">Enter full YouTube URL or 11-char ID. Auto-Fetch retrieves the official title and HD thumbnail!</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Video Title <span class="req">*</span></label>
+                        <input type="text" id="videoTitleInput" class="form-control" placeholder="e.g. Complete Guide for Pharmacy Admissions" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="videoCategoryInput" class="form-control">
+                                <option value="Admissions 2025">Admissions 2025</option>
+                                <option value="Career Guidance">Career Guidance</option>
+                                <option value="University Reviews">University Reviews</option>
+                                <option value="Guidance & Awareness">Guidance &amp; Awareness</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration Preview</label>
+                            <input type="text" id="videoDurationInput" class="form-control" placeholder="e.g. 4:15">
+                        </div>
+                    </div>
+
+                    <!-- Video Thumbnail Component -->
+                    <div class="form-group upload-box-container">
+                        <label><i class="fa fa-picture-o text-danger"></i> Video Thumbnail (Auto-fetched or Upload Custom)</label>
+                        <div class="input-with-action" style="display:flex; gap:8px; margin-bottom:10px;">
+                            <input type="text" id="videoThumbnailInput" class="form-control" placeholder="https://img.youtube.com/vi/ID/hqdefault.jpg or /images/uploads/..." style="flex:1;">
+                        </div>
+
+                        <div class="file-drop-zone" id="videoDropZone" data-target="videoThumbnailInput" data-preview="videoThumbnailPreview" data-file-input="videoFileInput">
+                            <input type="file" id="videoFileInput" class="local-device-file" accept="image/*" style="display:none;">
+                            <div class="drop-zone-content">
+                                <div class="drop-zone-icon" style="background:#fee2e2; color:#ef4444;"><i class="fa fa-cloud-upload"></i></div>
+                                <div class="drop-zone-text">
+                                    <span class="drop-title"><strong>Upload Custom Thumbnail from Device</strong> or drag &amp; drop</span>
+                                    <span class="drop-hint">PNG, JPG, WEBP (Custom YouTube thumbnail)</span>
+                                </div>
+                                <button type="button" class="btn btn-outline btn-sm btn-browse-local" style="margin-left:auto; flex-shrink:0;">
+                                    <i class="fa fa-folder-open"></i> Browse Device
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Active Preview Card -->
+                        <div id="videoThumbnailPreview" class="active-thumb-preview" style="display:none; margin-top:10px;">
+                            <div class="thumb-card">
+                                <img src="" alt="Thumbnail preview" class="thumb-preview-img" id="videoPreviewImg">
+                                <div class="thumb-meta">
+                                    <span class="thumb-name">Video Thumbnail</span>
+                                    <span class="thumb-badge"><i class="fa fa-check-circle"></i> Ready</span>
+                                </div>
+                                <button type="button" class="thumb-clear-btn" data-target="videoThumbnailInput" data-preview="videoThumbnailPreview" title="Clear image">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Short Description (Optional)</label>
+                        <textarea id="videoDescInput" class="form-control" rows="2" placeholder="Brief explanation of video content..."></textarea>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <input type="checkbox" id="videoFeaturedInput" style="cursor:pointer;">
+                        <label for="videoFeaturedInput" style="margin:0; cursor:pointer; font-weight:600; font-size:13px; color:#1e293b;">Mark as Featured Video on Channel</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeVideoModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background:#ef4444; border-color:#ef4444;"><i class="fa fa-check"></i> Add Video to Channel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= DELETE CONFIRMATION MODAL ================= -->
+    <div class="modal-overlay" id="deleteConfirmModal">
+        <div class="modal-dialog" style="max-width: 440px; text-align: center;">
+            <div class="modal-body" style="padding: 32px 24px;">
+                <div style="width: 56px; height: 56px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 16px;">
+                    <i class="fa fa-trash-o"></i>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 8px;" id="deleteModalTitle">Delete Item?</h3>
+                <p style="font-size: 13px; color: #64748b; margin-bottom: 24px;" id="deleteModalMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="window.closeDeleteModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" style="flex: 1; background: #ef4444; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;" id="confirmDeleteBtn">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= ADD / EDIT NAVIGATION HEADER MODAL ================= -->
+    <div class="modal-overlay" id="headerModal">
+        <div class="modal-dialog" style="max-width: 680px;">
+            <div class="modal-header">
+                <h3 id="headerModalTitle"><i class="fa fa-bars text-primary"></i> Edit Navigation Header</h3>
+                <button class="modal-close" onclick="window.closeHeaderModal()">&times;</button>
+            </div>
+            <form id="headerForm" onsubmit="window.handleHeaderSubmit(event)">
+                <div class="modal-body">
+                    <input type="hidden" id="editingHeaderId">
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex:2;">
+                            <label><strong>Header Navigation Title</strong> <span class="req">*</span></label>
+                            <input type="text" id="headerTitleInput" class="form-control" placeholder="e.g. Courses or Universities or Scholarships" required>
+                            <span style="font-size:11.5px; color:#64748b; margin-top:3px; display:block;">The clickable link text displayed in the website navigation bar.</span>
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label><strong>Navigation Type</strong></label>
+                            <select id="headerTypeInput" class="form-control" onchange="window.onHeaderTypeChange(this.value)">
+                                <option value="link">Direct Page Link</option>
+                                <option value="dropdown">Dropdown Sub-Menu</option>
+                                <option value="megamenu">Multi-Column Mega-Menu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Target Link URL</strong> <span class="req">*</span></label>
+                        <input type="text" id="headerUrlInput" class="form-control" placeholder="e.g. index.html or courses.html or #" value="#" required>
+                        <span style="font-size:11.5px; color:#64748b; margin-top:3px; display:block;">Use '#' if this is a dropdown-only container without its own page.</span>
+                    </div>
+
+                    <!-- Badge Settings -->
+                    <div class="form-row" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 14px; margin-top:12px;">
+                        <div class="form-group" style="flex:1;">
+                            <label><strong>Pill Badge Text (Optional)</strong></label>
+                            <input type="text" id="headerBadgeTextInput" class="form-control" placeholder="e.g. Popular or UGC Valid or New">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label><strong>Badge Color Theme</strong></label>
+                            <select id="headerBadgeColorInput" class="form-control">
+                                <option value="red">Red Pill (Popular)</option>
+                                <option value="green">Green Pill (UGC Valid / Verified)</option>
+                                <option value="blue">Blue Pill (Info / Updated)</option>
+                                <option value="amber">Amber / Gold Pill (Featured)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top:16px;">
+                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:700; color:#1e293b; font-size:13.5px;">
+                            <input type="checkbox" id="headerEnabledToggle" checked style="cursor:pointer; width:18px; height:18px;">
+                            <span>Active on Live Website (Uncheck to hide this header from visitors)</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="window.closeHeaderModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="background:#ff3115; border-color:#ff3115;"><i class="fa fa-check"></i> Save &amp; Publish Header</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================= MANAGE DROPDOWN SUB-LINKS MODAL ================= -->
+    <div class="modal-overlay" id="subLinksModal">
+        <div class="modal-dialog" style="max-width: 720px;">
+            <div class="modal-header">
+                <h3 id="subLinksModalTitle"><i class="fa fa-list-ul text-primary"></i> Manage Dropdown Sub-Links</h3>
+                <button class="modal-close" onclick="window.closeSubLinksModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="subLinksHeaderId">
+                <p id="subLinksModalSubtitle" style="font-size:13px; color:#64748b; margin-bottom:16px;">Configure nested links that appear in this dropdown menu on the website.</p>
+                
+                <!-- Add New Child Link Form -->
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; margin-bottom:18px;">
+                    <span style="font-size:13px; font-weight:700; color:#0f172a; display:block; margin-bottom:10px;"><i class="fa fa-plus-circle text-primary"></i> Add New Sub-Link:</span>
+                    <div class="form-row">
+                        <div class="form-group" style="flex:2;">
+                            <input type="text" id="newSubLinkTitle" class="form-control" placeholder="Sub-link Title (e.g. NIOS 10th &amp; 12th Admission)">
+                        </div>
+                        <div class="form-group" style="flex:2;">
+                            <input type="text" id="newSubLinkUrl" class="form-control" placeholder="Target Link (e.g. contact.html?subject=NIOS)">
+                        </div>
+                        <div class="form-group" style="flex:3;">
+                            <input type="text" id="newSubLinkDesc" class="form-control" placeholder="Short preview text (Optional)">
+                        </div>
+                        <div class="form-group" style="flex:0 0 auto;">
+                            <button type="button" class="btn btn-primary" onclick="window.addNewSubLinkRow()" style="background:#10b981; border-color:#10b981; white-space:nowrap;">
+                                <i class="fa fa-plus"></i> Add Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Existing Sub-Links List -->
+                <h5 style="font-size:14px; font-weight:700; color:#1e293b; margin-bottom:10px;"><i class="fa fa-link"></i> Current Sub-Links in Dropdown:</h5>
+                <div id="subLinksListContainer" style="display:flex; flex-direction:column; gap:8px;">
+                    <!-- Dynamically populated rows -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="window.closeSubLinksModal()">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="window.saveSubLinksChanges()" style="background:#10b981; border-color:#10b981;"><i class="fa fa-check"></i> Save Sub-Links</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/edit/js/edit.js?v=5.6.0"></script>
+</body>
+</html>

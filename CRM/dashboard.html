@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Dashboard | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-wrapper">
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="row">
+                    <div class="col-8"><div class="card"><div class="card-header"><h3><i class="fa fa-bar-chart" style="margin-right:8px;color:#ff3115;"></i> Leads by Source</h3></div><div class="card-body"><div class="bar-chart" id="sourceChart"></div></div></div></div>
+                    <div class="col-4"><div class="card"><div class="card-header"><h3><i class="fa fa-pie-chart" style="margin-right:8px;color:#ff3115;"></i> Lead Status</h3></div><div class="card-body"><div id="statusBreakdown"></div></div></div></div>
+                </div>
+                <div class="row">
+                    <div class="col-6"><div class="card"><div class="card-header"><h3><i class="fa fa-users" style="margin-right:8px;color:#17a2b8;"></i> Recent Leads</h3><a href="leads.html" class="btn btn-sm btn-outline">View All</a></div><div class="card-body no-padding"><table class="data-table" id="recentLeads"><thead><tr><th>Name</th><th>Course</th><th>Status</th><th>Date</th></tr></thead><tbody></tbody></table></div></div></div>
+                    <div class="col-6"><div class="card"><div class="card-header"><h3><i class="fa fa-envelope" style="margin-right:8px;color:#28a745;"></i> Recent Inquiries</h3><a href="inquiries.html" class="btn btn-sm btn-outline">View All</a></div><div class="card-body no-padding"><table class="data-table" id="recentInquiries"><thead><tr><th>Name</th><th>Subject</th><th>Status</th></tr></thead><tbody></tbody></table></div></div></div>
+                </div>
+                <div class="row"><div class="col-12"><div class="card"><div class="card-header"><h3><i class="fa fa-clock-o" style="margin-right:8px;color:#ffc107;"></i> Recent Activity</h3></div><div class="card-body"><div class="activity-list" id="activityFeed"></div></div></div></div></div>
+            </div>
+        </div>
+    </div>
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        
+    if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+    const currentUser=CRM.getCurrentUser();
+    function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+    function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3000);}
+
+        
+    function buildSidebar(activePage) {
+        const cu = CRM.getCurrentUser();
+        const modules = [
+            {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+            {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+            {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+            {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+            {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+            {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+            {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+            {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+            {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+        ];
+        let html='',ls='';
+        modules.forEach(m=>{
+            if(CRM.hasPermission(cu,m.key)){
+                if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+            }
+        });
+        html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+        document.getElementById('sidebarNav').innerHTML=html;
+        document.getElementById('topName').textContent=cu.name;
+        document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+        document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+    }
+
+        buildSidebar('dashboard');
+
+        async function initDashboard() {
+            // Synchronize with server to ensure all metrics and recent leads are 100% current
+            await CRM.syncWithServer();
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const stats = CRM.getStats();
+            const statusColors = {'new':'badge-primary','contacted':'badge-info','follow-up':'badge-warning','interested':'badge-success','application':'badge-info','enrolled':'badge-success','lost':'badge-danger'};
+
+            // Update topbar notification bell badge
+            const bell = document.querySelector('.notification-bell');
+            if (bell) {
+                if (stats.unreadInquiries > 0) {
+                    bell.innerHTML = `<i class="fa fa-bell-o"></i><span style="position:absolute;top:2px;right:2px;background:#ff3115;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">${stats.unreadInquiries}</span>`;
+                    bell.style.position = 'relative';
+                } else {
+                    bell.innerHTML = '<i class="fa fa-bell-o"></i>';
+                }
+            }
+
+            // Stat Cards with interactive drill-down links
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card" style="cursor:pointer;" onclick="window.location.href='leads.html'" title="Click to view all leads">
+                    <div class="stat-info">
+                        <h3>${stats.totalLeads}</h3>
+                        <p>Total Leads</p>
+                        <div class="stat-change up"><i class="fa fa-arrow-up"></i> ${stats.newLeads} new</div>
+                    </div>
+                    <div class="stat-icon bg-primary"><i class="fa fa-users"></i></div>
+                </div>
+                <div class="stat-card" style="cursor:pointer;" onclick="window.location.href='enrollments.html'" title="Click to view enrollments">
+                    <div class="stat-info">
+                        <h3>${stats.totalEnrollments}</h3>
+                        <p>Enrollments</p>
+                        <div class="stat-change up"><i class="fa fa-arrow-up"></i> ${stats.confirmedEnrollments} confirmed</div>
+                    </div>
+                    <div class="stat-icon bg-success"><i class="fa fa-graduation-cap"></i></div>
+                </div>
+                <div class="stat-card" style="cursor:pointer;" onclick="window.location.href='fees.html'" title="Click to view fee collections">
+                    <div class="stat-info">
+                        <h3>${CRM.formatCurrency(stats.revenue)}</h3>
+                        <p>Revenue Collected</p>
+                        <div class="stat-change down"><i class="fa fa-clock-o"></i> ${CRM.formatCurrency(stats.pendingRevenue)} pending</div>
+                    </div>
+                    <div class="stat-icon bg-warning"><i class="fa fa-inr"></i></div>
+                </div>
+                <div class="stat-card" style="cursor:pointer;" onclick="window.location.href='/crm/inquiries'" title="Click to view inquiries">
+                    <div class="stat-info">
+                        <h3>${stats.totalInquiries}</h3>
+                        <p>Inquiries</p>
+                        <div class="stat-change up"><i class="fa fa-envelope-o"></i> ${stats.unreadInquiries} unread</div>
+                    </div>
+                    <div class="stat-icon bg-info"><i class="fa fa-envelope"></i></div>
+                </div>
+            `;
+
+            // Leads by Source Chart
+            const sources = stats.leadsBySource;
+            const sourceEntries = Object.entries(sources);
+            if (sourceEntries.length === 0) {
+                document.getElementById('sourceChart').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:180px;width:100%;color:#888;font-size:13px;text-align:center;"><i class="fa fa-bar-chart" style="font-size:24px;margin-right:8px;color:#cbd5e1;"></i>No lead source data yet. Leads will populate automatically here.</div>';
+            } else {
+                const maxS = Math.max(...Object.values(sources), 1);
+                document.getElementById('sourceChart').innerHTML = sourceEntries.map(([s,c])=>`
+                    <div class="bar-item" style="cursor:pointer;" onclick="window.location.href='leads.html'" title="${s}: ${c} leads">
+                        <div class="bar-value">${c}</div>
+                        <div class="bar" style="height:${Math.max((c/maxS)*150, 15)}px"></div>
+                        <div class="bar-label">${s}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Lead Status Breakdown
+            const statusEntries = Object.entries(stats.leadsByStatus);
+            const statusHTML = statusEntries.length === 0 
+                ? '<div style="text-align:center;padding:20px 0;color:#888;font-size:13px;"><i class="fa fa-pie-chart" style="font-size:24px;display:block;margin-bottom:8px;color:#cbd5e1;"></i>No lead statuses recorded yet.</div>'
+                : statusEntries.map(([s,c])=>`
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;" onclick="window.location.href='leads.html'">
+                        <span class="badge ${statusColors[s]||'badge-info'}" style="text-transform:capitalize;">${s}</span>
+                        <strong>${c}</strong>
+                    </div>
+                `).join('');
+            
+            document.getElementById('statusBreakdown').innerHTML = statusHTML + `
+                <div style="margin-top:20px;padding:15px;background:#f8f9fa;border-radius:10px;text-align:center;cursor:pointer;" onclick="window.location.href='subscribers.html'" title="View subscribers">
+                    <div style="font-size:28px;font-weight:800;color:#ff3115;">${stats.totalSubscribers}</div>
+                    <div style="font-size:12px;color:#6c757d;text-transform:uppercase;font-weight:600;">Active Newsletter Subscribers</div>
+                </div>
+            `;
+
+            // Recent Leads Table
+            const leads = CRM.getAll('leads').slice(0,5);
+            if (leads.length === 0) {
+                document.querySelector('#recentLeads tbody').innerHTML = '<tr><td colspan="4" style="text-align:center;padding:28px;color:#888;font-size:13px;"><i class="fa fa-users" style="font-size:24px;margin-bottom:6px;display:block;color:#cbd5e1;"></i>No leads registered yet.</td></tr>';
+            } else {
+                document.querySelector('#recentLeads tbody').innerHTML = leads.map(l=>`
+                    <tr style="cursor:pointer;" onclick="window.location.href='leads.html'">
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(l.name)}">${CRM.getInitials(l.name)}</div>
+                                <div class="user-info">
+                                    <div class="name">${l.name}</div>
+                                    <div class="email">${l.email || l.phone || '-'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">${l.course || 'General'}</td>
+                        <td><span class="badge ${statusColors[l.status]||'badge-info'}" style="text-transform:capitalize;">${l.status}</span></td>
+                        <td style="font-size:12px;color:#6c757d;">${CRM.formatDate(l.date)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            // Recent Inquiries Table
+            const inqs = CRM.getAll('inquiries').slice(0,5);
+            const iqC = {'unread':'badge-danger','read':'badge-warning','replied':'badge-success'};
+            if (inqs.length === 0) {
+                document.querySelector('#recentInquiries tbody').innerHTML = '<tr><td colspan="3" style="text-align:center;padding:28px;color:#888;font-size:13px;"><i class="fa fa-envelope-o" style="font-size:24px;margin-bottom:6px;display:block;color:#cbd5e1;"></i>No inquiries received yet.</td></tr>';
+            } else {
+                document.querySelector('#recentInquiries tbody').innerHTML = inqs.map(i=>`
+                    <tr style="cursor:pointer;" onclick="window.location.href='/crm/inquiries'">
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(i.name)}">${CRM.getInitials(i.name)}</div>
+                                <div class="user-info">
+                                    <div class="name">${i.name}</div>
+                                    <div class="email">${i.email || i.phone || '-'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-size:13px;">${i.subject}</td>
+                        <td><span class="badge ${iqC[i.status]||'badge-info'}" style="text-transform:capitalize;">${i.status}</span></td>
+                    </tr>
+                `).join('');
+            }
+
+            // Dynamic Activity Feed
+            const acts = [];
+            leads.slice(0, 4).forEach(l => {
+                acts.push({ type: 'primary', text: `<strong>${l.name}</strong> registered for admission in <em>${l.course || 'program'}</em> (${l.source || 'Website'})`, time: CRM.formatDate(l.date) });
+            });
+            CRM.getAll('fees').slice(0, 3).forEach(f => {
+                if (f.paidAmount > 0) {
+                    acts.push({ type: 'success', text: `<strong>${f.studentName}</strong> fee payment of ${CRM.formatCurrency(f.paidAmount)} recorded`, time: CRM.formatDate(f.paymentDate || f.dueDate) });
+                }
+            });
+            inqs.slice(0, 2).forEach(i => {
+                acts.push({ type: 'warning', text: `<strong>${i.name}</strong> submitted an inquiry: "${i.subject}"`, time: CRM.formatDate(i.date) });
+            });
+            CRM.getAll('enrollments').slice(0, 2).forEach(e => {
+                acts.push({ type: 'info', text: `<strong>${e.studentName}</strong> enrolled in ${e.course}`, time: CRM.formatDate(e.date) });
+            });
+
+            if (acts.length === 0) {
+                document.getElementById('activityFeed').innerHTML = '<div style="text-align:center;padding:28px 15px;color:#888;font-size:13px;"><i class="fa fa-clock-o" style="font-size:26px;display:block;margin-bottom:6px;color:#cbd5e1;"></i>No recent activity logged yet. Activity will show in real-time as users interact.</div>';
+            } else {
+                document.getElementById('activityFeed').innerHTML = acts.map(a=>`
+                    <div class="activity-item">
+                        <div class="activity-dot ${a.type}"></div>
+                        <div class="activity-content">
+                            <div class="activity-text">${a.text}</div>
+                            <div class="activity-time"><i class="fa fa-clock-o"></i> ${a.time}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function initDashboard() {
+            await CRM.syncWithServer();
+            renderDashboard();
+        }
+
+        // Real-time live sync listeners for multi-device collaboration
+        window.addEventListener('crm:synced', () => {
+            renderDashboard();
+        });
+
+        // Background auto-refresh polling every 8 seconds
+        setInterval(() => {
+            CRM.syncWithServer();
+        }, 8000);
+
+        initDashboard();
+    </script>
+</body></html>

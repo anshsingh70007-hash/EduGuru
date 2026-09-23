@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    // Only inject base tag on web server when URL has deep sub-path (e.g. /courses/b-tech-ai)
+    // NEVER inject under file: protocol so local file browsing works 100% cleanly
+    if (window.location.protocol !== 'file:' && window.location.pathname.split('/').filter(Boolean).length > 1) {
+        var b = document.createElement('base');
+        b.href = '/';
+        document.head.prepend(b);
+    }
+</script>
+    
+    <meta charset="utf-8">
+    <title>Course Details | Admissions & Fee Guide | EducationistGuru</title>
+    <meta name="description" content="Explore comprehensive course details, syllabus, fee structure, eligibility criteria, and career prospects with 100% free admission guidance at EducationistGuru.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="images/fav.png">
+    
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/courses.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        /* =========================================================
+           Dedicated Course Details Modern Design System
+           Eliminates overlapping text, squished icons, and misalignment
+           ========================================================= */
+        :root {
+            --eg-primary: #ff3115;
+            --eg-primary-hover: #e0260d;
+            --eg-dark: #0f172a;
+            --eg-slate: #1e293b;
+            --eg-muted: #64748b;
+            --eg-border: #e2e8f0;
+            --eg-bg-light: #f8fafc;
+            --eg-radius: 14px;
+            --eg-shadow-sm: 0 4px 14px rgba(0,0,0,0.05);
+            --eg-shadow-md: 0 10px 30px rgba(15,23,42,0.08);
+            --eg-shadow-lg: 0 20px 45px rgba(15,23,42,0.12);
+        }
+
+        .course-detail-page {
+            background-color: #f8fafc;
+            padding: 40px 0 80px;
+        }
+
+        /* Hero Banner */
+        .cd-hero-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 20px;
+            padding: 40px 45px;
+            margin-bottom: 35px;
+            color: #ffffff;
+            box-shadow: var(--eg-shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        .cd-hero-banner::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(255, 49, 21, 0.25) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .cd-faculty-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 49, 21, 0.15);
+            color: #ff7663;
+            border: 1px solid rgba(255, 49, 21, 0.35);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 16px;
+        }
+
+        .cd-course-title {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 18px;
+        }
+
+        .cd-hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .cd-hero-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+        .cd-hero-meta-item i {
+            color: #ff3115;
+            font-size: 16px;
+        }
+        .cd-hero-meta-item strong {
+            color: #ffffff;
+        }
+
+        /* Left Main Content Card */
+        .cd-main-card {
+            background: #ffffff;
+            border: 1px solid var(--eg-border);
+            border-radius: var(--eg-radius);
+            box-shadow: var(--eg-shadow-sm);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .cd-image-wrapper {
+            width: 100%;
+            height: 380px;
+            position: relative;
+            background: #e2e8f0;
+            overflow: hidden;
+        }
+        .cd-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .cd-content-padding {
+            padding: 35px 35px 40px;
+        }
+
+        /* Modern Tabs */
+        .cd-nav-tabs {
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .cd-nav-tabs .nav-link {
+            border: none;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            background: transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .cd-nav-tabs .nav-link:hover {
+            color: var(--eg-primary);
+        }
+        .cd-nav-tabs .nav-link.active {
+            color: var(--eg-primary);
+            background: #fff5f3;
+            border-bottom: 3px solid var(--eg-primary);
+        }
+
+        /* Tab Panes */
+        .cd-section-heading {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--eg-dark);
+            margin-bottom: 16px;
+        }
+        .cd-body-text {
+            font-size: 15.5px;
+            line-height: 1.75;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        /* Specializations Box */
+        .cd-spec-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--eg-primary);
+            border-radius: 10px;
+            padding: 22px 24px;
+            margin: 25px 0;
+        }
+        .cd-spec-box h5 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--eg-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cd-spec-box h5 i {
+            color: var(--eg-primary);
+        }
+        .cd-spec-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .cd-spec-tag {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 6px;
+        }
+
+        /* Curriculum Accordion / List */
+        .cd-curriculum-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .cd-curriculum-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+            transition: all 0.2s ease;
+        }
+        .cd-curriculum-item:hover {
+            border-color: #cbd5e1;
+            background: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            transform: translateX(4px);
+        }
+        .cd-curriculum-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #fff0e6;
+            color: var(--eg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Admission Roadmap Cards */
+        .cd-roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .cd-roadmap-step {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+        .cd-step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--eg-primary);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .cd-roadmap-step h6 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--eg-dark);
+            margin-bottom: 6px;
+        }
+        .cd-roadmap-step p {
+            font-size: 13px;
+            color: #64748b;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Right Sticky Sidebar */
+        .cd-sidebar {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .cd-sidebar-widget {
+            background: #ffffff;
+            border: 1px solid var(--eg-border);
+            border-radius: var(--eg-radius);
+            box-shadow: var(--eg-shadow-sm);
+            padding: 28px 26px;
+            overflow: hidden;
+        }
+
+        .cd-widget-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--eg-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .cd-widget-title i {
+            color: var(--eg-primary);
+        }
+
+        /* Fee Card Highlight */
+        .cd-fee-card {
+            background: linear-gradient(135deg, #fff5f3 0%, #ffece9 100%);
+            border: 1px solid #ffdcd6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 22px;
+            text-align: center;
+        }
+        .cd-fee-card-label {
+            font-size: 12.5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #c22915;
+            margin-bottom: 4px;
+        }
+        .cd-fee-card-amount {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--eg-primary);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+        .cd-fee-card-badge {
+            display: inline-block;
+            background: #10b981;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* Sidebar Feature Specs List - Resolves "Tedhe Medhe" layout! */
+        .cd-features-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .cd-feature-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+        .cd-feature-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .cd-feature-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            color: var(--eg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .cd-feature-value {
+            font-weight: 700;
+            color: #0f172a;
+            text-align: right;
+            max-width: 55%;
+            word-break: break-word;
+        }
+
+        /* Big CTA Button */
+        .cd-btn-apply {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #ff3115 0%, #e0260d 100%);
+            color: #ffffff !important;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none !important;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 49, 21, 0.28);
+            transition: all 0.25s ease;
+            margin-bottom: 12px;
+        }
+        .cd-btn-apply:hover {
+            background: linear-gradient(135deg, #e0260d 0%, #c21e07 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 49, 21, 0.35);
+            color: #ffffff !important;
+        }
+
+        .cd-btn-call {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 11px 16px;
+            background: #f8fafc;
+            color: #1e293b !important;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none !important;
+            transition: all 0.2s ease;
+        }
+        .cd-btn-call:hover {
+            border-color: #ff3115;
+            color: #ff3115 !important;
+            background: #fffbf7;
+        }
+
+        /* Counselor Card */
+        .cd-counselor-box {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #15803d;
+            line-height: 1.5;
+        }
+        .cd-counselor-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #166534;
+            font-size: 13.5px;
+        }
+
+        @media (max-width: 991px) {
+            .cd-hero-banner {
+                padding: 30px 24px;
+            }
+            .cd-course-title {
+                font-size: 26px;
+            }
+            .cd-content-padding {
+                padding: 24px 20px;
+            }
+            .cd-image-wrapper {
+                height: 240px;
+            }
+            .cd-sidebar {
+                position: static;
+                margin-top: 30px;
+            }
+        }
+
+        /* Structured Headings & Rich Content (H1-H6 from Content Studio) */
+        .overview-h1 { font-size: 26px; font-weight: 800; color: #0f172a; margin: 24px 0 12px; border-bottom: 2px solid #ff3115; padding-bottom: 8px; }
+        .overview-h2 { font-size: 22px; font-weight: 800; color: #1e293b; margin: 22px 0 10px; border-left: 4px solid #ff3115; padding-left: 10px; }
+        .overview-h3 { font-size: 19px; font-weight: 700; color: #334155; margin: 18px 0 8px; }
+        .overview-h4 { font-size: 17px; font-weight: 700; color: #475569; margin: 16px 0 6px; }
+        .overview-h5 { font-size: 15px; font-weight: 600; color: #64748b; margin: 14px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .overview-h6 { font-size: 14px; font-weight: 600; color: #64748b; margin: 12px 0 4px; }
+        
+        .cd-chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+        .cd-chip-tag { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.15); color: #ffffff; padding: 4px 12px; border-radius: 20px; font-size: 12.5px; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(4px); }
+        .cd-chip-cat { display: inline-flex; align-items: center; gap: 5px; background: #fff0eb; color: #ff3115; padding: 4px 12px; border-radius: 20px; font-size: 12.5px; font-weight: 700; }
+        .cd-chip-kw { display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.15); color: #a7f3d0; padding: 3px 10px; border-radius: 16px; font-size: 11.5px; font-weight: 600; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+        .lead-inquiry-box {
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            border: 1px solid #fed7aa;
+            border-left: 5px solid #ff6b00;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 25px 0;
+        }
+        .lead-inquiry-box h4 { margin: 0 0 6px; font-size: 17px; font-weight: 800; color: #9a3412; display: flex; align-items: center; gap: 8px; }
+        .lead-inquiry-box p { margin: 0 0 14px; font-size: 14px; color: #7c2d12; line-height: 1.5; }
+        .lead-inquiry-box .btn { background: #ea580c; color: #fff; border: none; font-weight: 700; padding: 7px 18px; border-radius: 6px; text-decoration: none; display: inline-block; }
+        .lead-inquiry-box .btn:hover { background: #c2410c; }
+
+        .cd-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .cd-gallery-thumb {
+            border-radius: 8px;
+            overflow: hidden;
+            height: 120px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        .cd-gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .cd-gallery-thumb:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+    <link rel="stylesheet" href="css/smooth-ui.css">
+    <!-- Dynamic Site Mega-Menu & Custom Headers CSS -->
+    <link rel="stylesheet" href="css/site-menu.css?v=1.0.0">
+<body>
+
+    <!-- Header Toolbar -->
+    <div class="full-width-header">
+        <div class="rs-toolbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-left">
+                            <div class="welcome-message"><i class="fa fa-bank"></i><span>Welcome to EducationistGuru Admissions Portal</span></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="rs-toolbar-right">
+                            <div class="toolbar-share-icon">
+                                <ul>
+                                    <li><a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                                    <li><a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                                </ul>
+                            </div>
+                            <a href="tel:8750477000" class="apply-btn"><i class="fa fa-phone"></i> Free Counseling: 8750477000</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header Top -->
+        <header id="rs-header" class="rs-header">
+            <div class="rs-header-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact">
+                                <div class="widget-text">
+                                    <i class="fa fa-envelope" style="font-size:32px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text"><a href="mailto:info@educationistguru.com"><span>Mail Us</span>info@educationistguru.com</a></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="logo-area text-center">
+                                <a href="index.html"><img src="images/logo.png" alt="EducationistGuru" style="max-height:55px;"></a>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="header-contact pull-right">
+                                <div class="widget-text">
+                                    <i class="fa fa-phone" style="font-size:32px;color:#ff3115;margin-right:12px;"></i>
+                                    <div class="info-text"><a href="tel:8750477000"><span>Admissions Helpline</span>8750477000</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clean Navbar Without .html -->
+            <div class="menu-area menu-sticky">
+                <div class="container">
+                    <div class="main-menu">
+                        <div class="row relative">
+                            <div class="col-sm-12">
+                                <a class="rs-menu-toggle"><i class="fa fa-bars"></i> Menu</a>
+                                <nav class="rs-menu">
+                                    <ul class="nav-menu">
+                                        <li><a href="index.html">Home</a></li>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li class="current-menu-item"><a href="courses.html">Courses</a></li>
+                                        <li><a href="colleges.html">Colleges</a></li>
+                                        <li><a href="universities.html">Universities</a></li>
+                                        <li><a href="youtube.html"><i class="fa fa-youtube-play text-danger" style="margin-right:4px;"></i>Videos</a></li>
+                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a href="contact.html">Contact</a></li>
+                                    </ul>
+                                </nav>
+                                <div class="right-bar-icon text-right">
+                                    <a class="hidden-xs rs-search" data-toggle="modal" data-target=".search-modal"><i class="fa fa-search"></i></a>
+                                    <a id="nav-expander" class="nav-expander fixed"><i class="fa fa-bars fa-lg white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <!-- Main Course Detail Container -->
+    <main class="course-detail-page">
+        <div class="container">
+            
+            <!-- Breadcrumbs -->
+            <nav aria-label="breadcrumb" style="margin-bottom: 20px;">
+                <ol class="breadcrumb" style="background: transparent; padding: 0; font-size: 13.5px; font-weight: 600;">
+                    <li class="breadcrumb-item"><a href="index.html" style="color:#ff3115;"><i class="fa fa-home"></i> Home</a></li>
+                    <li class="breadcrumb-item"><a href="courses.html" style="color:#ff3115;">Courses</a></li>
+                    <li class="breadcrumb-item active text-muted" aria-current="page" id="breadcrumbCourseTitle">Course Details</li>
+                </ol>
+            </nav>
+
+            <!-- Hero Banner -->
+            <div class="cd-hero-banner" id="cdHeroBanner">
+                <span class="cd-faculty-pill" id="heroFacultyBadge">
+                    <i class="fa fa-graduation-cap"></i> <span id="heroFacultyText">Higher Education Degree</span>
+                </span>
+                <h1 class="cd-course-title" id="heroCourseTitle">Loading Course Details...</h1>
+                
+                <!-- Structured Multi-Tag & Category Chips (Point 3, 4, 5) -->
+                <div class="cd-chips-row" id="heroChipsRow"></div>
+
+                <div class="cd-hero-meta">
+                    <div class="cd-hero-meta-item">
+                        <i class="fa fa-clock-o"></i> <span>Duration: <strong id="heroDuration">3 Years</strong></span>
+                    </div>
+                    <div class="cd-hero-meta-item">
+                        <i class="fa fa-graduation-cap"></i> <span>Mode: <strong id="heroMode">Online / Regular</strong></span>
+                    </div>
+                    <div class="cd-hero-meta-item">
+                        <i class="fa fa-shield"></i> <span>Approval: <strong>UGC / AIU / NAAC Approved</strong></span>
+                    </div>
+                    <div class="cd-hero-meta-item">
+                        <i class="fa fa-check-circle" style="color:#10b981;"></i> <span style="color:#10b981;"><strong>Admissions Open 2025-26</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-Column Content Layout -->
+            <div class="row">
+                
+                <!-- Left Column: Details & Tabs -->
+                <div class="col-lg-8">
+                    <article class="cd-main-card">
+                        
+                        <!-- High Quality Course Banner Image -->
+                        <div class="cd-image-wrapper">
+                            <img id="cdCourseImage" src="images/courses/1.jpg" alt="Course Image" onerror="this.onerror=null;this.src='images/courses/1.jpg';">
+                        </div>
+
+                        <div class="cd-content-padding">
+                            
+                            <!-- Tab Navigation -->
+                            <ul class="nav cd-nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tab-overview">Overview & Highlights</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-curriculum">Curriculum & Syllabus</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-eligibility">Eligibility & Roadmap</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tab-why-eg">Why EducationistGuru</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab Contents -->
+                            <div class="tab-content">
+                                
+                                <!-- Tab 1: Overview (Supports H1-H6 Structured Headings) -->
+                                <div class="tab-pane fade show active" id="tab-overview" role="tabpanel">
+                                    <div class="cd-body-text" id="cdOverviewText">
+                                        This degree program is tailored to equip students with comprehensive theoretical foundations and practical competencies demanded by modern industries. Delivered in collaboration with leading UGC and AIU recognized universities.
+                                    </div>
+
+                                    <!-- Specializations / Streams Box -->
+                                    <div class="cd-spec-box" id="cdSpecBox">
+                                        <h5><i class="fa fa-star"></i> In-Demand Specializations & Tracks</h5>
+                                        <div class="cd-spec-tags" id="cdSpecTags">
+                                            <!-- Dynamically populated tags -->
+                                            <span class="cd-spec-tag">Core Specialization</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campus & Media Gallery (Point 6) -->
+                                    <div id="cdGallerySection" style="display:none; margin-top:30px; padding-top:24px; border-top:1px solid #e2e8f0;">
+                                        <h4 class="cd-section-heading" style="font-size:19px; display:flex; align-items:center; gap:8px;">
+                                            <i class="fa fa-picture-o text-danger"></i> Campus & Academic Media Gallery
+                                        </h4>
+                                        <div class="cd-gallery-grid" id="cdGalleryGrid"></div>
+                                    </div>
+
+                                    <h4 class="cd-section-heading" style="font-size:18px;margin-top:25px;">Key Career Prospects</h4>
+                                    <p class="cd-body-text">
+                                        Graduates of this program gain qualifications valid for all central, state government, and private corporate recruitments, competitive examinations, and international master's degree pathways.
+                                    </p>
+                                </div>
+
+                                <!-- Tab 2: Curriculum -->
+                                <div class="tab-pane fade" id="tab-curriculum" role="tabpanel">
+                                    <h3 class="cd-section-heading">Curriculum & Syllabus Breakdown</h3>
+                                    <p class="cd-body-text">
+                                        The curriculum adheres strictly to UGC Model Curricula, combining fundamental theory, domain specializations, laboratory simulations, and industry capstone projects:
+                                    </p>
+                                    <ul class="cd-curriculum-list" id="cdCurriculumList">
+                                        <li class="cd-curriculum-item">
+                                            <div class="cd-curriculum-icon"><i class="fa fa-book"></i></div>
+                                            <span>Foundation Concepts & Domain Fundamentals</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!-- Tab 3: Eligibility & Roadmap -->
+                                <div class="tab-pane fade" id="tab-eligibility" role="tabpanel">
+                                    <h3 class="cd-section-heading">Eligibility Criteria</h3>
+                                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:20px;margin-bottom:25px;">
+                                        <div style="font-size:14px;color:#64748b;margin-bottom:4px;font-weight:700;text-transform:uppercase;">Minimum Qualification Required</div>
+                                        <div style="font-size:16px;font-weight:700;color:#0f172a;" id="cdEligibilityText">10+2 / Graduation from recognized board/university</div>
+                                    </div>
+
+                                    <h4 class="cd-section-heading" style="font-size:18px;">4-Step Admission Roadmap</h4>
+                                    <div class="cd-roadmap-grid">
+                                        <div class="cd-roadmap-step">
+                                            <span class="cd-step-num">1</span>
+                                            <h6>Free Counseling</h6>
+                                            <p>Discuss your career goals and university preferences with our expert counselors.</p>
+                                        </div>
+                                        <div class="cd-roadmap-step">
+                                            <span class="cd-step-num">2</span>
+                                            <h6>Eligibility Verification</h6>
+                                            <p>Our team verifies your mark sheets and eligibility criteria at zero charges.</p>
+                                        </div>
+                                        <div class="cd-roadmap-step">
+                                            <span class="cd-step-num">3</span>
+                                            <h6>University Application</h6>
+                                            <p>Direct enrollment and seat reservation with approved partner institutions.</p>
+                                        </div>
+                                        <div class="cd-roadmap-step">
+                                            <span class="cd-step-num">4</span>
+                                            <h6>Enrolled & Validated</h6>
+                                            <p>Receive your official enrollment number, ID card, and study materials.</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab 4: Why EducationistGuru -->
+                                <div class="tab-pane fade" id="tab-why-eg" role="tabpanel">
+                                    <h3 class="cd-section-heading">Why Choose EducationistGuru?</h3>
+                                    <p class="cd-body-text">
+                                        Since July 2023, EducationistGuru has empowered thousands of students across India to make the right higher education choices with complete transparency and zero counseling fees.
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div style="display:flex;gap:12px;">
+                                                <i class="fa fa-check-circle text-success" style="font-size:20px;margin-top:2px;"></i>
+                                                <div>
+                                                    <strong style="color:#0f172a;font-size:15px;display:block;">100% Free Counseling</strong>
+                                                    <span style="color:#64748b;font-size:13px;">No hidden charges, registration fees, or commission.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div style="display:flex;gap:12px;">
+                                                <i class="fa fa-check-circle text-success" style="font-size:20px;margin-top:2px;"></i>
+                                                <div>
+                                                    <strong style="color:#0f172a;font-size:15px;display:block;">Recognized Universities</strong>
+                                                    <span style="color:#64748b;font-size:13px;">Degrees recognized by UGC, AICTE, NAAC, AIU, and DEB.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div style="display:flex;gap:12px;">
+                                                <i class="fa fa-check-circle text-success" style="font-size:20px;margin-top:2px;"></i>
+                                                <div>
+                                                    <strong style="color:#0f172a;font-size:15px;display:block;">Flexible Installments</strong>
+                                                    <span style="color:#64748b;font-size:13px;">Semester-wise payment plans directly to university accounts.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div style="display:flex;gap:12px;">
+                                                <i class="fa fa-check-circle text-success" style="font-size:20px;margin-top:2px;"></i>
+                                                <div>
+                                                    <strong style="color:#0f172a;font-size:15px;display:block;">7-Day Counselor Support</strong>
+                                                    <span style="color:#64748b;font-size:13px;">Dedicated helpline available 9:30 AM – 6:30 PM.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Right Column: Clean Program Highlights Sidebar -->
+                <div class="col-lg-4">
+                    <aside class="cd-sidebar">
+                        
+                        <!-- Main Stats Card -->
+                        <div class="cd-sidebar-widget">
+                            
+                            <!-- Header -->
+                            <div class="cd-widget-title">
+                                <i class="fa fa-certificate"></i> Program Features &amp; Stats
+                            </div>
+
+                            <!-- Annual Fee Card -->
+                            <div class="cd-fee-card">
+                                <div class="cd-fee-card-label">Approved Annual Fee</div>
+                                <div class="cd-fee-card-amount" id="sidebarFee">Contact Counselor</div>
+                                <span class="cd-fee-card-badge"><i class="fa fa-check"></i> Admissions Open 2025-26</span>
+                            </div>
+
+                            <!-- Course Features Spec List -->
+                            <ul class="cd-features-list">
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-clock-o"></i></div>
+                                        <span>Duration</span>
+                                    </div>
+                                    <div class="cd-feature-value" id="sidebarDuration">3 Years</div>
+                                </li>
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-desktop"></i></div>
+                                        <span>Learning Mode</span>
+                                    </div>
+                                    <div class="cd-feature-value" id="sidebarMode">Online / Regular</div>
+                                </li>
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-graduation-cap"></i></div>
+                                        <span>Eligibility</span>
+                                    </div>
+                                    <div class="cd-feature-value" id="sidebarEligibility">10+2 / Graduation</div>
+                                </li>
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-shield"></i></div>
+                                        <span>Recognition</span>
+                                    </div>
+                                    <div class="cd-feature-value">UGC / AIU Approved</div>
+                                </li>
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-briefcase"></i></div>
+                                        <span>Career Support</span>
+                                    </div>
+                                    <div class="cd-feature-value">Placement Guidance</div>
+                                </li>
+                                <li class="cd-feature-row">
+                                    <div class="cd-feature-left">
+                                        <div class="cd-feature-icon"><i class="fa fa-language"></i></div>
+                                        <span>Medium</span>
+                                    </div>
+                                    <div class="cd-feature-value">English / Hindi</div>
+                                </li>
+                            </ul>
+
+                            <!-- Primary Action Buttons -->
+                            <button type="button" class="cd-btn-apply" id="sidebarApplyBtn" onclick="handleEnrollClick()">
+                                <i class="fa fa-paper-plane"></i> Apply for Admission
+                            </button>
+                            
+                            <a href="tel:8750477000" class="cd-btn-call">
+                                <i class="fa fa-phone" style="color:#ff3115;"></i> Call Counselor: 8750477000
+                            </a>
+
+                            <!-- Trust Box -->
+                            <div class="cd-counselor-box">
+                                <i class="fa fa-shield"></i> <strong>100% Free Guidance</strong>
+                                Get direct verification of eligibility and university seat allocation with zero agent fees.
+                            </div>
+
+                        </div>
+
+                        <!-- Need Help Call Widget -->
+                        <div class="cd-sidebar-widget text-center" style="background:#0f172a;color:#ffffff;border:none;">
+                            <div style="width:50px;height:50px;border-radius:50%;background:rgba(255,49,21,0.2);color:#ff3115;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 15px;">
+                                <i class="fa fa-headphones"></i>
+                            </div>
+                            <h4 style="color:#ffffff;font-size:18px;font-weight:800;margin-bottom:8px;">Have Questions?</h4>
+                            <p style="color:#94a3b8;font-size:13px;margin-bottom:18px;">Speak with an EducationistGuru counselor directly for tailored course recommendations.</p>
+                            <a href="https://wa.me/918750477000?text=Hello%2C%20I%20am%20interested%20in%20course%20admission%20guidance" target="_blank" style="background:#25d366;color:#ffffff;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+                                <i class="fa fa-whatsapp" style="font-size:17px;"></i> Chat on WhatsApp
+                            </a>
+                        </div>
+
+                    </aside>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="rs-footer" class="bg3 rs-footer">
+        <div class="container">
+            <div>
+                <div class="row footer-contact-desc">
+                    <div class="col-md-4"><div class="contact-inner"><i class="fa fa-map-marker"></i><h4 class="contact-title">Address</h4><p class="contact-desc">India</p></div></div>
+                    <div class="col-md-4"><div class="contact-inner"><i class="fa fa-phone"></i><h4 class="contact-title">Phone Number</h4><p class="contact-desc">8750477000<br>9738707000</p></div></div>
+                    <div class="col-md-4"><div class="contact-inner"><i class="fa fa-envelope"></i><h4 class="contact-title">Email Address</h4><p class="contact-desc">info@educationistguru.com<br>www.educationistguru.com</p></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-12">
+                        <div class="about-widget">
+                            <img src="images/logo-footer.png" alt="Footer Logo">
+                            <p>Streamlining university admissions for students across India since July 2023. Online, Regular &amp; Distance Learning.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">RECENT POSTS</h5>
+                        <div class="recent-post-widget">
+                            <div class="post-item"><div class="post-date"><span>28</span><span>June</span></div><div class="post-desc"><h5 class="post-title"><a href="blog.html">Benefits of Distance Learning in 2025</a></h5><span class="post-category">Admissions</span></div></div>
+                            <div class="post-item"><div class="post-date"><span>10</span><span>June</span></div><div class="post-desc"><h5 class="post-title"><a href="blog.html">Top In-Demand Courses in India</a></h5><span class="post-category">Career Guidance</span></div></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">QUICK NAVIGATION</h5>
+                        <ul class="sitemap-widget">
+                            <li><a href="index.html"><i class="fa fa-angle-right"></i>Home</a></li>
+                            <li><a href="about.html"><i class="fa fa-angle-right"></i>About Us</a></li>
+                            <li><a href="courses.html"><i class="fa fa-angle-right"></i>All Courses</a></li>
+                            <li><a href="colleges.html"><i class="fa fa-angle-right"></i>Colleges</a></li>
+                            <li><a href="universities.html"><i class="fa fa-angle-right"></i>Universities</a></li>
+                            <li><a href="youtube.html"><i class="fa fa-angle-right"></i>Videos</a></li>
+                            <li><a href="blog.html"><i class="fa fa-angle-right"></i>Blog</a></li>
+                            <li><a href="contact.html"><i class="fa fa-angle-right"></i>Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <h5 class="footer-title">FREE NEWSLETTER</h5>
+                        <p>Sign up to receive admission alerts, fee schedules, and scholarship dates.</p>
+                        <form class="news-form"><input type="text" class="form-input" placeholder="Enter Your Email"><button type="submit" class="form-button"><i class="fa fa-arrow-right"></i></button></form>
+                    </div>
+                </div>
+                <div class="footer-share">
+                    <ul>
+                        <li><a href="https://www.facebook.com/educationistguruEg/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="https://www.instagram.com/educationistguru/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                        <li><a href="https://www.youtube.com/@Educationistguru" target="_blank"><i class="fa fa-youtube-play"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="copyright"><p>&copy; 2025 <a href="index.html">EducationistGuru</a>. All Rights Reserved.</p></div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="scrollUp"><i class="fa fa-angle-up"></i></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cms-content.js?v=3.5.0"></script>
+    <script src="js/crm-integration.js?v=3.5.0"></script>
+
+    <!-- Client-Side Hydration Engine for Clean Dynamic Slugs & URL rewriting -->
+    <script>
+        (function() {
+            let activeCourse = null;
+
+            function slugify(text) {
+                if (!text) return '';
+                return String(text)
+                    .toLowerCase()
+                    .trim()
+                    .replace(/&/g, 'and')
+                    .replace(/[\(\)\/,\.]+/g, ' ')
+                    .replace(/[^a-z0-9\s-]/g, '')
+                    .replace(/[\s-]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+            }
+
+            // Extract Course Identifier from Path (/courses/:slug) or Query Params
+            function getCourseIdentifier() {
+                const path = window.location.pathname.replace(/\/+$/, '');
+                const courseSlugMatch = path.match(/^\/courses\/([^\/]+)$/i);
+                
+                if (courseSlugMatch && courseSlugMatch[1] && courseSlugMatch[1] !== 'courses' && courseSlugMatch[1] !== 'courses.html') {
+                    return { type: 'slug', value: decodeURIComponent(courseSlugMatch[1]) };
+                }
+
+                const params = new URLSearchParams(window.location.search);
+                if (params.get('slug')) return { type: 'slug', value: params.get('slug') };
+                if (params.get('id')) return { type: 'id', value: params.get('id') };
+                if (params.get('name')) return { type: 'name', value: params.get('name') };
+                return null;
+            }
+
+            // Populate DOM with course data
+            function renderCourse(c) {
+                if (!c) return;
+                activeCourse = c;
+
+                // Document Metadata (Point 1 & 2: Title & Meta Description & Keywords)
+                document.title = `${c.name} | Admissions, Eligibility & Fee | EducationistGuru`;
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) {
+                    metaDesc.setAttribute('content', c.metaDescription || `${c.name} course details at EducationistGuru. Duration: ${c.duration}, Mode: ${c.mode || 'Online/Regular'}. Annual Fee: ${c.fee}. Get 100% free admission guidance.`);
+                }
+                let metaKw = document.querySelector('meta[name="keywords"]');
+                if (!metaKw) {
+                    metaKw = document.createElement('meta');
+                    metaKw.setAttribute('name', 'keywords');
+                    document.head.appendChild(metaKw);
+                }
+                const kwContent = (Array.isArray(c.keywords) && c.keywords.length > 0) ? c.keywords.join(', ') : `${c.name}, admission, eligibility, syllabus`;
+                metaKw.setAttribute('content', kwContent);
+
+                // Breadcrumbs & Titles (Point 1: Title)
+                const bcTitle = document.getElementById('breadcrumbCourseTitle');
+                if (bcTitle) bcTitle.textContent = c.name;
+
+                const heroTitle = document.getElementById('heroCourseTitle');
+                if (heroTitle) heroTitle.textContent = c.name;
+
+                const heroFacBadge = document.getElementById('heroFacultyText');
+                if (heroFacBadge) heroFacBadge.textContent = c.faculty || 'University Degree Program';
+
+                // Render Multi-Tag & Category Chips (Point 3, 4, 5)
+                const heroChipsRow = document.getElementById('heroChipsRow');
+                if (heroChipsRow) {
+                    let chipsHtml = '';
+                    if (Array.isArray(c.categories) && c.categories.length > 0) {
+                        chipsHtml += c.categories.map(cat => `<span class="cd-chip-cat"><i class="fa fa-folder-open"></i> ${cat}</span>`).join('');
+                    }
+                    if (Array.isArray(c.tags) && c.tags.length > 0) {
+                        chipsHtml += c.tags.map(tag => `<span class="cd-chip-tag"><i class="fa fa-tag"></i> ${tag}</span>`).join('');
+                    }
+                    if (Array.isArray(c.keywords) && c.keywords.length > 0) {
+                        chipsHtml += c.keywords.slice(0, 3).map(kw => `<span class="cd-chip-kw"><i class="fa fa-search"></i> ${kw}</span>`).join('');
+                    }
+                    heroChipsRow.innerHTML = chipsHtml;
+                }
+
+                const heroDuration = document.getElementById('heroDuration');
+                if (heroDuration) heroDuration.textContent = c.duration || '3 Years';
+
+                const heroMode = document.getElementById('heroMode');
+                if (heroMode) heroMode.textContent = c.mode || 'Online / Regular / Distance';
+
+                // Feature Image (Point 6)
+                const imgEl = document.getElementById('cdCourseImage');
+                if (imgEl) {
+                    const imgSrc = (c.image || 'images/courses/1.jpg').replace(/^\//, '');
+                    imgEl.src = imgSrc;
+                    imgEl.alt = c.name;
+                }
+
+                // Overview & Description (Supports H1-H6 Structured Headings - Point 7)
+                const overviewEl = document.getElementById('cdOverviewText');
+                if (overviewEl) {
+                    const rawContent = c.overviewContent || c.description;
+                    if (rawContent) {
+                        if (/<[a-z][\s\S]*>/i.test(rawContent)) {
+                            overviewEl.innerHTML = rawContent;
+                        } else {
+                            overviewEl.innerHTML = rawContent.split('\n\n').map(para => `<p style="margin-bottom:14px;">${para.replace(/\n/g, '<br>')}</p>`).join('');
+                        }
+                    } else {
+                        overviewEl.innerHTML = `<p>${c.name} is engineered to provide students with foundational theory, domain competencies, and career-oriented skillsets recognized across leading employers in India.</p>`;
+                    }
+                }
+
+                // Campus & Media Gallery (Point 6)
+                const galSection = document.getElementById('cdGallerySection');
+                const galGrid = document.getElementById('cdGalleryGrid');
+                if (galSection && galGrid) {
+                    if (Array.isArray(c.galleryImages) && c.galleryImages.length > 0) {
+                        galGrid.innerHTML = c.galleryImages.map((img, i) => `
+                            <div class="cd-gallery-thumb">
+                                <img src="${img.replace(/^\//, '')}" alt="Campus Media ${i+1}" onerror="this.src='images/courses/1.jpg';">
+                            </div>
+                        `).join('');
+                        galSection.style.display = 'block';
+                    } else {
+                        galSection.style.display = 'none';
+                    }
+                }
+
+                // Specializations
+                const specBox = document.getElementById('cdSpecBox');
+                const specTags = document.getElementById('cdSpecTags');
+                if (c.specializations && specTags) {
+                    const specs = c.specializations.split(',').map(s => s.trim()).filter(Boolean);
+                    if (specs.length > 0) {
+                        specTags.innerHTML = specs.map(s => `<span class="cd-spec-tag"><i class="fa fa-check text-danger" style="margin-right:4px;"></i>${s}</span>`).join('');
+                        if (specBox) specBox.style.display = 'block';
+                    } else if (specBox) {
+                        specBox.style.display = 'none';
+                    }
+                } else if (specBox) {
+                    specBox.style.display = 'none';
+                }
+
+                // Curriculum
+                const currList = document.getElementById('cdCurriculumList');
+                if (currList) {
+                    const mods = Array.isArray(c.curriculum) && c.curriculum.length > 0
+                        ? c.curriculum
+                        : ['Foundation Modules & Core Principles', 'Specialization Elective Subjects', 'Practical Projects & Laboratory Sessions', 'Industry Readiness & Placement Training'];
+                    
+                    currList.innerHTML = mods.map((mod, idx) => `
+                        <li class="cd-curriculum-item">
+                            <div class="cd-curriculum-icon"><i class="fa fa-book"></i></div>
+                            <span><strong>Module ${idx + 1}:</strong> ${mod}</span>
+                        </li>
+                    `).join('');
+                }
+
+                // Eligibility
+                const eligEl = document.getElementById('cdEligibilityText');
+                if (eligEl) eligEl.textContent = c.eligibility || '10+2 from recognized board or bachelor degree';
+
+                // Sidebar Stats
+                const sideFee = document.getElementById('sidebarFee');
+                if (sideFee) sideFee.textContent = c.fee || '₹40,000 / year';
+
+                const sideDur = document.getElementById('sidebarDuration');
+                if (sideDur) sideDur.textContent = c.duration || '3 Years';
+
+                const sideMode = document.getElementById('sidebarMode');
+                if (sideMode) sideMode.textContent = c.mode || 'Online / Regular / Distance';
+
+                const sideElig = document.getElementById('sidebarEligibility');
+                if (sideElig) sideElig.textContent = (c.eligibility && c.eligibility.length > 25) ? c.eligibility.slice(0, 23) + '...' : (c.eligibility || 'Recognized');
+
+                // If user accessed via ?id=106, cleanly pushState to /courses/:slug
+                if (c.slug && (window.location.search.includes('id=') || window.location.pathname.includes('courses-details'))) {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({ courseId: c.id, slug: c.slug }, c.name, `/courses/${c.slug}`);
+                    }
+                }
+            }
+
+            // Expose CTA Handler
+            window.handleEnrollClick = function() {
+                if (activeCourse && typeof window.openEnrollModal === 'function') {
+                    window.openEnrollModal(activeCourse.name, activeCourse.fee);
+                } else {
+                    const fallbackName = activeCourse ? activeCourse.name : 'University Admission';
+                    window.location.href = `/contact?course=${encodeURIComponent(fallbackName)}`;
+                }
+            };
+
+            // Main Load Flow
+            async function loadAndHydrate() {
+                const target = getCourseIdentifier();
+                let course = null;
+
+                // 1. Try Backend API
+                if (target) {
+                    try {
+                        const apiRes = await fetch(`/api/content/courses/${encodeURIComponent(target.value)}`, { cache: 'no-cache' });
+                        if (apiRes.ok) {
+                            const resData = await apiRes.json();
+                            if (resData.course) {
+                                renderCourse(resData.course);
+                                return;
+                            }
+                        }
+                    } catch (e) {}
+                }
+
+                // 2. Try static courses.json or LocalStorage
+                let allCourses = [];
+                try {
+                    const localData = localStorage.getItem('eg_cms_courses');
+                    if (localData) allCourses = JSON.parse(localData);
+                } catch (e) {}
+
+                if (!allCourses || allCourses.length === 0) {
+                    try {
+                        const fileRes = await fetch('data/courses.json', { cache: 'no-cache' });
+                        if (fileRes.ok) allCourses = await fileRes.json();
+                    } catch (e) {}
+                }
+
+                if (Array.isArray(allCourses) && allCourses.length > 0) {
+                    if (target) {
+                        if (target.type === 'slug') {
+                            course = allCourses.find(c => c.slug === target.value || slugify(c.name) === target.value);
+                        } else if (target.type === 'id') {
+                            course = allCourses.find(c => String(c.id) === String(target.value));
+                        } else if (target.type === 'name') {
+                            course = allCourses.find(c => c.name.toLowerCase().includes(target.value.toLowerCase()));
+                        }
+                    }
+                    if (!course) course = allCourses[0];
+                    renderCourse(course);
+                }
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', loadAndHydrate);
+            } else {
+                loadAndHydrate();
+            }
+        })();
+    </script>
+    <script src="js/smooth-scroll.js"></script>
+    <!-- Dynamic Site Mega-Menu & Custom Headers Hydration -->
+    <script src="js/site-menu.js?v=1.0.0"></script>
+</body>
+</html>

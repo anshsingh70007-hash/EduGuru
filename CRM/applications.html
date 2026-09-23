@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Applications | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .stats-grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:20px; }
+        @media (max-width: 1200px) { .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .stats-grid-4 { grid-template-columns: 1fr; } }
+        .stat-card-app { background:#fff; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #edf2f7; display:flex; align-items:center; gap:16px; transition:transform .2s; }
+        .stat-card-app:hover { transform:translateY(-2px); }
+        .stat-icon-app { width:50px; height:50px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+        .stat-icon-app.total { background:#e8f4fd; color:#0d6efd; }
+        .stat-icon-app.pending { background:#fff8e1; color:#f57f17; }
+        .stat-icon-app.accepted { background:#e8f5e9; color:#2e7d32; }
+        .stat-icon-app.converted { background:#f3e8fd; color:#7928ca; }
+        .stat-val-app { font-size:24px; font-weight:800; color:#1a202c; margin-top:2px; font-family:'Inter',sans-serif; }
+        .stat-lbl-app { font-size:12px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:.5px; }
+
+        .btn-wa-action { background:#25D366; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; transition:all .2s; }
+        .btn-wa-action:hover { background:#1ebc59; color:#fff; transform:scale(1.02); }
+        .btn-call-action { background:#edf2f7; color:#2d3748; border:1px solid #cbd5e0; border-radius:6px; padding:6px 9px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+        .btn-call-action:hover { background:#e2e8f0; color:#1a202c; }
+        .btn-convert-action { background:#7928ca; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all .2s; }
+        .btn-convert-action:hover { background:#621b9e; color:#fff; }
+        .btn-download-csv { background:#fff; border:2px solid #28a745; color:#28a745; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; }
+        .btn-download-csv:hover { background:#28a745; color:#fff; }
+
+        .modal-app-lg { width:780px; max-width:96vw; max-height:90vh; overflow-y:auto; }
+        .app-dossier-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+        .dossier-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:15px; }
+        .dossier-card h4 { font-size:13px; text-transform:uppercase; color:#718096; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+        .dossier-row { display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px; }
+        .dossier-row .label { color:#718096; }
+        .dossier-row .val { font-weight:600; color:#1a202c; text-align:right; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Student Applications</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i><span class="dot" id="unreadDot" style="display:none;"></span></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- KPI Summary Cards -->
+                <div class="stats-grid-4">
+                    <div class="stat-card-app">
+                        <div class="stat-icon-app total"><i class="fa fa-file-text-o"></i></div>
+                        <div>
+                            <div class="stat-lbl-app">Total Applications</div>
+                            <div class="stat-val-app" id="statTotalApps">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-app">
+                        <div class="stat-icon-app pending"><i class="fa fa-clock-o"></i></div>
+                        <div>
+                            <div class="stat-lbl-app">Under Review / Pending</div>
+                            <div class="stat-val-app" style="color:#e65100;" id="statPendingApps">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-app">
+                        <div class="stat-icon-app accepted"><i class="fa fa-check-circle"></i></div>
+                        <div>
+                            <div class="stat-lbl-app">Accepted / Approved</div>
+                            <div class="stat-val-app" style="color:#2e7d32;" id="statAcceptedApps">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-app">
+                        <div class="stat-icon-app converted"><i class="fa fa-graduation-cap"></i></div>
+                        <div>
+                            <div class="stat-lbl-app">Enrolled Students</div>
+                            <div class="stat-val-app" style="color:#7928ca;" id="statConvertedApps">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-filter Toolbar -->
+                <div class="table-toolbar" style="margin-bottom:16px;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search applicant, phone, email, university..." oninput="render()">
+                        </div>
+                        <select id="filterStatus" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                            <option value="converted">Enrolled</option>
+                        </select>
+                        <select id="filterCourse" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;max-width:240px;">
+                            <option value="">All Courses</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-download-csv" onclick="downloadApplicationsCSV()">
+                            <i class="fa fa-download"></i> Export CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="openAppModal()">
+                            <i class="fa fa-plus"></i> New Application
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Applications Table -->
+                <div class="card"><div class="card-body no-padding">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Applicant Details</th>
+                                <th>Program & University</th>
+                                <th>Qualification & CGPA</th>
+                                <th>Fee Status</th>
+                                <th>Status</th>
+                                <th>Counselor Fast Actions</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTable"></tbody>
+                    </table>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Application Modal -->
+    <div class="modal-overlay" id="appModal" onclick="if(event.target===this)closeAppModal()">
+        <div class="modal modal-app-lg">
+            <div class="modal-header">
+                <h3 id="appModalTitle"><i class="fa fa-file-text" style="color:#ff3115;margin-right:8px;"></i> New Admission Application</h3>
+                <button class="modal-close" onclick="closeAppModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="appId">
+                
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Candidate Name *</label>
+                        <input type="text" id="appName" required placeholder="Full candidate name">
+                    </div>
+                    <div class="form-group">
+                        <label>Calling Mobile *</label>
+                        <input type="text" id="appPhone" required placeholder="+91 98765 43210" oninput="syncAppWhatsApp()">
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                            <label style="margin:0;">WhatsApp Mobile</label>
+                            <label style="font-size:11px;font-weight:normal;cursor:pointer;color:#25D366;text-transform:none;">
+                                <input type="checkbox" id="appSameAsPhone" checked onchange="toggleAppWhatsAppSame(this.checked)"> Same as Calling
+                            </label>
+                        </div>
+                        <input type="text" id="appWhatsApp" placeholder="+91 98765 43210">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="appEmail" required placeholder="candidate@gmail.com">
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Desired Course / Program *</label>
+                        <select id="appCourse" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Preferred University / College</label>
+                        <select id="appUniversity">
+                            <option value="Mangalayatan University">Mangalayatan University</option>
+                            <option value="Swami Vivekanand Subharti University">Swami Vivekanand Subharti University</option>
+                            <option value="Sharda University">Sharda University</option>
+                            <option value="Suresh Gyan Vihar University">Suresh Gyan Vihar University</option>
+                            <option value="Amity University Online">Amity University Online</option>
+                            <option value="Chandigarh University">Chandigarh University</option>
+                            <option value="Lovely Professional University (LPU)">Lovely Professional University (LPU)</option>
+                            <option value="Manipal University Online">Manipal University Online</option>
+                            <option value="Other Partner University">Other Partner University</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Highest Qualification</label>
+                        <select id="appQual">
+                            <option value="12th Pass">12th Standard / Intermediate</option>
+                            <option value="Graduation (B.A/B.Sc/B.Com)">Graduation (B.A / B.Sc / B.Com)</option>
+                            <option value="B.Tech / B.E">B.Tech / B.E</option>
+                            <option value="Post Graduation (M.A/M.Sc/M.Com)">Post Graduation</option>
+                            <option value="Diploma / Polytechnic">Diploma / Polytechnic</option>
+                            <option value="10th Matriculation">10th Matriculation</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Percentage / CGPA</label>
+                        <input type="text" id="appMarks" placeholder="e.g. 78% or 8.2 CGPA">
+                    </div>
+                    <div class="form-group">
+                        <label>Learning Mode</label>
+                        <select id="appMode">
+                            <option value="Online Learning">Online Learning</option>
+                            <option value="Distance Education">Distance Education</option>
+                            <option value="Regular Campus">Regular Campus</option>
+                            <option value="Part-Time / Executive">Part-Time / Executive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Application Fee Status</label>
+                        <select id="appFeeStatus">
+                            <option value="unpaid">Unpaid / Pending</option>
+                            <option value="paid">Paid (₹1,000)</option>
+                            <option value="waived">Waived / Free</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Assigned Counselor</label>
+                        <select id="appCounselor">
+                            <option value="Jatinder Kaur">Jatinder Kaur (Lead Counselor)</option>
+                            <option value="Harmeet Singh">Harmeet Singh</option>
+                            <option value="Admission Team">Admission Team</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Application Status</label>
+                        <select id="appStatus">
+                            <option value="pending">Pending</option>
+                            <option value="reviewed">Reviewed</option>
+                            <option value="accepted">Accepted</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Documents Checklist</label>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:8px;background:#f8fafc;padding:12px;border-radius:8px;border:1px solid #e2e8f0;font-size:12px;">
+                        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;"><input type="checkbox" id="doc10"> 10th Marksheet</label>
+                        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;"><input type="checkbox" id="doc12"> 12th Marksheet</label>
+                        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;"><input type="checkbox" id="docGrad"> Graduation Degree</label>
+                        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;"><input type="checkbox" id="docAadhaar"> Aadhaar Card (Govt ID)</label>
+                        <label style="display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;"><input type="checkbox" id="docPhoto"> Passport Size Photo</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Counselor Remarks & Notes</label>
+                    <textarea id="appNotes" placeholder="Enter student background, eligibility remarks, fee concession notes..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeAppModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveApplication()"><i class="fa fa-check"></i> Save Application</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Dossier Details Modal -->
+    <div class="modal-overlay" id="dossierModal" onclick="if(event.target===this)closeDossierModal()">
+        <div class="modal modal-app-lg">
+            <div class="modal-header">
+                <h3 id="dossierTitle"><i class="fa fa-id-card-o" style="color:#ff3115;margin-right:8px;"></i> Application Dossier</h3>
+                <button class="modal-close" onclick="closeDossierModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="dossierBody"></div>
+            <div class="modal-footer" id="dossierFooter"></div>
+        </div>
+    </div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('applications');
+
+        const statusBadges = {
+            'pending': 'badge-warning',
+            'reviewed': 'badge-info',
+            'accepted': 'badge-success',
+            'rejected': 'badge-danger',
+            'converted': 'badge-primary'
+        };
+
+        let cachedCourses = [];
+
+        async function initCourses() {
+            cachedCourses = await CRM.loadCourses();
+            const filterSel = document.getElementById('filterCourse');
+            const modalSel = document.getElementById('appCourse');
+
+            // Group by faculty / category
+            const categories = {};
+            cachedCourses.forEach(c => {
+                const cat = c.category || 'General Higher Education';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(c);
+            });
+
+            let filterHTML = '<option value="">All Courses</option>';
+            let modalHTML = '';
+
+            Object.keys(categories).sort().forEach(cat => {
+                filterHTML += `<optgroup label="${cat}">`;
+                modalHTML += `<optgroup label="${cat}">`;
+                categories[cat].forEach(c => {
+                    filterHTML += `<option value="${c.name}">${c.name}</option>`;
+                    modalHTML += `<option value="${c.name}">${c.name} (${c.duration || 'Degree'})</option>`;
+                });
+                filterHTML += `</optgroup>`;
+                modalHTML += `</optgroup>`;
+            });
+
+            filterSel.innerHTML = filterHTML;
+            modalSel.innerHTML = modalHTML;
+        }
+
+        // WhatsApp Helper
+        function syncAppWhatsApp() {
+            if (document.getElementById('appSameAsPhone').checked) {
+                document.getElementById('appWhatsApp').value = document.getElementById('appPhone').value;
+            }
+        }
+        function toggleAppWhatsAppSame(checked) {
+            const waInput = document.getElementById('appWhatsApp');
+            if (checked) {
+                waInput.value = document.getElementById('appPhone').value;
+                waInput.disabled = true;
+            } else {
+                waInput.disabled = false;
+            }
+        }
+
+        function render() {
+            let apps = CRM.getAll('applications');
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+            const courseFilter = document.getElementById('filterCourse').value;
+
+            // KPI Counts
+            document.getElementById('statTotalApps').textContent = apps.length;
+            document.getElementById('statPendingApps').textContent = apps.filter(a => a.status === 'pending' || a.status === 'reviewed').length;
+            document.getElementById('statAcceptedApps').textContent = apps.filter(a => a.status === 'accepted').length;
+            document.getElementById('statConvertedApps').textContent = apps.filter(a => a.status === 'converted').length;
+
+            // Filter logic
+            if (q) {
+                apps = apps.filter(a => 
+                    (a.name || '').toLowerCase().includes(q) ||
+                    (a.email || '').toLowerCase().includes(q) ||
+                    (a.phone || '').toLowerCase().includes(q) ||
+                    (a.course || '').toLowerCase().includes(q) ||
+                    (a.university || '').toLowerCase().includes(q) ||
+                    (a.qualification || '').toLowerCase().includes(q) ||
+                    (a.appNo || '').toLowerCase().includes(q)
+                );
+            }
+            if (statusFilter) apps = apps.filter(a => a.status === statusFilter);
+            if (courseFilter) apps = apps.filter(a => a.course === courseFilter);
+
+            const tbody = document.getElementById('dataTable');
+            if (apps.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:45px;color:#888;font-size:13px;"><i class="fa fa-file-text-o" style="font-size:32px;display:block;margin-bottom:8px;color:#cbd5e1;"></i>No application records found matching your filters.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = apps.map(x => {
+                const phone = (x.phone || '').replace(/[^0-9]/g, '');
+                const cleanPhone = phone.startsWith('91') && phone.length === 12 ? phone : (phone.length === 10 ? '91' + phone : phone);
+                const waMsg = encodeURIComponent(`Dear ${x.name}, Greetings from EducationistGuru! We are reviewing your application for ${x.course} at ${x.university || 'our partner university'}. Please let us know if you have any questions regarding admission confirmation.`);
+                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : '#';
+
+                const feeStatusColor = x.feeStatus === 'paid' ? '#28a745' : (x.feeStatus === 'waived' ? '#17a2b8' : '#e65100');
+                const feeText = x.feeStatus === 'paid' ? 'Paid (₹1,000)' : (x.feeStatus === 'waived' ? 'Waived' : 'Unpaid');
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(x.name)};font-weight:700;">${CRM.getInitials(x.name)}</div>
+                                <div class="user-info">
+                                    <div class="name" style="font-weight:700;color:#1a202c;">${x.name}</div>
+                                    <div style="font-size:11px;color:#718096;">#APP-${String(x.id).padStart(4, '0')} &bull; <i class="fa fa-phone"></i> ${x.phone || 'No phone'}</div>
+                                    <div class="email" style="font-size:11px;">${x.email || ''}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600;color:#2d3748;font-size:13px;">${x.course}</div>
+                            <div style="font-size:11px;color:#718096;"><i class="fa fa-university"></i> ${x.university || 'Affiliated Partner Univ'}</div>
+                            <div style="font-size:10px;color:#a0aec0;">${x.mode || 'Online Learning'}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600;font-size:12px;">${x.qualification || '12th Pass'}</div>
+                            <div style="font-size:11px;color:#28a745;font-weight:600;">${x.marks || 'Awaiting Results'}</div>
+                        </td>
+                        <td>
+                            <span style="font-size:11px;font-weight:700;color:${feeStatusColor};background:#f8fafc;padding:3px 8px;border-radius:6px;border:1px solid #e2e8f0;">
+                                <i class="fa fa-${x.feeStatus === 'paid' ? 'check' : 'clock-o'}"></i> ${feeText}
+                            </span>
+                        </td>
+                        <td>
+                            <select onchange="updateAppStatus(${x.id}, this.value)" style="padding:4px 8px;border:1px solid #ced4da;border-radius:6px;font-size:12px;font-weight:600;">
+                                <option value="pending" ${x.status==='pending'?'selected':''}>Pending</option>
+                                <option value="reviewed" ${x.status==='reviewed'?'selected':''}>Reviewed</option>
+                                <option value="accepted" ${x.status==='accepted'?'selected':''}>Accepted</option>
+                                <option value="rejected" ${x.status==='rejected'?'selected':''}>Rejected</option>
+                                <option value="converted" ${x.status==='converted'?'selected':''}>Enrolled</option>
+                            </select>
+                            <div style="font-size:10px;color:#a0aec0;margin-top:3px;">${CRM.formatDate(x.date)}</div>
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                                <a href="${waLink}" target="_blank" class="btn-wa-action" title="1-Click WhatsApp Chat">
+                                    <i class="fa fa-whatsapp"></i> Chat
+                                </a>
+                                ${x.phone ? `<a href="tel:${x.phone}" class="btn-call-action" title="Click to Call"><i class="fa fa-phone"></i></a>` : ''}
+                                ${x.status !== 'converted' ? `
+                                    <button class="btn-convert-action" onclick="enrollApplication(${x.id})" title="Convert to Enrollment">
+                                        <i class="fa fa-graduation-cap"></i> Enroll
+                                    </button>
+                                ` : '<span style="font-size:11px;color:#7928ca;font-weight:700;"><i class="fa fa-check-circle"></i> Enrolled</span>'}
+                            </div>
+                        </td>
+                        <td style="text-align:right;">
+                            <div class="actions" style="justify-content:flex-end;">
+                                <button class="action-btn" title="View Full Dossier" onclick="viewDossier(${x.id})" style="color:#0d6efd;"><i class="fa fa-eye"></i></button>
+                                <button class="action-btn" title="Edit" onclick="editApp(${x.id})"><i class="fa fa-pencil"></i></button>
+                                <button class="action-btn delete" title="Delete" onclick="deleteApp(${x.id})"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateAppStatus(id, newStatus) {
+            CRM.update('applications', id, { status: newStatus, updatedAt: new Date().toISOString() });
+            showAlert(`Application status updated to ${newStatus.toUpperCase()}!`, 'success');
+            render();
+        }
+
+        function enrollApplication(id) {
+            const app = CRM.getById('applications', id);
+            if (!app) return;
+
+            if (confirm(`Convert application for ${app.name} (${app.course}) into Confirmed Enrollment?\nThis will create an enrollment and fee ledger entry.`)) {
+                CRM.convertToEnrollment(app);
+                CRM.update('applications', id, { status: 'converted', updatedAt: new Date().toISOString() });
+                showAlert(`Application successfully converted to Enrollment!`, 'success');
+                render();
+            }
+        }
+
+        // Add / Edit Modal Logic
+        function openAppModal(data) {
+            document.getElementById('appModal').classList.add('active');
+            if (data) {
+                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Application';
+                document.getElementById('appId').value = data.id;
+                document.getElementById('appName').value = data.name || '';
+                document.getElementById('appPhone').value = data.phone || '';
+                document.getElementById('appWhatsApp').value = data.whatsapp || data.phone || '';
+                document.getElementById('appSameAsPhone').checked = (data.whatsapp === data.phone);
+                document.getElementById('appEmail').value = data.email || '';
+                document.getElementById('appCourse').value = data.course || cachedCourses[0]?.name || '';
+                document.getElementById('appUniversity').value = data.university || 'Mangalayatan University';
+                document.getElementById('appQual').value = data.qualification || '12th Pass';
+                document.getElementById('appMarks').value = data.marks || '';
+                document.getElementById('appMode').value = data.mode || 'Online Learning';
+                document.getElementById('appFeeStatus').value = data.feeStatus || 'unpaid';
+                document.getElementById('appCounselor').value = data.counselor || 'Jatinder Kaur';
+                document.getElementById('appStatus').value = data.status || 'pending';
+                document.getElementById('appNotes').value = data.notes || '';
+
+                const docs = data.documents || {};
+                document.getElementById('doc10').checked = !!docs.doc10;
+                document.getElementById('doc12').checked = !!docs.doc12;
+                document.getElementById('docGrad').checked = !!docs.docGrad;
+                document.getElementById('docAadhaar').checked = !!docs.docAadhaar;
+                document.getElementById('docPhoto').checked = !!docs.docPhoto;
+            } else {
+                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> New Admission Application';
+                document.getElementById('appId').value = '';
+                document.getElementById('appName').value = '';
+                document.getElementById('appPhone').value = '';
+                document.getElementById('appWhatsApp').value = '';
+                document.getElementById('appSameAsPhone').checked = true;
+                document.getElementById('appEmail').value = '';
+                if (cachedCourses.length > 0) document.getElementById('appCourse').value = cachedCourses[0].name;
+                document.getElementById('appUniversity').selectedIndex = 0;
+                document.getElementById('appQual').selectedIndex = 0;
+                document.getElementById('appMarks').value = '';
+                document.getElementById('appMode').selectedIndex = 0;
+                document.getElementById('appFeeStatus').value = 'unpaid';
+                document.getElementById('appCounselor').value = currentUser.name || 'Jatinder Kaur';
+                document.getElementById('appStatus').value = 'pending';
+                document.getElementById('appNotes').value = '';
+
+                document.getElementById('doc10').checked = true;
+                document.getElementById('doc12').checked = true;
+                document.getElementById('docGrad').checked = false;
+                document.getElementById('docAadhaar').checked = true;
+                document.getElementById('docPhoto').checked = true;
+            }
+        }
+
+        function closeAppModal() {
+            document.getElementById('appModal').classList.remove('active');
+        }
+
+        function saveApplication() {
+            const id = document.getElementById('appId').value;
+            const name = document.getElementById('appName').value.trim();
+            const phone = document.getElementById('appPhone').value.trim();
+            const email = document.getElementById('appEmail').value.trim();
+            const course = document.getElementById('appCourse').value;
+
+            if (!name || !phone || !email || !course) {
+                alert('Please provide Candidate Name, Calling Phone, Email, and Course.');
+                return;
+            }
+
+            const appData = {
+                name,
+                phone,
+                whatsapp: document.getElementById('appWhatsApp').value.trim() || phone,
+                email,
+                course,
+                university: document.getElementById('appUniversity').value,
+                qualification: document.getElementById('appQual').value,
+                marks: document.getElementById('appMarks').value.trim(),
+                mode: document.getElementById('appMode').value,
+                feeStatus: document.getElementById('appFeeStatus').value,
+                counselor: document.getElementById('appCounselor').value,
+                status: document.getElementById('appStatus').value,
+                notes: document.getElementById('appNotes').value.trim(),
+                documents: {
+                    doc10: document.getElementById('doc10').checked,
+                    doc12: document.getElementById('doc12').checked,
+                    docGrad: document.getElementById('docGrad').checked,
+                    docAadhaar: document.getElementById('docAadhaar').checked,
+                    docPhoto: document.getElementById('docPhoto').checked
+                },
+                date: id ? undefined : new Date().toISOString().split('T')[0]
+            };
+
+            if (id) {
+                CRM.update('applications', parseInt(id), appData);
+                showAlert('Application details updated successfully!', 'success');
+            } else {
+                appData.appNo = `APP-${new Date().getFullYear()}-${Math.floor(1000 + Math.random()*9000)}`;
+                CRM.add('applications', appData);
+                showAlert('New application created successfully!', 'success');
+            }
+
+            closeAppModal();
+            render();
+        }
+
+        function editApp(id) {
+            const a = CRM.getById('applications', id);
+            if (a) openAppModal(a);
+        }
+
+        function deleteApp(id) {
+            if (confirm('Are you sure you want to delete this application record?')) {
+                CRM.remove('applications', id);
+                showAlert('Application record deleted.', 'danger');
+                render();
+            }
+        }
+
+        // Full Dossier View Modal
+        function viewDossier(id) {
+            const a = CRM.getById('applications', id);
+            if (!a) return;
+
+            const docs = a.documents || {};
+            const docList = [
+                { k: '10th Marksheet', ok: docs.doc10 },
+                { k: '12th Marksheet', ok: docs.doc12 },
+                { k: 'Graduation Degree', ok: docs.docGrad },
+                { k: 'Aadhaar / Govt Photo ID', ok: docs.docAadhaar },
+                { k: 'Passport Size Photo', ok: docs.docPhoto }
+            ];
+
+            document.getElementById('dossierTitle').innerHTML = `<i class="fa fa-id-card-o" style="color:#ff3115;margin-right:8px;"></i> Application Dossier &bull; ${a.name}`;
+            document.getElementById('dossierBody').innerHTML = `
+                <div class="app-dossier-grid">
+                    <div class="dossier-card">
+                        <h4><i class="fa fa-user"></i> Applicant Information</h4>
+                        <div class="dossier-row"><span class="label">Full Name:</span><span class="val">${a.name}</span></div>
+                        <div class="dossier-row"><span class="label">Calling Phone:</span><span class="val">${a.phone || '-'}</span></div>
+                        <div class="dossier-row"><span class="label">WhatsApp:</span><span class="val">${a.whatsapp || a.phone || '-'}</span></div>
+                        <div class="dossier-row"><span class="label">Email Address:</span><span class="val">${a.email || '-'}</span></div>
+                        <div class="dossier-row"><span class="label">Assigned Counselor:</span><span class="val">${a.counselor || 'Jatinder Kaur'}</span></div>
+                    </div>
+                    <div class="dossier-card">
+                        <h4><i class="fa fa-graduation-cap"></i> Academic & Program Details</h4>
+                        <div class="dossier-row"><span class="label">Selected Course:</span><span class="val" style="color:#ff3115;">${a.course}</span></div>
+                        <div class="dossier-row"><span class="label">Partner University:</span><span class="val">${a.university || 'Affiliated'}</span></div>
+                        <div class="dossier-row"><span class="label">Highest Qualification:</span><span class="val">${a.qualification || '-'}</span></div>
+                        <div class="dossier-row"><span class="label">Marks / Percentage:</span><span class="val">${a.marks || 'Results Awaited'}</span></div>
+                        <div class="dossier-row"><span class="label">Preferred Mode:</span><span class="val">${a.mode || 'Online Learning'}</span></div>
+                    </div>
+                </div>
+                <div class="app-dossier-grid">
+                    <div class="dossier-card">
+                        <h4><i class="fa fa-files-o"></i> Verification Document Checklist</h4>
+                        ${docList.map(d => `
+                            <div class="dossier-row">
+                                <span class="label">${d.k}</span>
+                                <span class="val" style="color:${d.ok ? '#28a745' : '#dc3545'};">
+                                    <i class="fa fa-${d.ok ? 'check-circle' : 'times-circle'}"></i> ${d.ok ? 'Verified' : 'Pending'}
+                                </span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="dossier-card">
+                        <h4><i class="fa fa-info-circle"></i> Status & Counselor Remarks</h4>
+                        <div class="dossier-row"><span class="label">Application Status:</span><span class="val" style="text-transform:uppercase;">${a.status}</span></div>
+                        <div class="dossier-row"><span class="label">Application Fee:</span><span class="val" style="text-transform:capitalize;">${a.feeStatus || 'Unpaid'}</span></div>
+                        <div class="dossier-row"><span class="label">Submission Date:</span><span class="val">${CRM.formatDate(a.date)}</span></div>
+                        <div style="margin-top:10px;background:#fff;padding:10px;border-radius:6px;border:1px solid #edf2f7;font-size:12px;color:#4a5568;line-height:1.5;">
+                            <strong>Remarks:</strong> ${a.notes || 'No remarks recorded yet.'}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('dossierFooter').innerHTML = `
+                <button class="btn btn-outline" onclick="closeDossierModal()">Close</button>
+                <button class="btn btn-primary" onclick="window.print()"><i class="fa fa-print"></i> Print Dossier</button>
+                ${a.status !== 'converted' ? `
+                    <button class="btn-convert-action" onclick="closeDossierModal();enrollApplication(${a.id})">
+                        <i class="fa fa-graduation-cap"></i> Convert to Enrollment
+                    </button>
+                ` : ''}
+            `;
+            document.getElementById('dossierModal').classList.add('active');
+        }
+
+        function closeDossierModal() {
+            document.getElementById('dossierModal').classList.remove('active');
+        }
+
+        // CSV Export
+        function downloadApplicationsCSV() {
+            const apps = CRM.getAll('applications');
+            if (apps.length === 0) {
+                alert('No applications to export.');
+                return;
+            }
+
+            const headers = ['Application No', 'Name', 'Phone', 'WhatsApp', 'Email', 'Course', 'University', 'Qualification', 'Marks', 'Mode', 'Fee Status', 'Counselor', 'Status', 'Date', 'Remarks'];
+            const rows = apps.map(a => [
+                a.appNo || `APP-${a.id}`,
+                a.name || '',
+                a.phone || '',
+                a.whatsapp || a.phone || '',
+                a.email || '',
+                a.course || '',
+                a.university || '',
+                a.qualification || '',
+                a.marks || '',
+                a.mode || '',
+                a.feeStatus || 'unpaid',
+                a.counselor || 'Jatinder Kaur',
+                a.status || 'pending',
+                a.date || '',
+                (a.notes || '').replace(/"/g, '""')
+            ]);
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += headers.map(h => `"${h}"`).join(',') + '\r\n';
+            rows.forEach(r => {
+                csvContent += r.map(v => `"${v}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `EducationistGuru_Applications_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showAlert(`Exported ${apps.length} applications to CSV!`, 'success');
+        }
+
+        // Initial Load & Server Sync
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initCourses();
+            await CRM.syncWithServer();
+            render();
+        });
+    
+        // Multi-device real-time sync listener
+        window.addEventListener('crm:synced', () => {
+            if (typeof render === "function") render();
+        });
+</script>
+</body>
+</html>

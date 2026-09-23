@@ -1,0 +1,28 @@
+[
+  {
+    "name": "Jaspreet Singh",
+    "email": "jaspreet.s@example.com",
+    "phone": "+91 9876588888",
+    "course": "BCA in Cloud Computing & Cybersecurity",
+    "qualification": "10+2 / Intermediate",
+    "mode": "Online Mode",
+    "status": "pending",
+    "date": "2026-09-21",
+    "_tempClientId": "draft_1790003233144_esvp",
+    "dateAdded": "2026-09-21T15:07:13.144Z",
+    "id": 2
+  },
+  {
+    "name": "Simranjeet Gill (Enroll Test)",
+    "email": "simran.gill@example.com",
+    "phone": "+91 9878899000",
+    "course": "B.Tech in Artificial Intelligence & Machine Learning",
+    "qualification": "10+2 / Intermediate",
+    "mode": "Online Mode",
+    "status": "pending",
+    "date": "2026-09-21",
+    "_tempClientId": "draft_1790002632076_u5cs",
+    "dateAdded": "2026-09-21T14:57:12.076Z",
+    "id": 1
+  }
+]

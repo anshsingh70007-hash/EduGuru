@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Fee Management | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .stat-grid-4 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px; margin-bottom:22px; }
+        .fee-card { background:#fff; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #edf2f7; display:flex; align-items:center; gap:16px; transition:transform .2s; }
+        .fee-card:hover { transform:translateY(-2px); }
+        .fee-icon { width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+        .fee-icon.total { background:#e8f4fd; color:#0d6efd; }
+        .fee-icon.collected { background:#e8f5e9; color:#2e7d32; }
+        .fee-icon.pending { background:#fff8e1; color:#f57f17; }
+        .fee-icon.overdue { background:#ffebee; color:#c62828; }
+        .fee-val { font-size:22px; font-weight:800; color:#1a202c; margin-top:2px; font-family:'Inter',sans-serif; }
+        .fee-lbl { font-size:12px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:.5px; }
+
+        .badge-paid { background:#d4edda; color:#155724; font-weight:700; }
+        .badge-partial { background:#cce5ff; color:#004085; font-weight:700; }
+        .badge-pending { background:#fff3cd; color:#856404; font-weight:700; }
+        .badge-overdue { background:#f8d7da; color:#721c24; font-weight:700; }
+
+        .btn-download { background:#fff; border:2px solid #28a745; color:#28a745; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; font-family:'Inter',sans-serif; }
+        .btn-download:hover { background:#28a745; color:#fff; box-shadow:0 3px 12px rgba(40,167,69,.2); }
+
+        .receipt-modal { width:650px; max-width:95vw; background:#fff; border-radius:14px; overflow:hidden; }
+        .receipt-box { border:2px dashed #cbd5e0; padding:25px; border-radius:12px; background:#fff; font-family:'Inter',sans-serif; }
+        .receipt-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #e2e8f0; padding-bottom:15px; margin-bottom:15px; }
+        .receipt-brand { font-size:20px; font-weight:800; color:#1a202c; }
+        .receipt-brand span { color:#ff3115; }
+        .receipt-table { width:100%; border-collapse:collapse; margin:15px 0; font-size:13px; }
+        .receipt-table th, .receipt-table td { padding:10px 12px; border:1px solid #e2e8f0; }
+        .receipt-table th { background:#f7fafc; text-align:left; font-weight:600; }
+        .receipt-total-row { background:#f8fafc; font-weight:700; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Fee Management</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- Fee Metrics Overview -->
+                <div class="stat-grid-4">
+                    <div class="fee-card">
+                        <div class="fee-icon total"><i class="fa fa-money"></i></div>
+                        <div>
+                            <div class="fee-lbl">Total Receivable</div>
+                            <div class="fee-val" id="statTotalReceivable">₹0</div>
+                        </div>
+                    </div>
+                    <div class="fee-card">
+                        <div class="fee-icon collected"><i class="fa fa-check-circle"></i></div>
+                        <div>
+                            <div class="fee-lbl">Total Collected</div>
+                            <div class="fee-val" style="color:#2e7d32;" id="statTotalCollected">₹0</div>
+                        </div>
+                    </div>
+                    <div class="fee-card">
+                        <div class="fee-icon pending"><i class="fa fa-clock-o"></i></div>
+                        <div>
+                            <div class="fee-lbl">Pending Due</div>
+                            <div class="fee-val" style="color:#e65100;" id="statPendingDue">₹0</div>
+                        </div>
+                    </div>
+                    <div class="fee-card">
+                        <div class="fee-icon overdue"><i class="fa fa-exclamation-triangle"></i></div>
+                        <div>
+                            <div class="fee-lbl">Overdue Amount</div>
+                            <div class="fee-val" style="color:#c62828;" id="statOverdueAmount">₹0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar with Search, Filters and Download Option -->
+                <div class="table-toolbar" style="margin-bottom:15px;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="feeSearchInput" placeholder="Search student, roll no, course, UTR..." oninput="renderFees()">
+                        </div>
+                        <select id="feeStatusFilter" onchange="renderFees()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Statuses</option>
+                            <option value="paid">Paid</option>
+                            <option value="partial">Partial</option>
+                            <option value="pending">Pending</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                        <select id="feeCourseFilter" onchange="renderFees()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;max-width:240px;">
+                            <option value="">All Courses</option>
+                        </select>
+                        <select id="feeModeFilter" onchange="renderFees()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Payment Modes</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Net Banking">Net Banking</option>
+                            <option value="Demand Draft">Demand Draft</option>
+                            <option value="Cash">Cash</option>
+                            <option value="NEFT/RTGS">NEFT/RTGS</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-download" onclick="downloadFeeReportCSV()">
+                            <i class="fa fa-download"></i> Download Fee Report (CSV)
+                        </button>
+                        <button class="btn btn-primary" onclick="openFeeModal()">
+                            <i class="fa fa-plus"></i> Record Fee Payment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fee Records Table -->
+                <div class="card"><div class="card-body no-padding">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student Details</th>
+                                <th>Course & Term</th>
+                                <th>Total Fee</th>
+                                <th>Paid Amount</th>
+                                <th>Pending Due</th>
+                                <th>Payment Mode & Ref</th>
+                                <th>Due / Paid Date</th>
+                                <th>Status</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="feeTableBody"></tbody>
+                    </table>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Fee Modal -->
+    <div class="modal-overlay" id="feeModal" onclick="if(event.target===this)closeFeeModal()"><div class="modal" style="width:620px;max-width:96vw;">
+        <div class="modal-header">
+            <h3 id="feeModalTitle"><i class="fa fa-money" style="color:#ff3115;margin-right:8px;"></i> Record Fee Payment</h3>
+            <button class="modal-close" onclick="closeFeeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="feeId">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Student Name *</label>
+                    <input type="text" id="fStudentName" required placeholder="Enter student full name">
+                </div>
+                <div class="form-group">
+                    <label>Roll / Enrollment No</label>
+                    <input type="text" id="fRollNo" placeholder="e.g. EG/24/CS09">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="fEmail" placeholder="student@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="fPhone" placeholder="+91 98765 43210">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Course *</label>
+                    <select id="fCourse"></select>
+                </div>
+                <div class="form-group">
+                    <label>Term / Installment</label>
+                    <select id="fTerm">
+                        <option>Annual Fee (Year 1)</option>
+                        <option>Semester 1</option>
+                        <option>Semester 2</option>
+                        <option>Semester 3</option>
+                        <option>Semester 4</option>
+                        <option>Trimester 1</option>
+                        <option>Exam / Hostel Fee</option>
+                    </select>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Total Fee (₹) *</label>
+                    <input type="number" id="fTotalFee" required placeholder="185000" oninput="calculatePending()">
+                </div>
+                <div class="form-group">
+                    <label>Amount Paid (₹) *</label>
+                    <input type="number" id="fPaidAmount" required placeholder="185000" oninput="calculatePending()">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="fPaymentMode">
+                        <option value="UPI">UPI (GooglePay / PhonePe / Paytm)</option>
+                        <option value="Net Banking">Net Banking</option>
+                        <option value="Demand Draft">Demand Draft (DD)</option>
+                        <option value="NEFT/RTGS">NEFT / RTGS</option>
+                        <option value="Cash">Cash at Counter</option>
+                        <option value="Cheque">Cheque</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Transaction Ref / UTR No</label>
+                    <input type="text" id="fTransactionRef" placeholder="e.g. UPI/424910284712">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-group">
+                    <label>Payment Date</label>
+                    <input type="date" id="fPaymentDate">
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="fDueDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Remarks / Notes</label>
+                <textarea id="fNotes" placeholder="Fee concession, education loan details, receipt notes..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeFeeModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveFeeRecord()"><i class="fa fa-check"></i> Save Fee Record</button>
+        </div>
+    </div></div>
+
+    <!-- Official Fee Receipt Modal -->
+    <div class="modal-overlay" id="receiptModal" onclick="if(event.target===this)closeReceiptModal()"><div class="modal receipt-modal">
+        <div class="modal-header">
+            <h3><i class="fa fa-file-text-o" style="color:#ff3115;margin-right:8px;"></i> Official Fee Receipt</h3>
+            <button class="modal-close" onclick="closeReceiptModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="receiptPrintableArea">
+            <div class="receipt-box">
+                <div class="receipt-header">
+                    <div>
+                        <div class="receipt-brand">Educationist<span>Guru</span></div>
+                        <div style="font-size:12px;color:#718096;margin-top:2px;">Affiliated College & Educational Institute</div>
+                        <div style="font-size:11px;color:#a0aec0;">GSTIN / Reg No: 07AAACE1234F1Z5 &bull; New Delhi, India</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:14px;font-weight:700;color:#ff3115;" id="rcptNumber">EGU/2024-25/0000</div>
+                        <div style="font-size:12px;color:#718096;margin-top:3px;">Date: <span id="rcptDate">-</span></div>
+                        <div style="font-size:11px;color:#28a745;font-weight:700;margin-top:2px;" id="rcptStatusTag">[PAID]</div>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px;font-size:12px;">
+                    <div>
+                        <div style="color:#718096;">STUDENT DETAILS</div>
+                        <div style="font-weight:700;font-size:14px;color:#1a202c;" id="rcptStudentName">-</div>
+                        <div id="rcptRollNo">Roll No: -</div>
+                        <div id="rcptContact">Email / Phone</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="color:#718096;">COURSE & ACADEMIC YEAR</div>
+                        <div style="font-weight:700;font-size:13px;color:#1a202c;" id="rcptCourse">-</div>
+                        <div id="rcptTerm">Term: -</div>
+                        <div id="rcptAcademicYear">Academic Year: 2024-25</div>
+                    </div>
+                </div>
+
+                <table class="receipt-table">
+                    <thead>
+                        <tr>
+                            <th>Particulars / Description</th>
+                            <th style="text-align:right;width:120px;">Amount (INR)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcptItemsBody"></tbody>
+                </table>
+
+                <div style="display:grid;grid-template-columns:2fr 1fr;gap:15px;margin-top:20px;padding-top:15px;border-top:1px solid #e2e8f0;font-size:12px;">
+                    <div>
+                        <div style="color:#718096;">Payment Mode: <strong id="rcptMode" style="color:#1a202c;">-</strong></div>
+                        <div style="color:#718096;">Transaction Ref / UTR: <strong id="rcptTxnRef" style="color:#1a202c;">-</strong></div>
+                        <div style="margin-top:6px;color:#718096;font-size:11px;">Note: This is a computer-generated receipt issued by EducationistGuru CRM.</div>
+                    </div>
+                    <div style="text-align:center;padding-top:25px;">
+                        <div style="border-top:1px solid #a0aec0;font-size:11px;font-weight:600;color:#4a5568;padding-top:4px;">
+                            Authorized Accounts Signatory
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="display:flex;justify-content:space-between;">
+            <button class="btn btn-outline" onclick="closeReceiptModal()">Close</button>
+            <button class="btn btn-primary" onclick="printReceipt()"><i class="fa fa-print"></i> Print Receipt</button>
+        </div>
+    </div></div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        // Auth check
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='', ls='';
+            modules.forEach(m => {
+                if(CRM.hasPermission(cu, m.key)){
+                    if(m.section !== ls){ html+='<div class="nav-section-title">'+m.section+'</div>'; ls=m.section; }
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML = html;
+            document.getElementById('topName').textContent = cu.name;
+            document.getElementById('topRole').textContent = (CRM.getUserRole(cu).label || cu.role);
+            document.getElementById('topAvatar').textContent = CRM.getInitials(cu.name);
+        }
+        buildSidebar('fees');
+
+        // ============ RENDER FEES ============
+        function renderFees() {
+            let fees = CRM.getAll('fees');
+            const q = (document.getElementById('feeSearchInput').value || '').toLowerCase();
+            const statusFilter = document.getElementById('feeStatusFilter').value;
+            const courseFilter = document.getElementById('feeCourseFilter').value;
+            const modeFilter = document.getElementById('feeModeFilter').value;
+
+            // Compute top-level summary metrics from all fees
+            const totalRec = fees.reduce((sum, f) => sum + (Number(f.totalFee) || 0), 0);
+            const totalColl = fees.reduce((sum, f) => sum + (Number(f.paidAmount) || 0), 0);
+            const totalPend = fees.reduce((sum, f) => sum + (Number(f.pendingAmount) || 0), 0);
+            const totalOverdue = fees.filter(f => f.status === 'overdue').reduce((sum, f) => sum + (Number(f.pendingAmount) || 0), 0);
+
+            document.getElementById('statTotalReceivable').textContent = CRM.formatCurrency(totalRec);
+            document.getElementById('statTotalCollected').textContent = CRM.formatCurrency(totalColl);
+            document.getElementById('statPendingDue').textContent = CRM.formatCurrency(totalPend);
+            document.getElementById('statOverdueAmount').textContent = CRM.formatCurrency(totalOverdue);
+
+            // Filter
+            if (q) {
+                fees = fees.filter(f => 
+                    (f.studentName || '').toLowerCase().includes(q) ||
+                    (f.rollNo || '').toLowerCase().includes(q) ||
+                    (f.course || '').toLowerCase().includes(q) ||
+                    (f.email || '').toLowerCase().includes(q) ||
+                    (f.receiptNo || '').toLowerCase().includes(q) ||
+                    (f.transactionRef || '').toLowerCase().includes(q)
+                );
+            }
+            if (statusFilter) fees = fees.filter(f => f.status === statusFilter);
+            if (courseFilter) fees = fees.filter(f => f.course === courseFilter);
+            if (modeFilter) fees = fees.filter(f => f.paymentMode === modeFilter);
+
+            const tbody = document.getElementById('feeTableBody');
+            if (fees.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:#a0aec0;"><i class="fa fa-inbox" style="font-size:32px;display:block;margin-bottom:8px;"></i>No fee records found matching your filters.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = fees.map(f => {
+                const pending = Math.max(0, (Number(f.totalFee) || 0) - (Number(f.paidAmount) || 0));
+                return `
+                    <tr>
+                        <td>
+                            <div style="display:flex;align-items:center;gap:10px;">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(f.studentName)};width:34px;height:34px;min-width:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;">
+                                    ${CRM.getInitials(f.studentName)}
+                                </div>
+                                <div>
+                                    <div style="font-weight:600;color:#2d3748;">${f.studentName}</div>
+                                    <div style="font-size:11px;color:#718096;">${f.rollNo || 'Roll Pending'} &bull; ${f.phone || f.email || '-'}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600;font-size:13px;">${f.course}</div>
+                            <div style="font-size:11px;color:#718096;">${f.term || 'Semester 1'}</div>
+                        </td>
+                        <td style="font-weight:700;color:#2d3748;">${CRM.formatCurrency(f.totalFee)}</td>
+                        <td style="font-weight:700;color:#28a745;">${CRM.formatCurrency(f.paidAmount)}</td>
+                        <td style="font-weight:700;color:${pending > 0 ? '#e65100' : '#718096'};">${CRM.formatCurrency(pending)}</td>
+                        <td>
+                            <div style="font-weight:600;font-size:12px;">${f.paymentMode || 'N/A'}</div>
+                            <div style="font-size:11px;color:#718096;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${f.transactionRef || '-'}</div>
+                        </td>
+                        <td>
+                            <div style="font-size:12px;color:#2d3748;">Due: ${CRM.formatDate(f.dueDate)}</div>
+                            <div style="font-size:11px;color:#718096;">Paid: ${f.paymentDate ? CRM.formatDate(f.paymentDate) : 'Not paid'}</div>
+                        </td>
+                        <td>
+                            <span class="badge badge-${f.status}" style="text-transform:uppercase;font-size:10px;letter-spacing:.5px;">${f.status}</span>
+                        </td>
+                        <td style="text-align:right;">
+                            <div class="actions" style="justify-content:flex-end;">
+                                <button class="action-btn" title="View/Print Receipt" onclick="viewReceipt(${f.id})" style="color:#0d6efd;"><i class="fa fa-print"></i></button>
+                                <button class="action-btn" title="Edit" onclick="editFeeRecord(${f.id})"><i class="fa fa-pencil"></i></button>
+                                <button class="action-btn delete" title="Delete" onclick="deleteFeeRecord(${f.id})"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ============ DOWNLOAD FEE REPORT (CSV) ============
+        function downloadFeeReportCSV() {
+            const fees = CRM.getAll('fees');
+            if (fees.length === 0) {
+                alert('No fee records to export.');
+                return;
+            }
+
+            const headers = [
+                'Receipt No',
+                'Student Name',
+                'Roll No',
+                'Email',
+                'Phone',
+                'Course',
+                'Term',
+                'Academic Year',
+                'Total Fee (INR)',
+                'Paid Amount (INR)',
+                'Pending Amount (INR)',
+                'Status',
+                'Payment Mode',
+                'Transaction Ref / UTR',
+                'Payment Date',
+                'Due Date',
+                'Notes'
+            ];
+
+            const rows = fees.map(f => [
+                f.receiptNo || '',
+                f.studentName || '',
+                f.rollNo || '',
+                f.email || '',
+                f.phone || '',
+                f.course || '',
+                f.term || '',
+                f.academicYear || '2024-25',
+                f.totalFee || 0,
+                f.paidAmount || 0,
+                f.pendingAmount || 0,
+                f.status || '',
+                f.paymentMode || '',
+                f.transactionRef || '',
+                f.paymentDate || '',
+                f.dueDate || '',
+                (f.notes || '').replace(/"/g, '""')
+            ]);
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += headers.map(h => `"${h}"`).join(',') + '\r\n';
+
+            rows.forEach(row => {
+                csvContent += row.map(v => `"${v}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            const today = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `EducationistGuru_Fee_Report_${today}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showAlert(`Exported ${fees.length} fee records to CSV successfully!`, 'success');
+        }
+
+        // ============ ADD / EDIT FEE RECORD ============
+        function openFeeModal(data) {
+            document.getElementById('feeModal').classList.add('active');
+            if (data) {
+                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Fee Record';
+                document.getElementById('feeId').value = data.id;
+                document.getElementById('fStudentName').value = data.studentName;
+                document.getElementById('fRollNo').value = data.rollNo || '';
+                document.getElementById('fEmail').value = data.email || '';
+                document.getElementById('fPhone').value = data.phone || '';
+                document.getElementById('fCourse').value = data.course || 'B.Tech Computer Science';
+                document.getElementById('fTerm').value = data.term || 'Semester 1';
+                document.getElementById('fTotalFee').value = data.totalFee || '';
+                document.getElementById('fPaidAmount').value = data.paidAmount || '';
+                document.getElementById('fPaymentMode').value = data.paymentMode || 'UPI';
+                document.getElementById('fTransactionRef').value = data.transactionRef || '';
+                document.getElementById('fPaymentDate').value = data.paymentDate || '';
+                document.getElementById('fDueDate').value = data.dueDate || '';
+                document.getElementById('fNotes').value = data.notes || '';
+            } else {
+                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> Record Fee Payment';
+                document.getElementById('feeId').value = '';
+                document.getElementById('fStudentName').value = '';
+                document.getElementById('fRollNo').value = '';
+                document.getElementById('fEmail').value = '';
+                document.getElementById('fPhone').value = '';
+                document.getElementById('fCourse').selectedIndex = 0;
+                document.getElementById('fTerm').selectedIndex = 0;
+                document.getElementById('fTotalFee').value = '';
+                document.getElementById('fPaidAmount').value = '';
+                document.getElementById('fPaymentMode').selectedIndex = 0;
+                document.getElementById('fTransactionRef').value = '';
+                document.getElementById('fPaymentDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('fDueDate').value = '';
+                document.getElementById('fNotes').value = '';
+            }
+        }
+
+        function closeFeeModal() {
+            document.getElementById('feeModal').classList.remove('active');
+        }
+
+        function calculatePending() {
+            const total = Number(document.getElementById('fTotalFee').value) || 0;
+            const paid = Number(document.getElementById('fPaidAmount').value) || 0;
+            // auto adjust
+        }
+
+        function saveFeeRecord() {
+            const id = document.getElementById('feeId').value;
+            const studentName = document.getElementById('fStudentName').value.trim();
+            const totalFee = Number(document.getElementById('fTotalFee').value) || 0;
+            const paidAmount = Number(document.getElementById('fPaidAmount').value) || 0;
+
+            if (!studentName || totalFee <= 0) {
+                alert('Please enter Student Name and a valid Total Fee amount.');
+                return;
+            }
+
+            const pending = Math.max(0, totalFee - paidAmount);
+            let status = 'pending';
+            if (paidAmount >= totalFee) status = 'paid';
+            else if (paidAmount > 0) status = 'partial';
+
+            // Check if overdue
+            const dueDate = document.getElementById('fDueDate').value;
+            if (dueDate && new Date(dueDate) < new Date() && status !== 'paid') {
+                status = 'overdue';
+            }
+
+            const record = {
+                studentName: studentName,
+                rollNo: document.getElementById('fRollNo').value.trim() || `EG/24/${Math.floor(1000 + Math.random()*9000)}`,
+                email: document.getElementById('fEmail').value.trim(),
+                phone: document.getElementById('fPhone').value.trim(),
+                course: document.getElementById('fCourse').value,
+                term: document.getElementById('fTerm').value,
+                academicYear: '2024-25',
+                totalFee: totalFee,
+                paidAmount: paidAmount,
+                pendingAmount: pending,
+                status: status,
+                paymentMode: document.getElementById('fPaymentMode').value,
+                transactionRef: document.getElementById('fTransactionRef').value.trim() || 'N/A',
+                paymentDate: paidAmount > 0 ? (document.getElementById('fPaymentDate').value || new Date().toISOString().split('T')[0]) : '',
+                dueDate: dueDate || '',
+                notes: document.getElementById('fNotes').value.trim(),
+                receiptNo: `EGU/2024-25/${Math.floor(1000 + Math.random()*9000)}`
+            };
+
+            if (id) {
+                CRM.update('fees', parseInt(id), record);
+                showAlert('Fee record updated successfully!', 'success');
+            } else {
+                CRM.add('fees', record);
+                showAlert('Fee payment recorded successfully!', 'success');
+            }
+
+            closeFeeModal();
+            renderFees();
+        }
+
+        function editFeeRecord(id) {
+            const f = CRM.getById('fees', id);
+            if (f) openFeeModal(f);
+        }
+
+        function deleteFeeRecord(id) {
+            if (confirm('Are you sure you want to delete this fee record?')) {
+                CRM.remove('fees', id);
+                showAlert('Fee record deleted.', 'danger');
+                renderFees();
+            }
+        }
+
+        // ============ OFFICIAL RECEIPT VIEW & PRINT ============
+        function viewReceipt(id) {
+            const f = CRM.getById('fees', id);
+            if (!f) return;
+
+            document.getElementById('rcptNumber').textContent = f.receiptNo || `EGU/2024-25/0${f.id}`;
+            document.getElementById('rcptDate').textContent = f.paymentDate ? CRM.formatDate(f.paymentDate) : CRM.formatDate(new Date());
+            document.getElementById('rcptStatusTag').textContent = `[${(f.status || 'PAID').toUpperCase()}]`;
+            document.getElementById('rcptStudentName').textContent = f.studentName;
+            document.getElementById('rcptRollNo').textContent = 'Roll No: ' + (f.rollNo || 'Pending');
+            document.getElementById('rcptContact').textContent = (f.email || '') + (f.phone ? ' • ' + f.phone : '');
+            document.getElementById('rcptCourse').textContent = f.course;
+            document.getElementById('rcptTerm').textContent = 'Term: ' + (f.term || 'Semester 1');
+            document.getElementById('rcptAcademicYear').textContent = 'Academic Year: ' + (f.academicYear || '2024-25');
+
+            document.getElementById('rcptMode').textContent = f.paymentMode || 'UPI';
+            document.getElementById('rcptTxnRef').textContent = f.transactionRef || 'N/A';
+
+            const pending = Math.max(0, (Number(f.totalFee)||0) - (Number(f.paidAmount)||0));
+            document.getElementById('rcptItemsBody').innerHTML = `
+                <tr>
+                    <td>
+                        <strong>Tuition & Academic Fee (${f.term || 'Semester 1'})</strong>
+                        <div style="font-size:11px;color:#718096;">Course: ${f.course}</div>
+                    </td>
+                    <td style="text-align:right;font-weight:700;">${CRM.formatCurrency(f.totalFee)}</td>
+                </tr>
+                <tr class="receipt-total-row">
+                    <td>Amount Paid Received</td>
+                    <td style="text-align:right;color:#28a745;">${CRM.formatCurrency(f.paidAmount)}</td>
+                </tr>
+                <tr style="font-size:12px;color:#718096;">
+                    <td>Balance Outstanding Due</td>
+                    <td style="text-align:right;font-weight:600;color:${pending > 0 ? '#e65100' : '#718096'};">${CRM.formatCurrency(pending)}</td>
+                </tr>
+            `;
+
+            document.getElementById('receiptModal').classList.add('active');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').classList.remove('active');
+        }
+
+        function printReceipt() {
+            const printContent = document.getElementById('receiptPrintableArea').innerHTML;
+            const originalTitle = document.title;
+            const printWin = window.open('', '', 'width=750,height=600');
+            printWin.document.write(`
+                <html>
+                <head>
+    
+                    <title>Fee Receipt - EducationistGuru</title>
+                    <style>
+                        body { font-family: 'Inter', sans-serif; padding: 20px; color: #2d3748; }
+                        .receipt-box { border: 2px solid #cbd5e0; padding: 25px; border-radius: 8px; }
+                        .receipt-header { display: flex; justify-content: space-between; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 15px; }
+                        .receipt-brand { font-size: 22px; font-weight: 800; color: #1a202c; }
+                        .receipt-brand span { color: #ff3115; }
+                        .receipt-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
+                        .receipt-table th, .receipt-table td { padding: 8px 12px; border: 1px solid #e2e8f0; }
+                        .receipt-table th { background: #f7fafc; text-align: left; }
+                        .receipt-total-row { background: #f8fafc; font-weight: bold; }
+                    </style>
+                </head>
+                <body>
+                    ${printContent}
+                    <script>window.onload = function(){ window.print(); window.close(); }<\/script>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+        }
+
+        // Close on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFeeModal();
+                closeReceiptModal();
+            }
+        });
+
+        // Dynamic Courses Initialization
+        let cachedFeeCourses = [];
+        async function initFeeCourses() {
+            cachedFeeCourses = await CRM.loadCourses();
+            const filterSel = document.getElementById('feeCourseFilter');
+            const modalSel = document.getElementById('fCourse');
+
+            const categories = {};
+            cachedFeeCourses.forEach(c => {
+                const cat = c.category || 'Higher Education';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(c);
+            });
+
+            let filterHTML = '<option value="">All Courses</option>';
+            let modalHTML = '';
+
+            Object.keys(categories).sort().forEach(cat => {
+                filterHTML += `<optgroup label="${cat}">`;
+                modalHTML += `<optgroup label="${cat}">`;
+                categories[cat].forEach(c => {
+                    filterHTML += `<option value="${c.name}">${c.name}</option>`;
+                    modalHTML += `<option value="${c.name}">${c.name} (${c.duration || 'Degree'})</option>`;
+                });
+                filterHTML += `</optgroup>`;
+                modalHTML += `</optgroup>`;
+            });
+
+            filterSel.innerHTML = filterHTML;
+            modalSel.innerHTML = modalHTML;
+        }
+
+        // Initial render & sync
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initFeeCourses();
+            await CRM.syncWithServer();
+            renderFees();
+        });
+    
+        // Multi-device real-time sync listener
+        window.addEventListener('crm:synced', () => {
+            if (typeof renderFees === "function") renderFees();
+        });
+</script>
+</body>
+</html>

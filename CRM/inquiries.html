@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Inquiries | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .stats-grid-3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px; margin-bottom:20px; }
+        .stat-card-inq { background:#fff; border-radius:12px; padding:18px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #edf2f7; display:flex; align-items:center; gap:16px; }
+        .stat-icon-inq { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+        .stat-icon-inq.total { background:#e8f4fd; color:#0d6efd; }
+        .stat-icon-inq.unread { background:#ffebee; color:#dc3545; }
+        .stat-icon-inq.converted { background:#e8f5e9; color:#28a745; }
+        .stat-val-inq { font-size:22px; font-weight:800; color:#1a202c; margin-top:2px; font-family:'Inter',sans-serif; }
+        .stat-lbl-inq { font-size:12px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:.5px; }
+
+        .btn-wa-action { background:#25D366; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+        .btn-wa-action:hover { background:#1ebc59; color:#fff; }
+        .btn-convert-lead { background:#ff3115; color:#fff; border:none; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+        .btn-convert-lead:hover { background:#e41f05; color:#fff; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Website Inquiries</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- KPI Summary Cards -->
+                <div class="stats-grid-3">
+                    <div class="stat-card-inq">
+                        <div class="stat-icon-inq total"><i class="fa fa-envelope-o"></i></div>
+                        <div>
+                            <div class="stat-lbl-inq">Total Inquiries</div>
+                            <div class="stat-val-inq" id="statTotalInq">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-inq">
+                        <div class="stat-icon-inq unread"><i class="fa fa-bell"></i></div>
+                        <div>
+                            <div class="stat-lbl-inq">Unread Messages</div>
+                            <div class="stat-val-inq" style="color:#dc3545;" id="statUnreadInq">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-inq">
+                        <div class="stat-icon-inq converted"><i class="fa fa-users"></i></div>
+                        <div>
+                            <div class="stat-lbl-inq">Converted to Leads</div>
+                            <div class="stat-val-inq" style="color:#28a745;" id="statConvertedInq">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="table-toolbar" style="margin-bottom:16px;">
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search sender, email, subject, keyword..." oninput="render()">
+                        </div>
+                        <select id="filterStatus" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Statuses</option>
+                            <option value="unread">Unread</option>
+                            <option value="read">Read</option>
+                            <option value="replied">Replied</option>
+                            <option value="converted">Converted to Lead</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn btn-outline" onclick="markAllAsRead()"><i class="fa fa-check-circle"></i> Mark All as Read</button>
+                    </div>
+                </div>
+
+                <!-- Inquiry List -->
+                <div id="inquiryList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inquiry Details Modal -->
+    <div class="modal-overlay" id="viewModal" onclick="if(event.target===this)closeViewModal()">
+        <div class="modal" style="width:680px;max-width:96vw;">
+            <div class="modal-header">
+                <h3 id="modalSubject"></h3>
+                <button class="modal-close" onclick="closeViewModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('inquiries');
+
+        const sc = {
+            'unread': 'badge-danger',
+            'read': 'badge-warning',
+            'replied': 'badge-info',
+            'converted': 'badge-success'
+        };
+
+        function render() {
+            let inqs = CRM.getAll('inquiries');
+            // Always sort authoritative newest inquiries to the top
+            inqs.sort((a, b) => {
+                const tA = new Date(a.dateAdded || a.date || 0).getTime();
+                const tB = new Date(b.dateAdded || b.date || 0).getTime();
+                if (tB !== tA) return tB - tA;
+                return (Number(b.id) || 0) - (Number(a.id) || 0);
+            });
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            // Stats
+            document.getElementById('statTotalInq').textContent = inqs.length;
+            document.getElementById('statUnreadInq').textContent = inqs.filter(x => x.status === 'unread').length;
+            document.getElementById('statConvertedInq').textContent = inqs.filter(x => x.status === 'converted').length;
+
+            if (q) inqs = inqs.filter(x => 
+                (x.name || '').toLowerCase().includes(q) || 
+                (x.subject || '').toLowerCase().includes(q) || 
+                (x.message || '').toLowerCase().includes(q) ||
+                (x.email || '').toLowerCase().includes(q) ||
+                (x.phone || '').toLowerCase().includes(q)
+            );
+            if (statusFilter) inqs = inqs.filter(x => x.status === statusFilter);
+
+            const container = document.getElementById('inquiryList');
+            if (inqs.length === 0) {
+                container.innerHTML = '<div class="card"><div class="card-body"><div class="empty-state"><i class="fa fa-envelope-open-o" style="font-size:36px;color:#cbd5e1;margin-bottom:10px;"></i><h4>No inquiries found matching your filters</h4></div></div></div>';
+                return;
+            }
+
+            container.innerHTML = inqs.map(x => {
+                const phone = (x.phone || '').replace(/[^0-9]/g, '');
+                const cleanPhone = phone.startsWith('91') && phone.length === 12 ? phone : (phone.length === 10 ? '91' + phone : phone);
+                const waMsg = encodeURIComponent(`Dear ${x.name}, Greetings from EducationistGuru! We received your website inquiry regarding "${x.subject}". How can our academic counseling team assist you today?`);
+                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : '#';
+
+                return `
+                    <div class="card" style="margin-bottom:12px;cursor:pointer;transition:transform .2s;" onclick="viewInquiry(${x.id})">
+                        <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;">
+                            <div class="user-cell" style="flex:1;">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(x.name)};font-weight:700;">${CRM.getInitials(x.name)}</div>
+                                <div class="user-info" style="max-width:80%;">
+                                    <div class="name" style="font-size:15px;font-weight:700;">
+                                        ${x.name}
+                                        ${x.status==='unread' ? '<span class="badge badge-danger" style="font-size:10px;margin-left:8px;vertical-align:middle;">NEW</span>' : ''}
+                                    </div>
+                                    <div style="font-weight:600;color:#1a1a2e;margin:2px 0 4px;font-size:14px;">${x.subject}</div>
+                                    <div class="email" style="color:#6c757d;font-size:12px;">${(x.message || '').substring(0, 100)}...</div>
+                                </div>
+                            </div>
+                            <div style="text-align:right;min-width:180px;" onclick="event.stopPropagation()">
+                                <span class="badge ${sc[x.status] || 'badge-info'}" style="text-transform:uppercase;font-size:11px;">${x.status}</span>
+                                <div style="font-size:12px;color:#adb5bd;margin:6px 0 10px;">${CRM.formatDateTime(x.date)}</div>
+                                <div style="display:flex;gap:6px;justify-content:flex-end;">
+                                    ${cleanPhone ? `<a href="${waLink}" target="_blank" class="btn-wa-action" title="1-Click WhatsApp"><i class="fa fa-whatsapp"></i> Chat</a>` : ''}
+                                    <button class="btn-icon danger" title="Delete" onclick="deleteInquiry(${x.id})"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function viewInquiry(id) {
+            const d = CRM.getById('inquiries', id);
+            if (!d) return;
+
+            if (d.status === 'unread') {
+                CRM.update('inquiries', id, { status: 'read' });
+            }
+
+            const phone = (d.phone || '').replace(/[^0-9]/g, '');
+            const cleanPhone = phone.startsWith('91') && phone.length === 12 ? phone : (phone.length === 10 ? '91' + phone : phone);
+            const waMsg = encodeURIComponent(`Dear ${d.name}, Greetings from EducationistGuru! We received your website inquiry regarding "${d.subject}". How can our academic counseling team assist you today?`);
+            const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : '#';
+
+            document.getElementById('modalSubject').textContent = d.subject || 'Website Inquiry';
+            document.getElementById('modalBody').innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;background:#f8fafc;padding:15px;border-radius:10px;margin-bottom:18px;border:1px solid #e2e8f0;font-size:13px;">
+                    <div><span style="color:#718096;">From:</span> <strong>${d.name}</strong></div>
+                    <div><span style="color:#718096;">Email:</span> <strong>${d.email || '-'}</strong></div>
+                    <div><span style="color:#718096;">Phone:</span> <strong>${d.phone || '-'}</strong></div>
+                    <div><span style="color:#718096;">Received Date:</span> <strong>${CRM.formatDateTime(d.date)}</strong></div>
+                </div>
+                <div style="background:#fff;padding:18px;border-radius:10px;border:1px solid #e2e8f0;line-height:1.7;font-size:14px;color:#2d3748;">
+                    ${d.message}
+                </div>
+            `;
+
+            document.getElementById('modalFooter').innerHTML = `
+                <div style="display:flex;gap:8px;justify-content:space-between;width:100%;align-items:center;flex-wrap:wrap;">
+                    <div>
+                        ${d.status !== 'converted' ? `
+                            <button class="btn-convert-lead" onclick="convertInquiryToLead(${d.id})">
+                                <i class="fa fa-user-plus"></i> Convert to Lead
+                            </button>
+                        ` : `
+                            <div style="display:inline-flex;align-items:center;gap:6px;color:#16a34a;font-weight:700;font-size:13px;">
+                                <i class="fa fa-check-circle"></i> Converted to Lead
+                                ${d.convertedLeadId ? `<a href="leads.html" style="color:#0d6efd;text-decoration:underline;margin-left:4px;">#EG-LEAD-${d.convertedLeadId}</a>` : ''}
+                            </div>
+                        `}
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        ${cleanPhone ? `<a href="${waLink}" target="_blank" class="btn-wa-action"><i class="fa fa-whatsapp"></i> Chat on WhatsApp</a>` : ''}
+                        <button class="btn btn-outline" onclick="markReplied(${d.id})"><i class="fa fa-check"></i> Mark Replied</button>
+                        ${d.email ? `<a href="mailto:${d.email}?subject=Re: ${encodeURIComponent(d.subject)}" class="btn btn-primary"><i class="fa fa-reply"></i> Email Reply</a>` : ''}
+                    </div>
+                </div>
+            `;
+            document.getElementById('viewModal').classList.add('active');
+            render();
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        function markReplied(id) {
+            CRM.update('inquiries', id, { status: 'replied', updatedAt: new Date().toISOString() });
+            showAlert('Inquiry marked as replied!', 'success');
+            closeViewModal();
+            render();
+        }
+
+        function convertInquiryToLead(id) {
+            const inq = CRM.getById('inquiries', id);
+            if (!inq) return;
+
+            const inqPhone = (inq.phone || '').replace(/\D/g, '').slice(-10);
+            const inqEmail = (inq.email || '').trim().toLowerCase();
+
+            // Check if lead already exists in CRM
+            const allLeads = CRM.getAll('leads');
+            const existing = allLeads.find(l => {
+                const lPhone = (l.phone || '').replace(/\D/g, '').slice(-10);
+                const lEmail = (l.email || '').trim().toLowerCase();
+                return (inqPhone && lPhone && inqPhone === lPhone) || (inqEmail && lEmail && inqEmail === lEmail);
+            });
+
+            let targetLeadId;
+            if (existing) {
+                // Link and upgrade existing lead without creating a duplicate record
+                const newNote = `[Inquiry #${inq.id} Linked]: ${inq.subject}\n${inq.message || ''}`;
+                const combinedNotes = existing.notes && !existing.notes.includes(inq.subject)
+                    ? `${existing.notes}\n\n${newNote}`.trim()
+                    : (existing.notes || newNote);
+
+                CRM.update('leads', existing.id, {
+                    status: (existing.status === 'new' || !existing.status) ? 'contacted' : existing.status,
+                    priority: 'hot',
+                    notes: combinedNotes,
+                    updatedAt: new Date().toISOString()
+                });
+                targetLeadId = existing.id;
+                showAlert(`Inquiry linked to existing Lead #EG-LEAD-${existing.id}! Lead upgraded to Hot 🔥`, 'success');
+            } else {
+                // Create clean new lead
+                let extractedCourse = 'General Higher Education';
+                if (inq.subject && inq.subject.includes(':')) {
+                    extractedCourse = inq.subject.split(':')[1].trim();
+                } else if (inq.subject) {
+                    extractedCourse = inq.subject.replace(/⚡|Urgent Callback Request|Course Enrollment|Inquiry regarding/gi, '').trim() || inq.subject;
+                }
+
+                const newLead = CRM.add('leads', {
+                    name: inq.name,
+                    phone: inq.phone || '',
+                    wa: inq.phone || '',
+                    email: inq.email || '',
+                    course: extractedCourse,
+                    source: inq.subject && inq.subject.includes('Callback') ? 'Callback Request' : 'Website Inquiry',
+                    status: 'contacted',
+                    priority: 'warm',
+                    counselor: (currentUser && currentUser.name) ? currentUser.name : 'Central Admissions Desk',
+                    notes: `Generated from website inquiry: "${inq.subject}".\nMessage: ${inq.message || 'None'}`,
+                    date: new Date().toISOString().split('T')[0],
+                    skipAutoInquiry: true
+                });
+                targetLeadId = newLead.id;
+                showAlert(`Inquiry converted to new Lead #EG-LEAD-${newLead.id}!`, 'success');
+            }
+
+            CRM.update('inquiries', id, { status: 'converted', convertedLeadId: targetLeadId, updatedAt: new Date().toISOString() });
+            closeViewModal();
+            render();
+        }
+
+        function markAllAsRead() {
+            const inqs = CRM.getAll('inquiries');
+            inqs.forEach(x => {
+                if (x.status === 'unread') {
+                    CRM.update('inquiries', x.id, { status: 'read' });
+                }
+            });
+            showAlert('All inquiries marked as read!', 'success');
+            render();
+        }
+
+        function deleteInquiry(id) {
+            if (confirm('Delete this inquiry?')) {
+                CRM.remove('inquiries', id);
+                showAlert('Inquiry deleted.', 'danger');
+                render();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await CRM.syncWithServer();
+            render();
+        });
+
+        // Real-time live sync listeners for multi-device collaboration
+        window.addEventListener('crm:synced', () => {
+            render();
+        });
+
+        // Background auto-refresh polling every 8 seconds
+        setInterval(() => {
+            CRM.syncWithServer();
+        }, 8000);
+    </script>
+</body>
+</html>

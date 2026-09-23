@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Android Build Artifacts & Binaries
+android_build/
+*.apk
+*.apk.idsig
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Verification Screenshots & Temporary Scratch Extractions
+leads_verification_screenshots/
+scratch/test_extract/
+scratch/*.png
+
+# Dynamic Server Snapshots (directory tracked via .gitkeep)
+backups/snapshots/*
+!backups/snapshots/.gitkeep

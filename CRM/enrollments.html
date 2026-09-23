@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/crm/">
+    
+    <meta charset="utf-8">
+    <title>Enrollments | EducationistGuru CRM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/fav.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .stats-grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:20px; }
+        @media (max-width: 1200px) { .stats-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .stats-grid-4 { grid-template-columns: 1fr; } }
+        .stat-card-enr { background:#fff; border-radius:12px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.04); border:1px solid #edf2f7; display:flex; align-items:center; gap:16px; transition:transform .2s; }
+        .stat-card-enr:hover { transform:translateY(-2px); }
+        .stat-icon-enr { width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+        .stat-icon-enr.total { background:#e8f4fd; color:#0d6efd; }
+        .stat-icon-enr.revenue { background:#e8f5e9; color:#2e7d32; }
+        .stat-icon-enr.pending { background:#fff8e1; color:#f57f17; }
+        .stat-icon-enr.confirmed { background:#f3e8fd; color:#7928ca; }
+        .stat-val-enr { font-size:22px; font-weight:800; color:#1a202c; margin-top:2px; font-family:'Inter',sans-serif; }
+        .stat-lbl-enr { font-size:12px; font-weight:600; color:#718096; text-transform:uppercase; letter-spacing:.5px; }
+
+        .btn-fee-action { background:#28a745; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; transition:all .2s; }
+        .btn-fee-action:hover { background:#218838; color:#fff; }
+        .btn-wa-action { background:#25D366; color:#fff; border:none; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+        .btn-wa-action:hover { background:#1ebc59; color:#fff; }
+        .btn-call-action { background:#edf2f7; color:#2d3748; border:1px solid #cbd5e0; border-radius:6px; padding:6px 9px; font-size:12px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; text-decoration:none; }
+        .btn-call-action:hover { background:#e2e8f0; color:#1a202c; }
+        .btn-download-csv { background:#fff; border:2px solid #28a745; color:#28a745; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; transition:all .3s; }
+        .btn-download-csv:hover { background:#28a745; color:#fff; }
+
+        .modal-enr-lg { width:740px; max-width:96vw; max-height:90vh; overflow-y:auto; }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><a href="dashboard.html"><img src="/images/logo-white.png" alt="EducationistGuru" class="sidebar-logo"></a><div class="brand-sub">CRM Dashboard</div></div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer"><a href="#" onclick="logout()"><i class="fa fa-sign-out"></i> Sign Out</a></div>
+        </aside>
+        <div class="main-content">
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><i class="fa fa-bars"></i></button>
+                    <h1>Student Enrollments</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
+                    <div class="admin-avatar">
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content">
+                <div id="alertArea"></div>
+
+                <!-- KPI Stats Overview -->
+                <div class="stats-grid-4">
+                    <div class="stat-card-enr">
+                        <div class="stat-icon-enr total"><i class="fa fa-graduation-cap"></i></div>
+                        <div>
+                            <div class="stat-lbl-enr">Total Enrollments</div>
+                            <div class="stat-val-enr" id="statTotalEnr">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-enr">
+                        <div class="stat-icon-enr revenue"><i class="fa fa-inr"></i></div>
+                        <div>
+                            <div class="stat-lbl-enr">Revenue Collected</div>
+                            <div class="stat-val-enr" style="color:#2e7d32;" id="statRevenueCollected">₹0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-enr">
+                        <div class="stat-icon-enr pending"><i class="fa fa-clock-o"></i></div>
+                        <div>
+                            <div class="stat-lbl-enr">Pending Balance</div>
+                            <div class="stat-val-enr" style="color:#e65100;" id="statPendingBalance">₹0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-enr">
+                        <div class="stat-icon-enr confirmed"><i class="fa fa-check-circle"></i></div>
+                        <div>
+                            <div class="stat-lbl-enr">Confirmed Seats</div>
+                            <div class="stat-val-enr" style="color:#7928ca;" id="statConfirmedSeats">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Multi-filter Toolbar -->
+                <div class="table-toolbar" style="margin-bottom:16px;">
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                        <div class="search-box">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Search student, enrollment no, course, phone..." oninput="render()">
+                        </div>
+                        <select id="filterStatus" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;">
+                            <option value="">All Statuses</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="partial">Partial / Provisional</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed / Alumni</option>
+                        </select>
+                        <select id="filterCourse" onchange="render()" style="padding:9px 14px;border:1px solid #ced4da;border-radius:8px;font-size:13px;max-width:240px;">
+                            <option value="">All Courses</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-download-csv" onclick="downloadEnrollmentsCSV()">
+                            <i class="fa fa-download"></i> Export CSV
+                        </button>
+                        <button class="btn btn-primary" onclick="openEnrModal()">
+                            <i class="fa fa-plus"></i> New Enrollment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Enrollments Table -->
+                <div class="card"><div class="card-body no-padding">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Student Details</th>
+                                <th>Course & University</th>
+                                <th>Batch / Session</th>
+                                <th>Total Fee</th>
+                                <th>Paid Amount</th>
+                                <th>Pending Balance</th>
+                                <th>Status</th>
+                                <th>Fast Actions</th>
+                                <th style="text-align:right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTable"></tbody>
+                    </table>
+                </div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add / Edit Enrollment Modal -->
+    <div class="modal-overlay" id="enrModal" onclick="if(event.target===this)closeEnrModal()">
+        <div class="modal modal-enr-lg">
+            <div class="modal-header">
+                <h3 id="enrModalTitle"><i class="fa fa-graduation-cap" style="color:#ff3115;margin-right:8px;"></i> New Student Enrollment</h3>
+                <button class="modal-close" onclick="closeEnrModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="enrId">
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Student Full Name *</label>
+                        <input type="text" id="enrName" required placeholder="Enter student full name">
+                    </div>
+                    <div class="form-group">
+                        <label>Enrollment / Roll No</label>
+                        <input type="text" id="enrRollNo" placeholder="Auto-generated if left blank">
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Calling Mobile *</label>
+                        <input type="text" id="enrPhone" required placeholder="+91 98765 43210" oninput="syncEnrWhatsApp()">
+                    </div>
+                    <div class="form-group">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                            <label style="margin:0;">WhatsApp Mobile</label>
+                            <label style="font-size:11px;font-weight:normal;cursor:pointer;color:#25D366;text-transform:none;">
+                                <input type="checkbox" id="enrSameAsPhone" checked onchange="toggleEnrWhatsAppSame(this.checked)"> Same as Calling
+                            </label>
+                        </div>
+                        <input type="text" id="enrWhatsApp" placeholder="+91 98765 43210">
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="enrEmail" placeholder="student@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Academic Batch / Session *</label>
+                        <select id="enrBatch">
+                            <option value="2024-25">2024-2025 (Current)</option>
+                            <option value="2024-26">2024-2026 (2-Year PG)</option>
+                            <option value="2024-27">2024-2027 (3-Year UG)</option>
+                            <option value="2024-28">2024-2028 (4-Year Tech)</option>
+                            <option value="2025-26">2025-2026 (Upcoming)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Enrolled Course / Program *</label>
+                        <select id="enrCourse" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Affiliated University</label>
+                        <select id="enrUniversity">
+                            <option value="Mangalayatan University">Mangalayatan University</option>
+                            <option value="Swami Vivekanand Subharti University">Swami Vivekanand Subharti University</option>
+                            <option value="Sharda University">Sharda University</option>
+                            <option value="Suresh Gyan Vihar University">Suresh Gyan Vihar University</option>
+                            <option value="Amity University Online">Amity University Online</option>
+                            <option value="Chandigarh University">Chandigarh University</option>
+                            <option value="Lovely Professional University (LPU)">Lovely Professional University (LPU)</option>
+                            <option value="Manipal University Online">Manipal University Online</option>
+                            <option value="Other Partner University">Other Partner University</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Total Program Fee (₹) *</label>
+                        <input type="number" id="enrTotalFee" required placeholder="55000">
+                    </div>
+                    <div class="form-group">
+                        <label>Initial Paid Amount (₹)</label>
+                        <input type="number" id="enrPaidAmount" placeholder="15000">
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Mode</label>
+                        <select id="enrPaymentMode">
+                            <option value="UPI">UPI (GooglePay / PhonePe / Paytm)</option>
+                            <option value="Net Banking">Net Banking</option>
+                            <option value="Demand Draft">Demand Draft (DD)</option>
+                            <option value="Cash">Cash at Campus</option>
+                            <option value="NEFT/RTGS">NEFT / RTGS</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+                    <div class="form-group">
+                        <label>Learning Mode</label>
+                        <select id="enrMode">
+                            <option value="Online Learning">Online Learning</option>
+                            <option value="Distance Education">Distance Education</option>
+                            <option value="Regular Campus">Regular Campus</option>
+                            <option value="Hybrid / Blended">Hybrid / Blended</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Enrollment Status</label>
+                        <select id="enrStatus">
+                            <option value="confirmed">Confirmed</option>
+                            <option value="partial">Partial / Provisional</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Assigned Counselor</label>
+                        <select id="enrCounselor">
+                            <option value="Jatinder Kaur">Jatinder Kaur</option>
+                            <option value="Harmeet Singh">Harmeet Singh</option>
+                            <option value="Admission Desk">Admission Desk</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Internal Admission Remarks</label>
+                    <textarea id="enrNotes" placeholder="Scholarship details, installment due dates, batch timings..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeEnrModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEnrollment()"><i class="fa fa-check"></i> Save Enrollment</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/crm/js/data.js?v=3.5.0"></script>
+    <script>
+        if(localStorage.getItem('crm_logged_in')!=='true'||!CRM.getCurrentUser()) window.location.href='/crm/';
+        const currentUser = CRM.getCurrentUser();
+        function logout(){localStorage.removeItem('crm_logged_in');localStorage.removeItem('crm_current_user');window.location.href='/crm/';}
+        function showAlert(m,t){document.getElementById('alertArea').innerHTML='<div class="alert alert-'+t+'"><i class="fa fa-'+(t==='success'?'check-circle':'exclamation-circle')+'"></i> '+m+'</div>';setTimeout(()=>document.getElementById('alertArea').innerHTML='',3500);}
+
+        function buildSidebar(activePage) {
+            const cu = CRM.getCurrentUser();
+            const modules = [
+                {key:'dashboard',icon:'fa-th-large',label:'Dashboard',href:'/crm/dashboard',section:'Main'},
+                {key:'leads',icon:'fa-users',label:'Leads',href:'/crm/leads',section:'Main'},
+                {key:'applications',icon:'fa-file-text',label:'Applications',href:'/crm/applications',section:'Main'},
+                {key:'enrollments',icon:'fa-graduation-cap',label:'Enrollments',href:'/crm/enrollments',section:'Main'},
+                {key:'fees',icon:'fa-credit-card',label:'Fee Management',href:'/crm/fees',section:'Financial'},
+                {key:'inquiries',icon:'fa-envelope',label:'Inquiries',href:'/crm/inquiries',section:'Communication'},
+                {key:'subscribers',icon:'fa-bell',label:'Subscribers',href:'/crm/subscribers',section:'Communication'},
+                {key:'users',icon:'fa-user-plus',label:'Users & Roles',href:'/crm/users',section:'Settings'},
+                {key:'settings',icon:'fa-cog',label:'Settings',href:'/crm/settings',section:'Settings'},
+            ];
+            let html='',ls='';
+            modules.forEach(m=>{
+                if(CRM.hasPermission(cu,m.key)){
+                    if(m.section!==ls){html+='<div class="nav-section-title">'+m.section+'</div>';ls=m.section;}
+                    html+='<a href="'+m.href+'"'+(m.key===activePage?' class="active"':'')+'><i class="fa '+m.icon+'"></i> '+m.label+'</a>';
+                }
+            });
+            html+='<a href="../index.html"><i class="fa fa-globe"></i> View Website</a>';
+            document.getElementById('sidebarNav').innerHTML=html;
+            document.getElementById('topName').textContent=cu.name;
+            document.getElementById('topRole').textContent=(CRM.getUserRole(cu).label||cu.role);
+            document.getElementById('topAvatar').textContent=CRM.getInitials(cu.name);
+        }
+        buildSidebar('enrollments');
+
+        const sc = {
+            'confirmed': 'badge-success',
+            'partial': 'badge-warning',
+            'pending': 'badge-danger',
+            'completed': 'badge-primary'
+        };
+
+        let cachedCourses = [];
+
+        async function initCourses() {
+            cachedCourses = await CRM.loadCourses();
+            const filterSel = document.getElementById('filterCourse');
+            const modalSel = document.getElementById('enrCourse');
+
+            const categories = {};
+            cachedCourses.forEach(c => {
+                const cat = c.category || 'Higher Education';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(c);
+            });
+
+            let filterHTML = '<option value="">All Courses</option>';
+            let modalHTML = '';
+
+            Object.keys(categories).sort().forEach(cat => {
+                filterHTML += `<optgroup label="${cat}">`;
+                modalHTML += `<optgroup label="${cat}">`;
+                categories[cat].forEach(c => {
+                    filterHTML += `<option value="${c.name}">${c.name}</option>`;
+                    modalHTML += `<option value="${c.name}">${c.name} (${c.duration || 'Degree'})</option>`;
+                });
+                filterHTML += `</optgroup>`;
+                modalHTML += `</optgroup>`;
+            });
+
+            filterSel.innerHTML = filterHTML;
+            modalSel.innerHTML = modalHTML;
+        }
+
+        function syncEnrWhatsApp() {
+            if (document.getElementById('enrSameAsPhone').checked) {
+                document.getElementById('enrWhatsApp').value = document.getElementById('enrPhone').value;
+            }
+        }
+        function toggleEnrWhatsAppSame(checked) {
+            const waInput = document.getElementById('enrWhatsApp');
+            if (checked) {
+                waInput.value = document.getElementById('enrPhone').value;
+                waInput.disabled = true;
+            } else {
+                waInput.disabled = false;
+            }
+        }
+
+        function render() {
+            let enrs = CRM.getAll('enrollments');
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+            const courseFilter = document.getElementById('filterCourse').value;
+
+            // Summary metrics
+            const totalFeeSum = enrs.reduce((s, e) => s + (Number(e.fee) || 0), 0);
+            const totalPaidSum = enrs.reduce((s, e) => s + (Number(e.paid) || 0), 0);
+            const pendingSum = Math.max(0, totalFeeSum - totalPaidSum);
+
+            document.getElementById('statTotalEnr').textContent = enrs.length;
+            document.getElementById('statRevenueCollected').textContent = CRM.formatCurrency(totalPaidSum);
+            document.getElementById('statPendingBalance').textContent = CRM.formatCurrency(pendingSum);
+            document.getElementById('statConfirmedSeats').textContent = enrs.filter(e => e.status === 'confirmed').length;
+
+            // Filters
+            if (q) {
+                enrs = enrs.filter(e =>
+                    (e.studentName || '').toLowerCase().includes(q) ||
+                    (e.email || '').toLowerCase().includes(q) ||
+                    (e.phone || '').toLowerCase().includes(q) ||
+                    (e.course || '').toLowerCase().includes(q) ||
+                    (e.rollNo || '').toLowerCase().includes(q) ||
+                    (e.university || '').toLowerCase().includes(q)
+                );
+            }
+            if (statusFilter) enrs = enrs.filter(e => e.status === statusFilter);
+            if (courseFilter) enrs = enrs.filter(e => e.course === courseFilter);
+
+            const tbody = document.getElementById('dataTable');
+            if (enrs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:45px;color:#888;font-size:13px;"><i class="fa fa-graduation-cap" style="font-size:32px;display:block;margin-bottom:8px;color:#cbd5e1;"></i>No enrollment records found matching your filters.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = enrs.map(e => {
+                const total = Number(e.fee) || 0;
+                const paid = Number(e.paid) || 0;
+                const pending = Math.max(0, total - paid);
+
+                const phone = (e.phone || '').replace(/[^0-9]/g, '');
+                const cleanPhone = phone.startsWith('91') && phone.length === 12 ? phone : (phone.length === 10 ? '91' + phone : phone);
+                const waMsg = encodeURIComponent(`Hello ${e.studentName}, Congratulations on your admission at EducationistGuru for ${e.course}! Your roll/reg number is ${e.rollNo || 'being generated'}. Please feel free to reach out to us for class schedules and portal access.`);
+                const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=${waMsg}` : '#';
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="user-cell">
+                                <div class="avatar" style="background:${CRM.getAvatarColor(e.studentName)};font-weight:700;">${CRM.getInitials(e.studentName)}</div>
+                                <div class="user-info">
+                                    <div class="name" style="font-weight:700;color:#1a202c;">${e.studentName}</div>
+                                    <div style="font-size:11px;color:#718096;">${e.rollNo || 'Roll Pending'} &bull; <i class="fa fa-phone"></i> ${e.phone || 'No phone'}</div>
+                                    <div class="email" style="font-size:11px;">${e.email || ''}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600;font-size:13px;color:#2d3748;">${e.course}</div>
+                            <div style="font-size:11px;color:#718096;"><i class="fa fa-university"></i> ${e.university || 'Affiliated Partner'}</div>
+                            <div style="font-size:10px;color:#a0aec0;">${e.mode || 'Online Learning'}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight:600;font-size:12px;color:#4a5568;">${e.batch || '2024-25'}</div>
+                        </td>
+                        <td style="font-weight:700;color:#2d3748;">${CRM.formatCurrency(total)}</td>
+                        <td style="font-weight:700;color:#28a745;">${CRM.formatCurrency(paid)}</td>
+                        <td style="font-weight:700;color:${pending > 0 ? '#e65100' : '#718096'};">${CRM.formatCurrency(pending)}</td>
+                        <td>
+                            <select onchange="updateEnrStatus(${e.id}, this.value)" style="padding:4px 8px;border:1px solid #ced4da;border-radius:6px;font-size:12px;font-weight:600;">
+                                <option value="confirmed" ${e.status==='confirmed'?'selected':''}>Confirmed</option>
+                                <option value="partial" ${e.status==='partial'?'selected':''}>Partial</option>
+                                <option value="pending" ${e.status==='pending'?'selected':''}>Pending</option>
+                                <option value="completed" ${e.status==='completed'?'selected':''}>Completed</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div style="display:flex;gap:6px;align-items:center;">
+                                <a href="fees.html" class="btn-fee-action" title="Record Fee Payment">
+                                    <i class="fa fa-credit-card"></i> Pay Fee
+                                </a>
+                                <a href="${waLink}" target="_blank" class="btn-wa-action" title="1-Click WhatsApp Chat">
+                                    <i class="fa fa-whatsapp"></i>
+                                </a>
+                                ${e.phone ? `<a href="tel:${e.phone}" class="btn-call-action" title="Click to Call"><i class="fa fa-phone"></i></a>` : ''}
+                            </div>
+                        </td>
+                        <td style="text-align:right;">
+                            <div class="actions" style="justify-content:flex-end;">
+                                <button class="action-btn" title="Edit" onclick="editEnr(${e.id})"><i class="fa fa-pencil"></i></button>
+                                <button class="action-btn delete" title="Delete" onclick="deleteEnr(${e.id})"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateEnrStatus(id, newStatus) {
+            CRM.update('enrollments', id, { status: newStatus, updatedAt: new Date().toISOString() });
+            showAlert(`Enrollment status changed to ${newStatus.toUpperCase()}!`, 'success');
+            render();
+        }
+
+        // Add / Edit Modal Logic
+        function openEnrModal(data) {
+            document.getElementById('enrModal').classList.add('active');
+            if (data) {
+                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Enrollment';
+                document.getElementById('enrId').value = data.id;
+                document.getElementById('enrName').value = data.studentName || '';
+                document.getElementById('enrRollNo').value = data.rollNo || '';
+                document.getElementById('enrPhone').value = data.phone || '';
+                document.getElementById('enrWhatsApp').value = data.whatsapp || data.phone || '';
+                document.getElementById('enrSameAsPhone').checked = (data.whatsapp === data.phone);
+                document.getElementById('enrEmail').value = data.email || '';
+                document.getElementById('enrBatch').value = data.batch || '2024-25';
+                document.getElementById('enrCourse').value = data.course || cachedCourses[0]?.name || '';
+                document.getElementById('enrUniversity').value = data.university || 'Mangalayatan University';
+                document.getElementById('enrTotalFee').value = data.fee || '';
+                document.getElementById('enrPaidAmount').value = data.paid || 0;
+                document.getElementById('enrPaymentMode').value = data.paymentMode || 'UPI';
+                document.getElementById('enrMode').value = data.mode || 'Online Learning';
+                document.getElementById('enrStatus').value = data.status || 'confirmed';
+                document.getElementById('enrCounselor').value = data.counselor || 'Jatinder Kaur';
+                document.getElementById('enrNotes').value = data.notes || '';
+            } else {
+                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> New Student Enrollment';
+                document.getElementById('enrId').value = '';
+                document.getElementById('enrName').value = '';
+                document.getElementById('enrRollNo').value = '';
+                document.getElementById('enrPhone').value = '';
+                document.getElementById('enrWhatsApp').value = '';
+                document.getElementById('enrSameAsPhone').checked = true;
+                document.getElementById('enrEmail').value = '';
+                document.getElementById('enrBatch').selectedIndex = 0;
+                if (cachedCourses.length > 0) document.getElementById('enrCourse').value = cachedCourses[0].name;
+                document.getElementById('enrUniversity').selectedIndex = 0;
+                document.getElementById('enrTotalFee').value = '45000';
+                document.getElementById('enrPaidAmount').value = '15000';
+                document.getElementById('enrPaymentMode').selectedIndex = 0;
+                document.getElementById('enrMode').selectedIndex = 0;
+                document.getElementById('enrStatus').value = 'confirmed';
+                document.getElementById('enrCounselor').value = currentUser.name || 'Jatinder Kaur';
+                document.getElementById('enrNotes').value = '';
+            }
+        }
+
+        function closeEnrModal() {
+            document.getElementById('enrModal').classList.remove('active');
+        }
+
+        function saveEnrollment() {
+            const id = document.getElementById('enrId').value;
+            const studentName = document.getElementById('enrName').value.trim();
+            const phone = document.getElementById('enrPhone').value.trim();
+            const course = document.getElementById('enrCourse').value;
+            const fee = Number(document.getElementById('enrTotalFee').value) || 0;
+            const paid = Number(document.getElementById('enrPaidAmount').value) || 0;
+
+            if (!studentName || !phone || !course || fee <= 0) {
+                alert('Please enter Student Name, Calling Mobile, Course, and a valid Total Fee.');
+                return;
+            }
+
+            const rollNo = document.getElementById('enrRollNo').value.trim() || `EG-${new Date().getFullYear()}-${Math.floor(1000 + Math.random()*9000)}`;
+
+            const enrData = {
+                studentName,
+                rollNo,
+                phone,
+                whatsapp: document.getElementById('enrWhatsApp').value.trim() || phone,
+                email: document.getElementById('enrEmail').value.trim(),
+                batch: document.getElementById('enrBatch').value,
+                course,
+                university: document.getElementById('enrUniversity').value,
+                fee,
+                paid,
+                paymentMode: document.getElementById('enrPaymentMode').value,
+                mode: document.getElementById('enrMode').value,
+                status: document.getElementById('enrStatus').value,
+                counselor: document.getElementById('enrCounselor').value,
+                notes: document.getElementById('enrNotes').value.trim(),
+                date: id ? undefined : new Date().toISOString().split('T')[0]
+            };
+
+            if (id) {
+                CRM.update('enrollments', parseInt(id), enrData);
+                showAlert('Enrollment details updated!', 'success');
+            } else {
+                const newEnr = CRM.add('enrollments', enrData);
+                // Also create corresponding fee ledger entry
+                CRM.add('fees', {
+                    studentName: enrData.studentName,
+                    rollNo: enrData.rollNo,
+                    email: enrData.email,
+                    phone: enrData.phone,
+                    course: enrData.course,
+                    term: 'Annual Fee (Year 1)',
+                    academicYear: enrData.batch,
+                    totalFee: enrData.fee,
+                    paidAmount: enrData.paid,
+                    pendingAmount: Math.max(0, enrData.fee - enrData.paid),
+                    status: enrData.paid >= enrData.fee ? 'paid' : (enrData.paid > 0 ? 'partial' : 'pending'),
+                    paymentMode: enrData.paymentMode,
+                    paymentDate: enrData.paid > 0 ? new Date().toISOString().split('T')[0] : '',
+                    dueDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+                    receiptNo: `EGU/${new Date().getFullYear()}/${Math.floor(1000 + Math.random()*9000)}`
+                });
+                showAlert('Student successfully enrolled and fee ledger initiated!', 'success');
+            }
+
+            closeEnrModal();
+            render();
+        }
+
+        function editEnr(id) {
+            const e = CRM.getById('enrollments', id);
+            if (e) openEnrModal(e);
+        }
+
+        function deleteEnr(id) {
+            if (confirm('Are you sure you want to delete this enrollment record?')) {
+                CRM.remove('enrollments', id);
+                showAlert('Enrollment record removed.', 'danger');
+                render();
+            }
+        }
+
+        // CSV Export
+        function downloadEnrollmentsCSV() {
+            const enrs = CRM.getAll('enrollments');
+            if (enrs.length === 0) {
+                alert('No enrollments to export.');
+                return;
+            }
+
+            const headers = ['Roll No', 'Student Name', 'Phone', 'WhatsApp', 'Email', 'Course', 'University', 'Batch', 'Total Fee (INR)', 'Paid (INR)', 'Pending (INR)', 'Status', 'Mode', 'Counselor', 'Enrollment Date'];
+            const rows = enrs.map(e => {
+                const total = Number(e.fee) || 0;
+                const paid = Number(e.paid) || 0;
+                return [
+                    e.rollNo || '',
+                    e.studentName || '',
+                    e.phone || '',
+                    e.whatsapp || e.phone || '',
+                    e.email || '',
+                    e.course || '',
+                    e.university || '',
+                    e.batch || '',
+                    total,
+                    paid,
+                    Math.max(0, total - paid),
+                    e.status || 'confirmed',
+                    e.mode || '',
+                    e.counselor || 'Jatinder Kaur',
+                    e.date || ''
+                ];
+            });
+
+            let csvContent = 'data:text/csv;charset=utf-8,\uFEFF';
+            csvContent += headers.map(h => `"${h}"`).join(',') + '\r\n';
+            rows.forEach(r => {
+                csvContent += r.map(v => `"${v}"`).join(',') + '\r\n';
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `EducationistGuru_Enrollments_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showAlert(`Exported ${enrs.length} enrollments to CSV!`, 'success');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await initCourses();
+            await CRM.syncWithServer();
+            render();
+        });
+    
+        // Multi-device real-time sync listener
+        window.addEventListener('crm:synced', () => {
+            if (typeof render === "function") render();
+        });
+</script>
+</body>
+</html>

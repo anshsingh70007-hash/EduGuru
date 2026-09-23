@@ -1,0 +1,18 @@
+[
+  {
+    "email": "subscriber.audit@example.com",
+    "id": 2,
+    "date": "2026-09-21",
+    "dateAdded": "2026-09-21T14:39:17.063Z",
+    "status": "active"
+  },
+  {
+    "email": "testreader.1789980263974@gmail.com",
+    "name": "Test Reader",
+    "source": "API Test",
+    "status": "active",
+    "id": 1,
+    "date": "2026-09-21",
+    "dateAdded": "2026-09-21T08:44:23.975Z"
+  }
+]

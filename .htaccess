@@ -1,0 +1,80 @@
+# =========================================================
+# EducationistGuru - Production Apache / Hostinger .htaccess
+# Universal Support: Clean URLs, Dynamic Slugs, Native PHP API & HTTPS
+# =========================================================
+
+Options -Indexes
+DirectoryIndex index.html index.php
+RewriteEngine On
+RewriteBase /
+
+# 1. Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 2. Redirect root index.html to /
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s+/index\.html [NC]
+RewriteRule ^index\.html$ / [R=301,L]
+
+# 3. Strip .html extension from direct requests (301 Permanent Redirect)
+# Prevents .html from appearing in browser URL address bar
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\s+/([^.\s]+)\.html [NC]
+RewriteCond %1 !^(courses-details|blog-details)$
+RewriteRule ^ /%1 [R=301,L]
+
+# 4. Universal Native Hostinger PHP API Engine
+# Handles ALL /api/* requests: CRM (leads/inquiries), Visual Editor (courses/colleges/universities/blogs), Uploads & Backups
+RewriteRule ^api/(.*)$ api.php?endpoint=$1 [L,QSA]
+
+# 5. Dynamic Clean Slugs for Courses, Colleges, Universities & Blogs
+RewriteRule ^courses/([a-zA-Z0-9_-]+)/?$ courses-details.html [L,QSA]
+RewriteRule ^colleges/([a-zA-Z0-9_-]+)/?$ colleges.html [L,QSA]
+RewriteRule ^universities/([a-zA-Z0-9_-]+)/?$ universities.html [L,QSA]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ blog-details.html [L,QSA]
+
+# 6. Clean CRM & Content Studio Routes (Case-Insensitive for Linux / Hostinger)
+# Ensure trailing slash so browser resolves relative assets (css/admin.css, js/data.js) properly
+RewriteRule ^crm$ /crm/ [R=301,NC,L]
+RewriteRule ^CRM$ /crm/ [R=301,L]
+RewriteRule ^edit$ /edit/ [R=301,NC,L]
+RewriteRule ^edit\.html$ /edit/ [R=301,NC,L]
+
+# Root entry points
+RewriteRule ^crm/?$ CRM/index.html [NC,L,QSA]
+RewriteRule ^CRM/?$ CRM/index.html [NC,L,QSA]
+RewriteRule ^edit/?$ edit/index.html [NC,L,QSA]
+
+# Static assets inside CRM & edit
+RewriteRule ^crm/css/(.*)$ CRM/css/$1 [NC,L,QSA]
+RewriteRule ^crm/js/(.*)$ CRM/js/$1 [NC,L,QSA]
+RewriteRule ^crm/images/(.*)$ CRM/images/$1 [NC,L,QSA]
+RewriteRule ^CRM/css/(.*)$ CRM/css/$1 [NC,L,QSA]
+RewriteRule ^CRM/js/(.*)$ CRM/js/$1 [NC,L,QSA]
+RewriteRule ^CRM/images/(.*)$ CRM/images/$1 [NC,L,QSA]
+
+RewriteRule ^edit/css/(.*)$ edit/css/$1 [NC,L,QSA]
+RewriteRule ^edit/js/(.*)$ edit/js/$1 [NC,L,QSA]
+RewriteRule ^edit/images/(.*)$ edit/images/$1 [NC,L,QSA]
+
+# Sub-pages inside CRM (e.g. /crm/leads, /crm/dashboard, /crm/inquiries, /crm/settings)
+RewriteRule ^crm/([a-zA-Z0-9_-]+)(?:\.html)?/?$ CRM/$1.html [NC,L,QSA]
+RewriteRule ^CRM/([a-zA-Z0-9_-]+)(?:\.html)?/?$ CRM/$1.html [NC,L,QSA]
+
+# Sub-pages inside edit
+RewriteRule ^edit/([a-zA-Z0-9_-]+)(?:\.html)?/?$ edit/$1.html [NC,L,QSA]
+
+# Prevent Aggressive CDN & Browser Caching on Data Files
+<FilesMatch "\.(json)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
+
+# 7. Clean Extensionless URLs: Internally serve corresponding .html file
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^([a-zA-Z0-9_/-]+)/?$ $1.html [L,QSA]
+
+# 8. Custom 404 Error Page
+ErrorDocument 404 /error-404.html
