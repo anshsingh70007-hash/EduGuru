@@ -39,7 +39,7 @@
                 <div class="topbar-right">
                     <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
     <div class="modal-overlay" id="subModal" onclick="if(event.target===this)closeSubModal()">
         <div class="modal" style="width:500px;max-width:96vw;">
             <div class="modal-header">
-                <h3 id="subModalTitle"><i class="fa fa-bell" style="color:#ff3115;margin-right:8px;"></i> Add Subscriber</h3>
+                <h3 id="subModalTitle"><i class="fa fa-bell" style="color:#ff6b00;margin-right:8px;"></i> Add Subscriber</h3>
                 <button class="modal-close" onclick="closeSubModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -242,14 +242,14 @@
         function openSubModal(data) {
             document.getElementById('subModal').classList.add('active');
             if (data) {
-                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Subscriber';
+                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff6b00;margin-right:8px;"></i> Edit Subscriber';
                 document.getElementById('subId').value = data.id;
                 document.getElementById('subEmail').value = data.email || '';
                 document.getElementById('subName').value = data.name || '';
                 document.getElementById('subSource').value = data.source || 'Website Footer Newsletter';
                 document.getElementById('subStatus').value = data.status || 'active';
             } else {
-                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> Add Subscriber';
+                document.getElementById('subModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff6b00;margin-right:8px;"></i> Add Subscriber';
                 document.getElementById('subId').value = '';
                 document.getElementById('subEmail').value = '';
                 document.getElementById('subName').value = '';

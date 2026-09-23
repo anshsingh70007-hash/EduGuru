@@ -62,7 +62,7 @@ const CRM = {
 
   seedRoles() {
     const roles = [
-      { id: 1, name: 'owner', label: 'Owner / Super Admin', color: '#ff3115', permissions: ['all'] },
+      { id: 1, name: 'owner', label: 'Owner / Super Admin', color: '#ff6b00', permissions: ['all'] },
       { id: 2, name: 'admin', label: 'Admin', color: '#6f42c1', permissions: ['dashboard','leads','applications','enrollments','fees','inquiries','subscribers','users','settings'] },
       { id: 3, name: 'manager', label: 'Manager', color: '#17a2b8', permissions: ['dashboard','leads','applications','enrollments','fees','inquiries'] },
       { id: 4, name: 'sales', label: 'Sales Executive / Counselor', color: '#28a745', permissions: ['dashboard','leads','applications','enrollments','fees'] },
@@ -421,7 +421,7 @@ const CRM = {
     const found = roles.find(r => r.name === user.role);
     if (found) return found;
     if (user.role === 'owner' || user.role === 'admin') {
-      return { id: 1, name: user.role, label: 'Owner / Super Admin', color: '#ff3115', permissions: ['all'] };
+      return { id: 1, name: user.role, label: 'Owner / Super Admin', color: '#ff6b00', permissions: ['all'] };
     }
     return { name: user.role || 'user', label: user.role || 'User', color: '#64748b', permissions: ['dashboard', 'leads'] };
   },
@@ -477,7 +477,7 @@ const CRM = {
   formatDate(d) { return d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'; },
   formatDateTime(d) { return d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'; },
   formatCurrency(amt) { return '₹' + Number(amt || 0).toLocaleString('en-IN'); },
-  getAvatarColor(n) { const c = ['#ff3115','#17a2b8','#28a745','#ffc107','#6f42c1','#e83e8c','#0f3460','#fd7e14']; let h=0; for(let i=0;i<(n||'').length;i++) h=n.charCodeAt(i)+((h<<5)-h); return c[Math.abs(h)%c.length]; },
+  getAvatarColor(n) { const c = ['#ff6b00','#17a2b8','#28a745','#ffc107','#6f42c1','#e83e8c','#0f3460','#fd7e14']; let h=0; for(let i=0;i<(n||'').length;i++) h=n.charCodeAt(i)+((h<<5)-h); return c[Math.abs(h)%c.length]; },
   getInitials(n) { return (n || 'EG').split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2); }
 };
 

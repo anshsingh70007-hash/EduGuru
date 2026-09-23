@@ -28,7 +28,7 @@
                 <div class="topbar-right">
                     <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -36,8 +36,8 @@
             <div class="page-content">
                 <div class="stats-grid" id="statsGrid"></div>
                 <div class="row">
-                    <div class="col-8"><div class="card"><div class="card-header"><h3><i class="fa fa-bar-chart" style="margin-right:8px;color:#ff3115;"></i> Leads by Source</h3></div><div class="card-body"><div class="bar-chart" id="sourceChart"></div></div></div></div>
-                    <div class="col-4"><div class="card"><div class="card-header"><h3><i class="fa fa-pie-chart" style="margin-right:8px;color:#ff3115;"></i> Lead Status</h3></div><div class="card-body"><div id="statusBreakdown"></div></div></div></div>
+                    <div class="col-8"><div class="card"><div class="card-header"><h3><i class="fa fa-bar-chart" style="margin-right:8px;color:#ff6b00;"></i> Leads by Source</h3></div><div class="card-body"><div class="bar-chart" id="sourceChart"></div></div></div></div>
+                    <div class="col-4"><div class="card"><div class="card-header"><h3><i class="fa fa-pie-chart" style="margin-right:8px;color:#ff6b00;"></i> Lead Status</h3></div><div class="card-body"><div id="statusBreakdown"></div></div></div></div>
                 </div>
                 <div class="row">
                     <div class="col-6"><div class="card"><div class="card-header"><h3><i class="fa fa-users" style="margin-right:8px;color:#17a2b8;"></i> Recent Leads</h3><a href="leads.html" class="btn btn-sm btn-outline">View All</a></div><div class="card-body no-padding"><table class="data-table" id="recentLeads"><thead><tr><th>Name</th><th>Course</th><th>Status</th><th>Date</th></tr></thead><tbody></tbody></table></div></div></div>
@@ -99,7 +99,7 @@
             const bell = document.querySelector('.notification-bell');
             if (bell) {
                 if (stats.unreadInquiries > 0) {
-                    bell.innerHTML = `<i class="fa fa-bell-o"></i><span style="position:absolute;top:2px;right:2px;background:#ff3115;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">${stats.unreadInquiries}</span>`;
+                    bell.innerHTML = `<i class="fa fa-bell-o"></i><span style="position:absolute;top:2px;right:2px;background:#ff6b00;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid #fff;">${stats.unreadInquiries}</span>`;
                     bell.style.position = 'relative';
                 } else {
                     bell.innerHTML = '<i class="fa fa-bell-o"></i>';
@@ -171,7 +171,7 @@
             
             document.getElementById('statusBreakdown').innerHTML = statusHTML + `
                 <div style="margin-top:20px;padding:15px;background:#f8f9fa;border-radius:10px;text-align:center;cursor:pointer;" onclick="window.location.href='subscribers.html'" title="View subscribers">
-                    <div style="font-size:28px;font-weight:800;color:#ff3115;">${stats.totalSubscribers}</div>
+                    <div style="font-size:28px;font-weight:800;color:#ff6b00;">${stats.totalSubscribers}</div>
                     <div style="font-size:12px;color:#6c757d;text-transform:uppercase;font-weight:600;">Active Newsletter Subscribers</div>
                 </div>
             `;

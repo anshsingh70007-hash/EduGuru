@@ -1,5 +1,35 @@
 [
   {
+    "id": 9,
+    "slug": "zenith-institute-of-advanced-technology-and-ai-2",
+    "name": "Zenith Institute of Advanced Technology & AI",
+    "metaDescription": "",
+    "tags": [],
+    "keywords": [],
+    "facilities": [],
+    "category": "Engineering",
+    "categories": [
+      "Engineering"
+    ],
+    "affiliation": "Affiliated to VTU & Approved by AICTE",
+    "location": "Bengaluru, Karnataka",
+    "established": "2008",
+    "accreditation": "NAAC A++, AICTE, NBA",
+    "fee": "₹1,25,000 / Semester",
+    "image": "images/courses/1.jpg",
+    "rating": 4.9,
+    "courses": "B.Tech Artificial Intelligence, B.Tech Computer Science, M.Tech Robotics",
+    "coursesList": [
+      "B.Tech Artificial Intelligence",
+      "B.Tech Computer Science",
+      "M.Tech Robotics"
+    ],
+    "description": "Premier AI and technology institute providing industry-immersive learning and 100% placement track record.",
+    "isFeatured": true,
+    "featured": true,
+    "dateAdded": "2026-09-23T11:00:30.205Z"
+  },
+  {
     "id": 7,
     "slug": "zenith-institute-of-advanced-technology-and-ai",
     "name": "Zenith Institute of Advanced Technology & AI",

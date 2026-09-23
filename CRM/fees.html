@@ -33,7 +33,7 @@
         .receipt-box { border:2px dashed #cbd5e0; padding:25px; border-radius:12px; background:#fff; font-family:'Inter',sans-serif; }
         .receipt-header { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #e2e8f0; padding-bottom:15px; margin-bottom:15px; }
         .receipt-brand { font-size:20px; font-weight:800; color:#1a202c; }
-        .receipt-brand span { color:#ff3115; }
+        .receipt-brand span { color:#ff6b00; }
         .receipt-table { width:100%; border-collapse:collapse; margin:15px 0; font-size:13px; }
         .receipt-table th, .receipt-table td { padding:10px 12px; border:1px solid #e2e8f0; }
         .receipt-table th { background:#f7fafc; text-align:left; font-weight:600; }
@@ -56,7 +56,7 @@
                 <div class="topbar-right">
                     <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -158,7 +158,7 @@
     <!-- Add/Edit Fee Modal -->
     <div class="modal-overlay" id="feeModal" onclick="if(event.target===this)closeFeeModal()"><div class="modal" style="width:620px;max-width:96vw;">
         <div class="modal-header">
-            <h3 id="feeModalTitle"><i class="fa fa-money" style="color:#ff3115;margin-right:8px;"></i> Record Fee Payment</h3>
+            <h3 id="feeModalTitle"><i class="fa fa-money" style="color:#ff6b00;margin-right:8px;"></i> Record Fee Payment</h3>
             <button class="modal-close" onclick="closeFeeModal()">&times;</button>
         </div>
         <div class="modal-body">
@@ -252,7 +252,7 @@
     <!-- Official Fee Receipt Modal -->
     <div class="modal-overlay" id="receiptModal" onclick="if(event.target===this)closeReceiptModal()"><div class="modal receipt-modal">
         <div class="modal-header">
-            <h3><i class="fa fa-file-text-o" style="color:#ff3115;margin-right:8px;"></i> Official Fee Receipt</h3>
+            <h3><i class="fa fa-file-text-o" style="color:#ff6b00;margin-right:8px;"></i> Official Fee Receipt</h3>
             <button class="modal-close" onclick="closeReceiptModal()">&times;</button>
         </div>
         <div class="modal-body" id="receiptPrintableArea">
@@ -264,7 +264,7 @@
                         <div style="font-size:11px;color:#a0aec0;">GSTIN / Reg No: 07AAACE1234F1Z5 &bull; New Delhi, India</div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:14px;font-weight:700;color:#ff3115;" id="rcptNumber">EGU/2024-25/0000</div>
+                        <div style="font-size:14px;font-weight:700;color:#ff6b00;" id="rcptNumber">EGU/2024-25/0000</div>
                         <div style="font-size:12px;color:#718096;margin-top:3px;">Date: <span id="rcptDate">-</span></div>
                         <div style="font-size:11px;color:#28a745;font-weight:700;margin-top:2px;" id="rcptStatusTag">[PAID]</div>
                     </div>
@@ -507,7 +507,7 @@
         function openFeeModal(data) {
             document.getElementById('feeModal').classList.add('active');
             if (data) {
-                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Fee Record';
+                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff6b00;margin-right:8px;"></i> Edit Fee Record';
                 document.getElementById('feeId').value = data.id;
                 document.getElementById('fStudentName').value = data.studentName;
                 document.getElementById('fRollNo').value = data.rollNo || '';
@@ -523,7 +523,7 @@
                 document.getElementById('fDueDate').value = data.dueDate || '';
                 document.getElementById('fNotes').value = data.notes || '';
             } else {
-                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> Record Fee Payment';
+                document.getElementById('feeModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff6b00;margin-right:8px;"></i> Record Fee Payment';
                 document.getElementById('feeId').value = '';
                 document.getElementById('fStudentName').value = '';
                 document.getElementById('fRollNo').value = '';
@@ -676,7 +676,7 @@
                         .receipt-box { border: 2px solid #cbd5e0; padding: 25px; border-radius: 8px; }
                         .receipt-header { display: flex; justify-content: space-between; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 15px; }
                         .receipt-brand { font-size: 22px; font-weight: 800; color: #1a202c; }
-                        .receipt-brand span { color: #ff3115; }
+                        .receipt-brand span { color: #ff6b00; }
                         .receipt-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px; }
                         .receipt-table th, .receipt-table td { padding: 8px 12px; border: 1px solid #e2e8f0; }
                         .receipt-table th { background: #f7fafc; text-align: left; }

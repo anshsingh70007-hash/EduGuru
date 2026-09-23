@@ -18,10 +18,10 @@
         .role-perms { font-size:12px; color:var(--text-muted); margin-top:3px; }
         .perm-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:15px; }
         .perm-checkbox { display:flex; align-items:center; gap:6px; font-size:13px; padding:8px 12px; background:#f8f9fa; border-radius:8px; cursor:pointer; }
-        .perm-checkbox input { accent-color:#ff3115; }
+        .perm-checkbox input { accent-color:#ff6b00; }
         .tab-nav { display:flex; border-bottom:2px solid var(--border); margin-bottom:25px; }
         .tab-nav button { padding:12px 25px; border:none; background:none; font-size:14px; font-weight:600; cursor:pointer; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-2px; transition:all .2s; font-family:'Inter',sans-serif; }
-        .tab-nav button.active { color:#ff3115; border-bottom-color:#ff3115; }
+        .tab-nav button.active { color:#ff6b00; border-bottom-color:#ff6b00; }
         .tab-content { display:none; }
         .tab-content.active { display:block; }
         .access-denied { text-align:center; padding:80px 20px; }
@@ -43,7 +43,7 @@
                 </div>
                 <div class="topbar-right">
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -82,7 +82,7 @@
                 <input type="hidden" id="roleId">
                 <div class="form-group"><label>Role Name</label><input type="text" id="roleName" placeholder="e.g. Counsellor"></div>
                 <div class="form-group"><label>Display Label</label><input type="text" id="roleLabel" placeholder="e.g. Academic Counsellor"></div>
-                <div class="form-group"><label>Color</label><input type="color" id="roleColor" value="#ff3115" style="height:45px;cursor:pointer;"></div>
+                <div class="form-group"><label>Color</label><input type="color" id="roleColor" value="#ff6b00" style="height:45px;cursor:pointer;"></div>
                 <div class="form-group">
                     <label>Permissions</label>
                     <div class="perm-grid" id="permGrid"></div>
@@ -287,7 +287,7 @@
             document.getElementById('roleId').value = role ? role.id : '';
             document.getElementById('roleName').value = role ? role.name : '';
             document.getElementById('roleLabel').value = role ? role.label : '';
-            document.getElementById('roleColor').value = role ? role.color : '#ff3115';
+            document.getElementById('roleColor').value = role ? role.color : '#ff6b00';
             const perms = role ? role.permissions : [];
             document.getElementById('permGrid').innerHTML = ALL_PERMISSIONS.map(p => `
                 <label class="perm-checkbox"><input type="checkbox" value="${p.key}" ${perms.includes(p.key)||perms.includes('all')?'checked':''}> ${p.label}</label>

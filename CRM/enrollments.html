@@ -51,7 +51,7 @@
                 <div class="topbar-right">
                     <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i></div>
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
     <div class="modal-overlay" id="enrModal" onclick="if(event.target===this)closeEnrModal()">
         <div class="modal modal-enr-lg">
             <div class="modal-header">
-                <h3 id="enrModalTitle"><i class="fa fa-graduation-cap" style="color:#ff3115;margin-right:8px;"></i> New Student Enrollment</h3>
+                <h3 id="enrModalTitle"><i class="fa fa-graduation-cap" style="color:#ff6b00;margin-right:8px;"></i> New Student Enrollment</h3>
                 <button class="modal-close" onclick="closeEnrModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -477,7 +477,7 @@
         function openEnrModal(data) {
             document.getElementById('enrModal').classList.add('active');
             if (data) {
-                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Enrollment';
+                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff6b00;margin-right:8px;"></i> Edit Enrollment';
                 document.getElementById('enrId').value = data.id;
                 document.getElementById('enrName').value = data.studentName || '';
                 document.getElementById('enrRollNo').value = data.rollNo || '';
@@ -496,7 +496,7 @@
                 document.getElementById('enrCounselor').value = data.counselor || 'Jatinder Kaur';
                 document.getElementById('enrNotes').value = data.notes || '';
             } else {
-                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> New Student Enrollment';
+                document.getElementById('enrModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff6b00;margin-right:8px;"></i> New Student Enrollment';
                 document.getElementById('enrId').value = '';
                 document.getElementById('enrName').value = '';
                 document.getElementById('enrRollNo').value = '';

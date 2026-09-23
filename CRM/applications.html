@@ -57,7 +57,7 @@
                 <div class="topbar-right">
                     <div class="notification-bell" onclick="window.location.href='/crm/inquiries'"><i class="fa fa-bell-o"></i><span class="dot" id="unreadDot" style="display:none;"></span></div>
                     <div class="admin-avatar">
-                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff3115;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
+                        <div id="topAvatar" style="width:36px;height:36px;border-radius:50%;background:#ff6b00;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;"></div>
                         <div><div class="admin-name" id="topName"></div><div class="admin-role" id="topRole"></div></div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
     <div class="modal-overlay" id="appModal" onclick="if(event.target===this)closeAppModal()">
         <div class="modal modal-app-lg">
             <div class="modal-header">
-                <h3 id="appModalTitle"><i class="fa fa-file-text" style="color:#ff3115;margin-right:8px;"></i> New Admission Application</h3>
+                <h3 id="appModalTitle"><i class="fa fa-file-text" style="color:#ff6b00;margin-right:8px;"></i> New Admission Application</h3>
                 <button class="modal-close" onclick="closeAppModal()">&times;</button>
             </div>
             <div class="modal-body">
@@ -287,7 +287,7 @@
     <div class="modal-overlay" id="dossierModal" onclick="if(event.target===this)closeDossierModal()">
         <div class="modal modal-app-lg">
             <div class="modal-header">
-                <h3 id="dossierTitle"><i class="fa fa-id-card-o" style="color:#ff3115;margin-right:8px;"></i> Application Dossier</h3>
+                <h3 id="dossierTitle"><i class="fa fa-id-card-o" style="color:#ff6b00;margin-right:8px;"></i> Application Dossier</h3>
                 <button class="modal-close" onclick="closeDossierModal()">&times;</button>
             </div>
             <div class="modal-body" id="dossierBody"></div>
@@ -512,7 +512,7 @@
         function openAppModal(data) {
             document.getElementById('appModal').classList.add('active');
             if (data) {
-                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff3115;margin-right:8px;"></i> Edit Application';
+                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-pencil" style="color:#ff6b00;margin-right:8px;"></i> Edit Application';
                 document.getElementById('appId').value = data.id;
                 document.getElementById('appName').value = data.name || '';
                 document.getElementById('appPhone').value = data.phone || '';
@@ -536,7 +536,7 @@
                 document.getElementById('docAadhaar').checked = !!docs.docAadhaar;
                 document.getElementById('docPhoto').checked = !!docs.docPhoto;
             } else {
-                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff3115;margin-right:8px;"></i> New Admission Application';
+                document.getElementById('appModalTitle').innerHTML = '<i class="fa fa-plus" style="color:#ff6b00;margin-right:8px;"></i> New Admission Application';
                 document.getElementById('appId').value = '';
                 document.getElementById('appName').value = '';
                 document.getElementById('appPhone').value = '';
@@ -641,7 +641,7 @@
                 { k: 'Passport Size Photo', ok: docs.docPhoto }
             ];
 
-            document.getElementById('dossierTitle').innerHTML = `<i class="fa fa-id-card-o" style="color:#ff3115;margin-right:8px;"></i> Application Dossier &bull; ${a.name}`;
+            document.getElementById('dossierTitle').innerHTML = `<i class="fa fa-id-card-o" style="color:#ff6b00;margin-right:8px;"></i> Application Dossier &bull; ${a.name}`;
             document.getElementById('dossierBody').innerHTML = `
                 <div class="app-dossier-grid">
                     <div class="dossier-card">
@@ -654,7 +654,7 @@
                     </div>
                     <div class="dossier-card">
                         <h4><i class="fa fa-graduation-cap"></i> Academic & Program Details</h4>
-                        <div class="dossier-row"><span class="label">Selected Course:</span><span class="val" style="color:#ff3115;">${a.course}</span></div>
+                        <div class="dossier-row"><span class="label">Selected Course:</span><span class="val" style="color:#ff6b00;">${a.course}</span></div>
                         <div class="dossier-row"><span class="label">Partner University:</span><span class="val">${a.university || 'Affiliated'}</span></div>
                         <div class="dossier-row"><span class="label">Highest Qualification:</span><span class="val">${a.qualification || '-'}</span></div>
                         <div class="dossier-row"><span class="label">Marks / Percentage:</span><span class="val">${a.marks || 'Results Awaited'}</span></div>
