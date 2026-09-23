@@ -1,6 +1,6 @@
 /**
  * EducationistGuru - YouTube Video Hub Stylesheet
- * Brand colors: #ff3115 (EG Red), #ff0000 (YouTube Red), #111827 (Dark), #f8fafc (Light Slate)
+ * Brand colors: #ff6b00 (EG Red), #ff0000 (YouTube Red), #111827 (Dark), #f8fafc (Light Slate)
  */
 
 /* ================= HERO & CHANNEL SPOTLIGHT ================= */
@@ -20,7 +20,7 @@
     right: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(255, 0, 0, 0.18) 0%, rgba(255, 49, 21, 0) 70%);
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.18) 0%, rgba(255, 107, 0, 0) 70%);
     pointer-events: none;
     z-index: 1;
 }

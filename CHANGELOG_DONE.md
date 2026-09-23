@@ -40,6 +40,18 @@
 
 ---
 
+## Phase 6 — Public Portal Palette Unification & Final Touch-up
+
+- Unified all off-brand harsh reds to the brand orange system across **28 public files** (23 HTML pages + 5 CSS files: `blog.css`, `colleges-universities.css`, `site-menu.css`, `smooth-ui.css`, `youtube.css`):
+  - `#ff3115` → `#ff6b00` (brand orange)
+  - `#e0260c` → `#e65e00` (gradient/hover partner)
+  - `rgba(255,49,21,*)` → `rgba(255,107,0,*)` (ambient glows/shadows)
+- Affected UI: section-heading accents, "Founder & CEO" pill, "Our Leadership" block, event card icons, YouTube guidance cards & play buttons, "Newly Added Programs" banner CTA, mail/phone icons.
+- **Preserved** genuine social-brand icon colors: YouTube `#ff0000`, Facebook `#3b5998`, Instagram `#e1306c`.
+- Verified in-browser at desktop (1440×900) and mobile (390×844): homepage, courses, and contact render cleanly with consistent brand orange and correct spacing — no console errors. Satisfies INVARIANT 7.
+
+---
+
 ## Verification Summary
 
 | Check | Result |
@@ -47,6 +59,7 @@
 | EDIT dual-file SHA256 parity | ✅ `true` |
 | `test_unbreakable_system.js` | ✅ passing |
 | Residual `#ff3115` (excl. accurate `admin.css` comment) | ✅ 0 |
+| Public site palette (23 HTML + 5 CSS) | ✅ unified to brand orange |
 | Editor login + workspace render | ✅ no console errors |
 | CRM empty-state pages | ✅ graceful, no errors |
 | Zero-loss lead pipeline (normal/offline/drain) | ✅ verified |

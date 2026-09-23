@@ -637,7 +637,7 @@ h1, h2, h3, .heading-display {
 }
 .modal-header .close:hover {
   opacity: 1;
-  color: #ff3115;
+  color: #ff6b00;
   transform: rotate(90deg);
 }
 
@@ -948,7 +948,7 @@ h1, h2, h3, .heading-display {
   color: #0f172a;
   line-height: 1.35;
   margin: 30px 0 14px;
-  border-bottom: 2.5px solid #ff3115;
+  border-bottom: 2.5px solid #ff6b00;
   padding-bottom: 8px;
 }
 
@@ -959,7 +959,7 @@ h1, h2, h3, .heading-display {
   color: #1e293b;
   line-height: 1.38;
   margin: 26px 0 12px;
-  border-left: 4px solid #ff3115;
+  border-left: 4px solid #ff6b00;
   padding-left: 12px;
 }
 
@@ -1117,7 +1117,7 @@ h1, h2, h3, .heading-display {
 .sidebar-inquiry-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-top: 4px solid #ff3115;
+  border-top: 4px solid #ff6b00;
   border-radius: 12px;
   padding: 24px 22px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
@@ -1129,7 +1129,7 @@ h1, h2, h3, .heading-display {
   align-items: center;
   gap: 6px;
   background: #fff1ee;
-  color: #ff3115;
+  color: #ff6b00;
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
@@ -1165,7 +1165,7 @@ h1, h2, h3, .heading-display {
 
 .sidebar-inquiry-card .btn-submit-inquiry {
   width: 100%;
-  background: #ff3115;
+  background: #ff6b00;
   color: #ffffff;
   font-weight: 700;
   font-size: 14px;
@@ -1204,7 +1204,7 @@ h1, h2, h3, .heading-display {
 
 .sidebar-inquiry-card .helpline-item a {
   font-weight: 700;
-  color: #ff3115;
+  color: #ff6b00;
   text-decoration: none;
 }
 

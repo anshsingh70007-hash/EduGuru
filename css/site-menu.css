@@ -5,7 +5,7 @@
    ========================================================= */
 
 :root {
-    --eg-menu-primary: #ff3115;
+    --eg-menu-primary: #ff6b00;
     --eg-menu-primary-hover: #e0260d;
     --eg-menu-dark: #0f172a;
     --eg-menu-text: #1e293b;
@@ -18,7 +18,7 @@
 
 /* ================= TOP ANNOUNCEMENT RIBBON ================= */
 .eg-announcement-bar {
-    background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #ff3115 100%);
+    background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #ff6b00 100%);
     color: #ffffff;
     font-size: 13px;
     font-weight: 600;
@@ -69,7 +69,7 @@
 }
 .eg-announcement-bar .announcement-cta:hover {
     background: #ffffff;
-    color: #ff3115;
+    color: #ff6b00;
 }
 @media (max-width: 768px) {
     .eg-announcement-bar {
@@ -144,7 +144,7 @@
     transition: color 0.2s ease;
 }
 .right-bar-icon a:hover {
-    color: #ff3115 !important;
+    color: #ff6b00 !important;
 }
 
 @media (max-width: 1320px) and (min-width: 992px) {
@@ -165,7 +165,7 @@
     letter-spacing: 0.4px;
     padding: 1.5px 5.5px;
     border-radius: 8px;
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
     line-height: 1.1;
     display: inline-flex;
@@ -294,7 +294,7 @@
     }
     .eg-megamenu-list li a:hover .item-mode {
         background: #fee2e2;
-        color: #ff3115;
+        color: #ff6b00;
     }
 
     /* Featured Counselor Card in Mega-Menu */
@@ -326,7 +326,7 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        background: #ff3115;
+        background: #ff6b00;
         color: #ffffff;
         font-size: 12px;
         font-weight: 700;
@@ -382,7 +382,7 @@
     }
     .eg-dropdown-menu li a:hover {
         background: #fff5f2;
-        color: #ff3115;
+        color: #ff6b00;
         padding-left: 22px;
     }
     .eg-dropdown-menu li a .dropdown-desc {
@@ -425,7 +425,7 @@
     .eg-sub-dropdown {
         display: none;
         background: #f8fafc;
-        border-left: 3px solid #ff3115;
+        border-left: 3px solid #ff6b00;
         padding: 10px 14px;
         margin: 6px 0;
         border-radius: 6px;
@@ -451,7 +451,7 @@
         float: right;
         padding: 2px 8px;
         font-size: 14px;
-        color: #ff3115;
+        color: #ff6b00;
         cursor: pointer;
     }
 }

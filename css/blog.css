@@ -22,7 +22,7 @@
     right: -50px;
     width: 260px;
     height: 260px;
-    background: radial-gradient(circle, rgba(255, 49, 21, 0.22) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.22) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -31,9 +31,9 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(255, 49, 21, 0.18);
+    background: rgba(255, 107, 0, 0.18);
     color: #ff7663;
-    border: 1px solid rgba(255, 49, 21, 0.35);
+    border: 1px solid rgba(255, 107, 0, 0.35);
     padding: 5px 14px;
     border-radius: 20px;
     font-size: 11.5px;
@@ -100,8 +100,8 @@
 }
 
 .eg-blog-search-input:focus {
-    border-color: #ff3115;
-    box-shadow: 0 0 0 4px rgba(255, 49, 21, 0.18), 0 6px 20px rgba(0, 0, 0, 0.1);
+    border-color: #ff6b00;
+    box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.18), 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 .eg-blog-search-clear {
@@ -122,7 +122,7 @@
 }
 
 .eg-blog-search-clear:hover {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
 }
 
@@ -157,10 +157,10 @@
 }
 
 .eg-blog-pill.active {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
-    border-color: #ff3115;
-    box-shadow: 0 4px 14px rgba(255, 49, 21, 0.35);
+    border-color: #ff6b00;
+    box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
 }
 
 .eg-blog-pill-count {
@@ -193,7 +193,7 @@
 .eg-blog-reset-btn {
     background: none;
     border: none;
-    color: #ff3115;
+    color: #ff6b00;
     font-weight: 700;
     font-size: 13px;
     cursor: pointer;
@@ -293,8 +293,8 @@
 }
 
 .eg-blog-card-cat:hover {
-    background: rgba(255, 49, 21, 0.95);
-    border-color: rgba(255, 49, 21, 0.5);
+    background: rgba(255, 107, 0, 0.95);
+    border-color: rgba(255, 107, 0, 0.5);
     color: #ffffff;
     transform: translateY(-1px);
 }
@@ -303,7 +303,7 @@
     position: absolute;
     top: 14px;
     right: 14px;
-    background: linear-gradient(135deg, #ff3115, #ea580c);
+    background: linear-gradient(135deg, #ff6b00, #ea580c);
     color: #ffffff;
     padding: 4px 10px;
     border-radius: 20px;
@@ -312,7 +312,7 @@
     text-transform: uppercase;
     letter-spacing: 0.4px;
     z-index: 2;
-    box-shadow: 0 2px 8px rgba(255, 49, 21, 0.4);
+    box-shadow: 0 2px 8px rgba(255, 107, 0, 0.4);
     display: inline-flex;
     align-items: center;
     gap: 4px;
@@ -373,7 +373,7 @@
 }
 
 .eg-blog-card-title a:hover {
-    color: #ff3115;
+    color: #ff6b00;
 }
 
 .eg-blog-card-desc {
@@ -402,7 +402,7 @@
     gap: 6px;
     font-size: 13px;
     font-weight: 700;
-    color: #ff3115;
+    color: #ff6b00;
     text-decoration: none;
     transition: gap 0.2s;
 }
@@ -451,7 +451,7 @@
 }
 
 .eg-blog-empty-btn {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
     border: none;
     padding: 10px 24px;
@@ -494,7 +494,7 @@
     left: 0;
     width: 36px;
     height: 3px;
-    background: #ff3115;
+    background: #ff6b00;
     border-radius: 2px;
 }
 
@@ -518,7 +518,7 @@
 }
 
 .eg-side-search-input:focus {
-    border-color: #ff3115;
+    border-color: #ff6b00;
     background: #ffffff;
 }
 
@@ -533,7 +533,7 @@
 }
 
 .eg-side-search-btn:hover {
-    color: #ff3115;
+    color: #ff6b00;
 }
 
 /* Sidebar Categories Interactive List */
@@ -568,12 +568,12 @@
 }
 
 .eg-side-cat-btn:hover {
-    color: #ff3115;
+    color: #ff6b00;
     padding-left: 6px;
 }
 
 .eg-side-cat-btn.active {
-    color: #ff3115;
+    color: #ff6b00;
     font-weight: 700;
 }
 
@@ -587,7 +587,7 @@
 }
 
 .eg-side-cat-btn.active .eg-side-cat-badge {
-    background: #ff3115;
+    background: #ff6b00;
     color: #ffffff;
 }
 
@@ -629,7 +629,7 @@
 
 .eg-side-post-date {
     font-size: 11px;
-    color: #ff3115;
+    color: #ff6b00;
     font-weight: 700;
     margin-bottom: 3px;
     display: inline-flex;
@@ -656,16 +656,16 @@
 }
 
 .eg-side-post-title a:hover {
-    color: #ff3115;
+    color: #ff6b00;
 }
 
 /* Free Counseling Helpline Card */
 .eg-helpline-card {
-    background: linear-gradient(135deg, #ff3115 0%, #e6260c 100%);
+    background: linear-gradient(135deg, #ff6b00 0%, #e6260c 100%);
     color: #ffffff;
     border-radius: 18px;
     padding: 24px;
-    box-shadow: 0 10px 25px rgba(255, 49, 21, 0.3);
+    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3);
     text-align: left;
     position: relative;
     overflow: hidden;
@@ -717,7 +717,7 @@
     gap: 8px;
     width: 100%;
     background: #ffffff;
-    color: #ff3115;
+    color: #ff6b00;
     padding: 11px 16px;
     border-radius: 10px;
     font-size: 13.5px;
@@ -731,6 +731,6 @@
 .eg-helpline-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    color: #ff3115;
+    color: #ff6b00;
     text-decoration: none;
 }

@@ -219,3 +219,8 @@ Whenever you (the AI assistant) or any engineer makes changes to this project, *
 - **Empty-Collection Safety:** Enrollments / Fees / Users & Roles render graceful empty-states with zeroed stats; `readData()` self-heal confirmed identical in `server.js` and `api.php` (INVARIANT 5).
 - **Validation:** `node scratch/test_unbreakable_system.js` passing; EDIT SHA256 parity `true`. Note: `test_unbreakable_recovery.js` fails only on a hard-coded Windows vault path (`C:\Users\...`), an environment-specific artifact unrelated to these display-only changes.
 
+### 2026-09-23 — Public Portal Palette Unification (Phase 6)
+- **Public site (28 files):** Unified all off-brand harsh reds to the brand orange system across 23 public HTML pages + 5 CSS files (`blog.css`, `colleges-universities.css`, `site-menu.css`, `smooth-ui.css`, `youtube.css`): `#ff3115 → #ff6b00`, gradient partner `#e0260c → #e65e00`, and `rgba(255,49,21,*) → rgba(255,107,0,*)`. Covers section-heading accents, "Founder & CEO" pill, leadership block, event icons, YouTube guidance cards/play buttons, "Newly Added Programs" banner CTA, and mail/phone icons.
+- **Preserved intentionally:** genuine social-brand icon colors — YouTube `#ff0000`, Facebook `#3b5998`, Instagram `#e1306c`.
+- **Verified in-browser (desktop + mobile):** homepage, courses, contact render cleanly with unified brand orange and correct spacing; no console errors. Satisfies INVARIANT 7 (Anti-AI Design System — no harsh red on public toolbar/UI).
+

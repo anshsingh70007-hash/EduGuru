@@ -110,7 +110,7 @@
     font-weight: 700;
     font-size: 14px;
     border-radius: 10px;
-    box-shadow: 0 4px 18px rgba(255, 49, 21, 0.45);
+    box-shadow: 0 4px 18px rgba(255, 107, 0, 0.45);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -120,8 +120,8 @@
 
 .eg-hero-cta-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 22px rgba(255, 49, 21, 0.6);
-    background: linear-gradient(135deg, #ff7e1d 0%, #ff3115 100%);
+    box-shadow: 0 6px 22px rgba(255, 107, 0, 0.6);
+    background: linear-gradient(135deg, #ff7e1d 0%, #ff6b00 100%);
 }
 
 /* --- Search & Filter Control Panel --- */
