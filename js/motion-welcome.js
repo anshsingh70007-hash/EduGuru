@@ -27,6 +27,15 @@
     const welcomeEl = document.getElementById('eg-motion-welcome');
     if (!welcomeEl) return;
 
+    // Show the intro only once per browsing session so internal navigation
+    // feels instant. (Failsafe guarantees below still apply on first view.)
+    try {
+        if (sessionStorage.getItem('eg_welcomed') === 'true') {
+            welcomeEl.remove();
+            return;
+        }
+    } catch (e) {}
+
     const counterEl = document.getElementById('eg-welcome-counter');
     const progressBar = document.getElementById('eg-progress-bar');
     let dismissed = false;

@@ -31,6 +31,15 @@
     pointer-events: none !important;
 }
 
+/* Fade the inner content out FIRST (faster than the curtain) so the welcome
+   text/logo can never be seen ghosting over the hero as the curtain slides up. */
+#eg-motion-welcome.eg-exit .eg-welcome-stage,
+#eg-motion-welcome.eg-exit .eg-welcome-meta,
+#eg-motion-welcome.eg-exit .eg-progress-track {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
 /* Stage Layout */
 .eg-welcome-stage {
     position: relative;
